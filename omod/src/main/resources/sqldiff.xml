@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqldiff PUBLIC "-//OpenMRS//DTD OpenMRS SQL Diff Config 1.0//EN" "http://resources.openmrs.org/doctype/sqldiff-1.0.dtd">
+
+<sqldiff version="1.0">
+	<help>
+		USE:
+			The diffs are ordered by datamodel version number.
+			The script can be run in a top down fashion and is
+			expected to not failor overwrite old data
+		
+		EXPECT:
+			- "use business-database-name;" was called prior to
+			   calling this script
+	</help>
+	<diff>
+		<version>3.1.0</version>
+		<author>Viet Nguyen</author>
+		<date>Otc 13rd 2010</date>
+		<description>
+			Create Tender table
+		</description>
+		<sql>
+		CREATE TABLE IF NOT EXISTS `billing_tender` (
+		  `tender_id` int(11) NOT NULL auto_increment,
+		  `number` int(11) default NULL,
+		  `name` varchar(255) default NULL,
+		  `description` varchar(255) default NULL,
+		  `price` decimal(19,2) default NULL,
+		  `opening_date` datetime default NULL,
+		  `closing_date` datetime default NULL,
+		  `created_date` datetime default NULL,
+		  `retired` bit(1) default NULL,
+		  `retired_date` datetime default NULL,
+		  PRIMARY KEY  (`tender_id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		
+		CREATE TABLE IF NOT EXISTS `billing_company` (
+		  `company_id` int(11) NOT NULL auto_increment,
+		  `name` varchar(255) default NULL,
+		  `address` varchar(255) default NULL,
+		  `description` varchar(255) default NULL,
+		  `phone` varchar(20) default NULL,
+		  `created_date` datetime default NULL,
+		  `retired` bit(1) default NULL,
+		  `retired_date` datetime default NULL,
+		  PRIMARY KEY  (`company_id`)
+		)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		
+		CREATE TABLE IF NOT EXISTS `billing_ambulance` (
+		  `ambulance_id` int(11) NOT NULL auto_increment,
+		  `name` varchar(255) default NULL,
+		  `description` varchar(255) default NULL,
+		  `created_date` datetime default NULL,
+		  `retired` bit(1) default NULL,
+		  `retired_date` datetime default NULL,
+		  PRIMARY KEY  (`ambulance_id`)
+		)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		
+		CREATE TABLE IF NOT EXISTS `billing_driver` (
+		  `driver_id` int(11) NOT NULL auto_increment,
+		  `name` varchar(255) default NULL,
+		  `address` varchar(255) default NULL,
+		  `description` varchar(255) default NULL,
+		  `phone` varchar(20) default NULL,
+		  `created_date` datetime default NULL,
+		  `retired` bit(1) default NULL,
+		  `retired_date` datetime default NULL,
+		  PRIMARY KEY  (`driver_id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		
+		CREATE TABLE IF NOT EXISTS `billing_service` (
+		  `service_id` int(11) NOT NULL auto_increment,
+		  `concept_id` int(11) default NULL,
+		  `name` varchar(255) default NULL,
+		  `short_name` varchar(255) default NULL,
+		  `price` decimal(19,2) default NULL,
+		  `disable` bit(1) default NULL,
+		  PRIMARY KEY  (`service_id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		
+		CREATE TABLE IF NOT EXISTS `billing_ambulance_bill` (
+		  `ambulance__bill_id` int(11) NOT NULL auto_increment,
+		  `description` varchar(255) default NULL,
+		  `creator` int(11) default NULL,
+		  `amount` decimal(19,2) default NULL,
+		  `printed` bit(1) default NULL,
+		  `created_date` datetime default NULL,
+		  `voided` bit(1) default NULL,
+		  `voided_date` datetime default NULL,
+		  `driver_id` int(11) default NULL,
+		  PRIMARY KEY  (`ambulance__bill_id`),
+		  KEY `fk_ambulancebill_driver` (`driver_id`),
+		  KEY `fk_ambulancebill_user` (`creator`),
+		  CONSTRAINT `fk_ambulancebill_user` FOREIGN KEY (`creator`) REFERENCES `users` (`user_id`),
+		  CONSTRAINT `fk_ambulancebill_driver` FOREIGN KEY (`driver_id`) REFERENCES `billing_driver` (`driver_id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		
+		CREATE TABLE IF NOT EXISTS `billing_ambulance_bill_item` (
+		  `ambulance__bill_item_id` int(11) NOT NULL auto_increment,
+		  `ambulance_id` int(11) default NULL,
+		  `ambulance_bill_id` int(11) default NULL,
+		  `number_of_trip` int(11) default NULL,
+		  `amount` decimal(19,2) default NULL,
+		  `name` varchar(255) default NULL,
+		  `created_date` datetime default NULL,
+		  `voided` bit(1) default NULL,
+		  `voided_date` datetime default NULL,
+		  PRIMARY KEY  (`ambulance__bill_item_id`),
+		  KEY `fk_ambulancebillitem_ambulancebill` (`ambulance_bill_id`),
+		  KEY `fk_ambulancebillitem_ambulance` (`ambulance_id`),
+		  CONSTRAINT `fk_ambulancebillitem_ambulance` FOREIGN KEY (`ambulance_id`) REFERENCES `billing_ambulance` (`ambulance_id`),
+		  CONSTRAINT `fk_ambulancebillitem_ambulancebill` FOREIGN KEY (`ambulance_bill_id`) REFERENCES `billing_ambulance_bill` (`ambulance__bill_id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+		CREATE TABLE IF NOT EXISTS `billing_patient_service_bill` (
+		  `patient_service_bill_id` int(11) NOT NULL auto_increment,
+		  `description` varchar(255) default NULL,
+		  `creator` int(11) default NULL,
+		  `amount` decimal(19,2) default NULL,
+		  `printed` bit(1) default NULL,
+		  `created_date` datetime default NULL,
+		  `voided` bit(1) default NULL,
+		  `voided_date` datetime default NULL,
+		  `patient_id` int(11) default NULL,
+		  PRIMARY KEY  (`patient_service_bill_id`),
+		  KEY `fk_patientservicebill_patient` (`patient_id`),
+		  KEY `fk_patientservicebill_user` (`creator`),
+		  CONSTRAINT `fk_patientservicebill_user` FOREIGN KEY (`creator`) REFERENCES `users` (`user_id`),
+		  CONSTRAINT `fk_patientservicebill_patient` FOREIGN KEY (`patient_id`) REFERENCES `patient` (`patient_id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		
+		CREATE TABLE IF NOT EXISTS `billing_patient_service_bill_item` (
+		  `patient_service_bill_item_id` int(11) NOT NULL auto_increment,
+		  `service_id` int(11) default NULL,
+		  `patient_service_bill_id` int(11) default NULL,
+		  `unitPrice` decimal(19,2) default NULL,
+		  `amount` decimal(19,2) default NULL,
+		  `quantity` int(11) default NULL,
+		  `name` varchar(255) default NULL,
+		  `created_date` datetime default NULL,
+		  `voided` bit(1) default NULL,
+		  `voided_date` datetime default NULL,
+		  PRIMARY KEY  (`patient_service_bill_item_id`),
+		  KEY `fk_patientservicebillitem_service` (`service_id`),
+		  KEY `fk_patientservicebillitem_patientservicebill` (`patient_service_bill_id`),
+		  CONSTRAINT `fk_patientservicebillitem_patientservicebill` FOREIGN KEY (`patient_service_bill_id`) REFERENCES `billing_patient_service_bill` (`patient_service_bill_id`),
+		  CONSTRAINT `fk_patientservicebillitem_service` FOREIGN KEY (`service_id`) REFERENCES `billing_service` (`service_id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		
+		CREATE TABLE IF NOT EXISTS `billing_tender_bill` (
+		  `tender_bill_id` int(11) NOT NULL auto_increment,
+		  `description` varchar(255) default NULL,
+		  `creator` int(11) default NULL,
+		  `amount` decimal(19,2) default NULL,
+		  `printed` bit(1) default NULL,
+		  `created_date` datetime default NULL,
+		  `voided` bit(1) default NULL,
+		  `voided_date` datetime default NULL,
+		  `company_id` int(11) default NULL,
+		  PRIMARY KEY  (`tender_bill_id`),
+		  KEY `fk_tenderbill_company` (`company_id`),
+		  KEY `fk_tenderbill_user` (`creator`),
+		  CONSTRAINT `fk_tenderbill_user` FOREIGN KEY (`creator`) REFERENCES `users` (`user_id`),
+		  CONSTRAINT `fk_tenderbill_company` FOREIGN KEY (`company_id`) REFERENCES `billing_company` (`company_id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		
+		CREATE TABLE IF NOT EXISTS  `billing_tender_bill_item` (
+		  `tender_bill_item_id` int(11) NOT NULL auto_increment,
+		  `name` varchar(255) default NULL,
+		  `amount` decimal(19,2) default NULL,
+		  `unit_price` decimal(19,2) default NULL,
+		  `quantity` int(11) default NULL,
+		  `created_date` datetime default NULL,
+		  `voided` bit(1) default NULL,
+		  `voided_date` datetime default NULL,
+		  `tender_id` int(11) default NULL,
+		  `tender_bill_id` int(11) default NULL,
+		  PRIMARY KEY  (`tender_bill_item_id`),
+		  KEY `fk_tenderbillitem_tenderbill` (`tender_bill_id`),
+		  KEY `fk_tenderbillitem_tender` (`tender_id`),
+		  CONSTRAINT `fk_tenderbillitem_tender` FOREIGN KEY (`tender_id`) REFERENCES `billing_tender` (`tender_id`),
+		  CONSTRAINT `fk_tenderbillitem_tenderbill` FOREIGN KEY (`tender_bill_id`) REFERENCES `billing_tender_bill` (`tender_bill_id`)
+		)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		</sql>
+	</diff>
+
+	<diff>
+		<version>3.1.1</version>
+		<author>Viet Nguyen</author>
+		<date>Nov 09th 2010</date>
+		<description>
+			Change Service table to BillableService
+		</description>
+		<sql>
+			ALTER TABLE billing_patient_service_bill_item DROP FOREIGN KEY `fk_patientservicebillitem_service`;
+			ALTER TABLE billing_service RENAME billing_billable_service;
+			ALTER TABLE billing_patient_service_bill_item ADD CONSTRAINT `fk_patientservicebillitem_billableservice` FOREIGN KEY (`service_id`) REFERENCES `billing_billable_service` (`service_id`);
+		</sql>
+	</diff>	
+	
+	<diff>
+		<version>3.1.2</version>
+		<author>Viet Nguyen</author>
+		<date>Nov 09th 2010</date>
+		<description>
+			Create tables for Miscellaneous service
+		</description>
+		<sql>
+			CREATE TABLE IF NOT EXISTS `billing_miscellaneous_service` (
+			  `id` int(11) NOT NULL auto_increment,
+			  `name` varchar(255) default NULL,
+			  `description` varchar(255) default NULL,
+			  `price` decimal(19,2) default NULL,
+			  `retired` bit(1) default NULL,
+			  `retired_date` datetime default NULL,
+			  `creator` int(11) default NULL,
+			  `created_date` datetime default NULL,
+			  PRIMARY KEY  (`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+			CREATE TABLE IF NOT EXISTS `billing_miscellaneous_service_bill` (
+			  `id` int(11) NOT NULL auto_increment,
+			  `liable_name` varchar(255) default NULL,
+			  `description` varchar(255) default NULL,
+			  `amount` decimal(19,2) default NULL,
+			  `printed` bit(1) default NULL,
+			  `creator` int(11) default NULL,
+			  `created_date` datetime default NULL,
+			  `voided` bit(1) default NULL,
+			  `voided_date` datetime default NULL,
+			  `service_id` int(11) default NULL,
+			  PRIMARY KEY  (`id`),
+			  KEY `fk_miscellaneous_service_bill_miscellaneous_service_service` (`service_id`),
+			  CONSTRAINT `fk_miscellaneous_service_bill_miscellaneous_service_service` FOREIGN KEY (`service_id`) REFERENCES `billing_miscellaneous_service` (`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		</sql>
+	</diff>	
+	
+	<diff>
+		<version>3.1.3</version>
+		<author>Viet Nguyen</author>
+		<date>Dec 06th 2010</date>
+		<description>
+			Create table Receipt
+		</description>
+		<sql>
+			CREATE TABLE IF NOT EXISTS `billing_receipt` (
+			  `id` int(11) NOT NULL auto_increment,
+			  `paid_date` datetime default NULL,
+			  PRIMARY KEY  (`id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+			ALTER TABLE billing_patient_service_bill
+			ADD COLUMN `receipt_id`  int(11) default NULL,
+	 		ADD CONSTRAINT `fk_patientservicebill_receipt` FOREIGN KEY (`receipt_id`) REFERENCES `billing_receipt` (`id`);
+	 	
+	 		ALTER TABLE billing_ambulance_bill
+			ADD COLUMN `receipt_id`  int(11) default NULL,
+	 		ADD CONSTRAINT `fk_ambulance_receipt` FOREIGN KEY (`receipt_id`) REFERENCES `billing_receipt` (`id`);
+	 		
+ 			ALTER TABLE billing_tender_bill
+			ADD COLUMN `receipt_id`  int(11) default NULL,
+	 		ADD CONSTRAINT `fk_tender_receipt` FOREIGN KEY (`receipt_id`) REFERENCES `billing_receipt` (`id`);
+	 		
+ 			ALTER TABLE billing_miscellaneous_service_bill
+			ADD COLUMN `receipt_id`  int(11) default NULL,
+	 		ADD CONSTRAINT `fk_miscellaneous_receipt` FOREIGN KEY (`receipt_id`) REFERENCES `billing_receipt` (`id`);
+		</sql>
+	</diff>	
+	
+	<diff>
+		<version>3.1.4</version>
+		<author>Viet Nguyen</author>
+		<date>Dec 06th 2010</date>
+		<description>
+			Add foreign keys for receipt
+		</description>
+		<sql>
+ 			ALTER TABLE billing_patient_service_bill
+			ADD COLUMN `free_bill`  bit(1)  default NULL;
+			
+			ALTER TABLE billing_patient_service_bill_item
+			ADD COLUMN `order_id`  int(11)  default NULL,
+	 		ADD CONSTRAINT `fk_patientservicebillitem_order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
+			ALTER TABLE billing_billable_service ADD category INT(11);
+		</sql>
+	</diff>	
+	<diff>
+		<version>3.1.5</version>
+		<author>Truong Ha</author>
+		<date>Sep 24th 2011</date>
+		<description>
+			Add `actual_amount` columns into table `billing_patient_service_bill` and `billing_patient_service_bill_item`
+		</description>
+		<sql>						
+			ALTER TABLE `billing_patient_service_bill` ADD `actual_amount` decimal(19,2) DEFAULT NULL;
+			ALTER TABLE `billing_patient_service_bill_item` ADD `actual_amount` decimal(19,2) DEFAULT NULL;
+		</sql>
+	</diff>
+</sqldiff>

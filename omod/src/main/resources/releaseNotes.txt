@@ -1,0 +1,68 @@
+3.1.6
+- Added column RSBY/BPL in to patient search result.
+- Added tag for free bill when creating new bill.
+
+3.1.5
+- Customized to change flexibly billing policy.
+
+3.1.4
+- Integrated new patient search plugin. 
+
+3.1.3.5
+- Fixed bug saving new company.
+- Fixed bug saving new driver.
+- Added feature Maintainer.
+
+3.1.3.4
+- Removed the feature to update old bills.
+
+3.1.3.3
+- Fixed bug jquery conflict in OpenMRS 1.8
+
+3.1.3.2
+- Fixed bug in db when running baseline db.
+
+3.1.3.1
+- Fixed bug change amount of BPL/RSBY bills to zero in database when editing a bill.
+
+3.1.3
+- Fixed bug not update Free bill status on BPL/RSBY bills when saving bill.
+- Fixed bug not update void and void_date column when voiding a tender bill.
+- Fixed bug not update void and void_date column when voiding an ambulance bill.
+
+3.1.2
+- Added global properties for sending orders to radiology module
+- Fixed bug updating billable service category
+
+3.1.1
+- Added feature to update billable service category for the easier report aggregation  
+
+3.1.0
+- Added feature to manage major and minor procedures
+
+3.0.17
+- Fixed not updating Voided and Voided Date column in PatientServiceBillItem
+
+3.0.14
+- Fixed bug displaying amount for patient with category RSBY/BPL 
+
+3.0.13
+- Added advance patient search 
+
+3.0.10
+- Fixed created date column not shown in page manage Miscellaneous service
+- Fixed throwing exception when not finding a lab for an order
+- Fixed deleting a company that says the selected company is deleted but not and the message is not correct
+- Fixed line through the tender bill when it is voided
+- Fixed tender bill id is not displayed in the listing.
+- Add Void bill button to page manage miscellaneous bill    
+####################
+3.0.9
+- Add the method updateReceipt ID for bills in hospitalcore, using batch update
+- require hospitalcore version 0.5
+####################
+3.0.8
+- fix bug can not install in version 3.0.7
+##################################
+3.0.7
+- Fixed bug can not install billing from blank database : move all sql queries which belong to billing from hospitalcore to billing. 
