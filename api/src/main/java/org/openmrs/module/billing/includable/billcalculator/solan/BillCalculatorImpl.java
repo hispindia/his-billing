@@ -12,7 +12,7 @@ import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
 
-public class SolanBillCalculatorImpl implements BillCalculator {
+public class BillCalculatorImpl implements BillCalculator {
 
 	/**
 	 * Get the percentage of price to pay If patient category is RSBY or BPL,
@@ -43,7 +43,7 @@ public class SolanBillCalculatorImpl implements BillCalculator {
 				Concept concept = Context.getConceptService().getConcept(
 						item.getService().getConceptId());
 				if (concept.getName().getName()
-						.equalsIgnoreCase("Lipid Profile")) {
+						.equalsIgnoreCase("LIPID PANEL")) {
 					return new BigDecimal(1);
 				} else {
 					return new BigDecimal(0);

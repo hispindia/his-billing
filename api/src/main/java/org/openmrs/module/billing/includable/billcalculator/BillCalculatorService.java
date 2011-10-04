@@ -7,11 +7,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Patient;
-import org.openmrs.module.billing.includable.billcalculator.common.CommonBillCalculatorImpl;
-import org.openmrs.module.billing.includable.billcalculator.ddu.DDUBillCalculatorImpl;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
 import org.openmrs.module.hospitalcore.util.GlobalPropertyUtil;
-import org.openmrs.module.hospitalcore.util.HospitalConstants;
 import org.openmrs.module.hospitalcore.util.HospitalCoreConstants;
 
 public class BillCalculatorService implements BillCalculator {
@@ -28,13 +25,17 @@ public class BillCalculatorService implements BillCalculator {
 		String hospitalName = GlobalPropertyUtil.getString(
 				HospitalCoreConstants.PROPERTY_HOSPITAL_NAME, "");
 		if (!StringUtils.isBlank(hospitalName)) {
-			if (hospitalName.equalsIgnoreCase(HospitalConstants.DDU)) {
-				calculator = new DDUBillCalculatorImpl();
-			}
-		} else {
-			calculator = new CommonBillCalculatorImpl();
+			hospitalName = "common";
 			logger.warn("CAN'T FIND THE HOSPITAL NAME. ALL TESTS WILL BE CHARGED 100%");
 		}
+		
+		hospitalName = hospitalName.toLowerCase();
+		String qualifiedName = "org.openmrs.module.billing.includable.billcalculator." + hospitalName + ".BillCalculatorImpl";
+		try {
+			calculator = (BillCalculator) Class.forName(qualifiedName).newInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
 	}
 
 	/**

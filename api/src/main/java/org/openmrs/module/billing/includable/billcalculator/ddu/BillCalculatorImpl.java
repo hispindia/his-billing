@@ -8,7 +8,7 @@ import org.openmrs.Patient;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculator;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
 
-public class DDUBillCalculatorImpl implements BillCalculator {
+public class BillCalculatorImpl implements BillCalculator {
 
 	/**
 	 * Get the percentage of price to pay If patient category is RSBY or BPL,
