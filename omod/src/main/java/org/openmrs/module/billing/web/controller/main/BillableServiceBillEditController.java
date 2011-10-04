@@ -149,7 +149,7 @@ public class BillableServiceBillEditController {
 				item = new PatientServiceBillItem();
 				
 				// Get the ratio for each bill item
-				BigDecimal rate = calculator.getRate(attributes, item);				
+				BigDecimal rate = calculator.getRate(patient, attributes, item);				
 				
 				item.setAmount(itemAmount.getAmount());
 				item.setActualAmount(item.getAmount().multiply(rate));
@@ -166,7 +166,7 @@ public class BillableServiceBillEditController {
 				item = mapOldItems.get(Integer.parseInt(sItemId));
 				
 				// Get the ratio for each bill item
-				BigDecimal rate = calculator.getRate(attributes, item);				
+				BigDecimal rate = calculator.getRate(patient, attributes, item);				
 				
 				item.setVoided(false);
 				item.setVoidedDate(null);
@@ -180,7 +180,7 @@ public class BillableServiceBillEditController {
 		bill.setActualAmount(totalActualAmount);
 		
 		// Determine whether the bill is free or not
-		bill.setFreeBill(calculator.isFreeBill(attributes));
+		bill.setFreeBill(calculator.isFreeBill(patient, attributes));
 		logger.info("Is free bill: " + bill.getFreeBill());
 		
 		bill = billingService.savePatientServiceBill(bill);

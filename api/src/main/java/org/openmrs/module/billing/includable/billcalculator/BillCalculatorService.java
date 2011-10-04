@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Patient;
 import org.openmrs.module.billing.includable.billcalculator.common.CommonBillCalculatorImpl;
 import org.openmrs.module.billing.includable.billcalculator.ddu.DDUBillCalculatorImpl;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
@@ -41,10 +42,10 @@ public class BillCalculatorService implements BillCalculator {
 	 * `calculator` found, it will be used to calculate Otherwise, it will
 	 * return 1 which means patient will be charged 100%
 	 */
-	public BigDecimal getRate(Map<String, String> patientAttributes,
-			PatientServiceBillItem item) {
+	public BigDecimal getRate(Patient patient,
+			Map<String, String> patientAttributes, PatientServiceBillItem item) {
 		if (calculator != null) {
-			return calculator.getRate(patientAttributes, item);
+			return calculator.getRate(patient, patientAttributes, item);
 		} else {
 			return new BigDecimal(1);
 		}
@@ -55,9 +56,9 @@ public class BillCalculatorService implements BillCalculator {
 	 * it will be used to determine. Otherwise, it will return `false` which means
 	 * the bill is not free.
 	 */
-	public boolean isFreeBill(Map<String, String> patientAttributes) {
+	public boolean isFreeBill(Patient patient, Map<String, String> patientAttributes) {
 		if (calculator != null) {
-			return calculator.isFreeBill(patientAttributes);
+			return calculator.isFreeBill(patient, patientAttributes);
 		} 
 		return false;
 	}

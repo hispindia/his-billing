@@ -122,7 +122,7 @@ public class BillableServiceBillAddController {
 			item.setAmount(itemAmount.getAmount());
 			
 			// Get the ratio for each bill item
-			BigDecimal rate = calculator.getRate(attributes, item);	
+			BigDecimal rate = calculator.getRate(patient, attributes, item);	
 			item.setActualAmount(item.getAmount().multiply(rate));
 			totalActualAmount = totalActualAmount.add(item.getActualAmount());
 			
@@ -136,7 +136,7 @@ public class BillableServiceBillAddController {
 //		if(category.contains("RSBY") || category.contains("BPL")){
 //			bill.setFreeBill(true);
 //		}
-		bill.setFreeBill(calculator.isFreeBill(attributes));
+		bill.setFreeBill(calculator.isFreeBill(patient, attributes));
 		logger.info("Is free bill: " + bill.getFreeBill());
 		
 		bill.setReceipt(billingService.createReceipt());

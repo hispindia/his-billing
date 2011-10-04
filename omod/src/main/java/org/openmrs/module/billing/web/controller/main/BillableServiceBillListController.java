@@ -52,7 +52,7 @@ public class BillableServiceBillListController {
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		Map<String, String> attributes = PatientUtil.getAttributes(patient);
 		BillCalculatorService calculator = new BillCalculatorService();		
-		model.addAttribute("freeBill", calculator.isFreeBill(attributes));
+		model.addAttribute("freeBill", calculator.isFreeBill(patient, attributes));
 		
 		if( patient != null ){
 			
@@ -65,7 +65,7 @@ public class BillableServiceBillListController {
 		if( billId != null ){
 			PatientServiceBill bill = billingService.getPatientServiceBillById(billId);			
 			
-			bill.setFreeBill(calculator.isFreeBill(attributes));
+			bill.setFreeBill(calculator.isFreeBill(patient, attributes));
 			model.addAttribute("bill", bill);
 		}
 		User user = Context.getAuthenticatedUser();
@@ -82,7 +82,7 @@ public class BillableServiceBillListController {
     		patientSerciceBill.setPrinted(true);
     		Map<String, String> attributes = PatientUtil.getAttributes(patientSerciceBill.getPatient());
 			BillCalculatorService calculator = new BillCalculatorService();
-			patientSerciceBill.setFreeBill(calculator.isFreeBill(attributes));			
+			patientSerciceBill.setFreeBill(calculator.isFreeBill(patientSerciceBill.getPatient(), attributes));			
     		billingService.saveBillEncounterAndOrder(patientSerciceBill);
     	}
 		return "redirect:/module/billing/patientServiceBill.list?patientId="+patientId;
