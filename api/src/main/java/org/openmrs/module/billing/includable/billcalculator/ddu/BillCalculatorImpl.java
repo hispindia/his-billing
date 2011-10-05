@@ -4,25 +4,22 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.openmrs.Patient;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculator;
-import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
 
 public class BillCalculatorImpl implements BillCalculator {
 
 	/**
 	 * Get the percentage of price to pay If patient category is RSBY or BPL,
 	 * the bill should be 100% free
-	 * @param patient
-	 * 
 	 * @return
 	 */
-	public BigDecimal getRate(Patient patient,
-			Map<String, String> patientAttributes, PatientServiceBillItem item) {
+	@SuppressWarnings("unchecked")
+	public BigDecimal getRate(Map<String, Object> parameters) {
 		BigDecimal ratio = new BigDecimal(1);
-		String patientCategory = patientAttributes.get("Patient Category");
-		String bplNumber = patientAttributes.get("BPL Number");
-		String rsbyNumber = patientAttributes.get("RSBY Number");
+		Map<String, String> attributes = (Map<String, String>) parameters.get("attributes");
+		String patientCategory = attributes.get("Patient Category");
+		String bplNumber = attributes.get("BPL Number");
+		String rsbyNumber = attributes.get("RSBY Number");
 
 		if (!StringUtils.isBlank(patientCategory)) {
 			if (patientCategory.contains("RSBY")) {
@@ -42,14 +39,14 @@ public class BillCalculatorImpl implements BillCalculator {
 	/**
 	 * Determine whether a bill should be free or not. If patient category is
 	 * RSBY or BPL, the bill should be treated as the free bill
-	 * @param patientAttributes
-	 * 
 	 * @return
 	 */
-	public boolean isFreeBill(Patient patient, Map<String, String> patientAttributes) {
-		String patientCategory = patientAttributes.get("Patient Category");
-		String bplNumber = patientAttributes.get("BPL Number");
-		String rsbyNumber = patientAttributes.get("RSBY Number");
+	@SuppressWarnings("unchecked")
+	public boolean isFreeBill(Map<String, Object> parameters) {
+		Map<String, String> attributes = (Map<String, String>) parameters.get("attributes");
+		String patientCategory = attributes.get("Patient Category");
+		String bplNumber = attributes.get("BPL Number");
+		String rsbyNumber = attributes.get("RSBY Number");
 
 		if (!StringUtils.isBlank(patientCategory)) {
 			if (patientCategory.contains("RSBY")) {

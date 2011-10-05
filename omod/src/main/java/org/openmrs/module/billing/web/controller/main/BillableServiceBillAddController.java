@@ -33,6 +33,7 @@ import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
+import org.openmrs.module.hospitalcore.util.HospitalCoreUtils;
 import org.openmrs.module.hospitalcore.util.Money;
 import org.openmrs.module.hospitalcore.util.PatientUtil;
 import org.springframework.stereotype.Controller;
@@ -122,7 +123,8 @@ public class BillableServiceBillAddController {
 			item.setAmount(itemAmount.getAmount());
 			
 			// Get the ratio for each bill item
-			BigDecimal rate = calculator.getRate(patient, attributes, item);	
+			Map<String, Object> parameters = HospitalCoreUtils.buildParameters("patient", patient, "attributes", attributes, "billItem", item);
+			BigDecimal rate = calculator.getRate(parameters);	
 			item.setActualAmount(item.getAmount().multiply(rate));
 			totalActualAmount = totalActualAmount.add(item.getActualAmount());
 			
@@ -131,12 +133,8 @@ public class BillableServiceBillAddController {
 		bill.setAmount(totalAmount.getAmount());	
 		bill.setActualAmount(totalActualAmount);
 		
-		// Determine whether the bill is free or not
-//		String category = PatientUtil.getPatientCategory(bill.getPatient());
-//		if(category.contains("RSBY") || category.contains("BPL")){
-//			bill.setFreeBill(true);
-//		}
-		bill.setFreeBill(calculator.isFreeBill(patient, attributes));
+		bill.setFreeBill(calculator.isFreeBill(HospitalCoreUtils
+				.buildParameters("attributes", attributes)));
 		logger.info("Is free bill: " + bill.getFreeBill());
 		
 		bill.setReceipt(billingService.createReceipt());

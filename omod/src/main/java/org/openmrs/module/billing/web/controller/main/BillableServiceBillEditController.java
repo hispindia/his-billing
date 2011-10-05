@@ -32,6 +32,7 @@ import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
+import org.openmrs.module.hospitalcore.util.HospitalCoreUtils;
 import org.openmrs.module.hospitalcore.util.Money;
 import org.openmrs.module.hospitalcore.util.PatientUtil;
 import org.springframework.stereotype.Controller;
@@ -47,7 +48,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/module/billing/editPatientServiceBill.form")
 public class BillableServiceBillEditController {
-	
+
 	private Log logger = LogFactory.getLog(getClass());
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -92,8 +93,9 @@ public class BillableServiceBillEditController {
 
 		PatientServiceBill bill = billingService
 				.getPatientServiceBillById(billId);
-		
-		// Get the BillCalculator to calculate the rate of bill item the patient has to pay
+
+		// Get the BillCalculator to calculate the rate of bill item the patient
+		// has to pay
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		Map<String, String> attributes = PatientUtil.getAttributes(patient);
 		BillCalculatorService calculator = new BillCalculatorService();
@@ -141,19 +143,23 @@ public class BillableServiceBillEditController {
 
 			mUnitPrice = new Money(unitPrice);
 			itemAmount = mUnitPrice.times(quantity);
-			totalAmount = totalAmount.plus(itemAmount);			
+			totalAmount = totalAmount.plus(itemAmount);
 
 			String sItemId = request.getParameter(conceptId + "_itemId");
-			
+
 			if (sItemId == null) {
 				item = new PatientServiceBillItem();
-				
+
 				// Get the ratio for each bill item
-				BigDecimal rate = calculator.getRate(patient, attributes, item);				
-				
+				Map<String, Object> parameters = HospitalCoreUtils
+						.buildParameters("patient", patient, "attributes",
+								attributes, "billItem", item);
+				BigDecimal rate = calculator.getRate(parameters);
+
 				item.setAmount(itemAmount.getAmount());
 				item.setActualAmount(item.getAmount().multiply(rate));
-				totalActualAmount = totalActualAmount.add(item.getActualAmount());
+				totalActualAmount = totalActualAmount.add(item
+						.getActualAmount());
 				item.setCreatedDate(new Date());
 				item.setName(name);
 				item.setPatientServiceBill(bill);
@@ -162,27 +168,33 @@ public class BillableServiceBillEditController {
 				item.setUnitPrice(unitPrice);
 				bill.addBillItem(item);
 			} else {
-				
+
 				item = mapOldItems.get(Integer.parseInt(sItemId));
-				
+
 				// Get the ratio for each bill item
-				BigDecimal rate = calculator.getRate(patient, attributes, item);				
-				
+				Map<String, Object> parameters = HospitalCoreUtils
+						.buildParameters("patient", patient, "attributes",
+								attributes, "billItem", item);
+				BigDecimal rate = calculator.getRate(parameters);
+
 				item.setVoided(false);
 				item.setVoidedDate(null);
 				item.setQuantity(quantity);
 				item.setAmount(itemAmount.getAmount());
 				item.setActualAmount(item.getAmount().multiply(rate));
-				totalActualAmount = totalActualAmount.add(item.getActualAmount());
+				totalActualAmount = totalActualAmount.add(item
+						.getActualAmount());
 			}
 		}
 		bill.setAmount(totalAmount.getAmount());
 		bill.setActualAmount(totalActualAmount);
-		
+
 		// Determine whether the bill is free or not
-		bill.setFreeBill(calculator.isFreeBill(patient, attributes));
+
+		bill.setFreeBill(calculator.isFreeBill(HospitalCoreUtils
+				.buildParameters("attributes", attributes)));
 		logger.info("Is free bill: " + bill.getFreeBill());
-		
+
 		bill = billingService.savePatientServiceBill(bill);
 		return "redirect:/module/billing/patientServiceBill.list?patientId="
 				+ patientId + "&billId=" + billId;

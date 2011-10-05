@@ -3,28 +3,20 @@ package org.openmrs.module.billing.includable.billcalculator;
 import java.math.BigDecimal;
 import java.util.Map;
 
-import org.openmrs.Patient;
-import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
 
 public interface BillCalculator {
 
 	/**
 	 * Return the rate to calculate for a particular bill item
-	 * @param patient TODO
-	 * @param patientAttributes
-	 * @param item
-	 * 
+	 * @param parameters TODO
 	 * @return
 	 */
-	public BigDecimal getRate(Patient patient,
-			Map<String, String> patientAttributes, PatientServiceBillItem item);
+	public BigDecimal getRate(Map<String, Object> parameters);
 
 	/**
 	 * Determine whether a bill should be free or not
-	 * @param patient TODO
-	 * @param patientAttributes
-	 * 
+	 * @param parameters TODO
 	 * @return
 	 */
-	public boolean isFreeBill(Patient patient, Map<String, String> patientAttributes);
+	public boolean isFreeBill(Map<String, Object> parameters);
 }

@@ -18,14 +18,16 @@ public class BillCalculatorImpl implements BillCalculator {
 	 * Get the percentage of price to pay If patient category is RSBY or BPL,
 	 * the bill should be 100% free
 	 * 
-	 * @param patient
-	 * 
 	 * @return
 	 */
-	public BigDecimal getRate(Patient patient,
-			Map<String, String> patientAttributes, PatientServiceBillItem item) {
+	@SuppressWarnings("unchecked")
+	public BigDecimal getRate(Map<String, Object> parameters) {
 		BigDecimal ratio = new BigDecimal(1);
-		String patientCategory = patientAttributes.get("Patient Category");
+		Map<String, String> attributes = (Map<String, String>) parameters.get("attributes");
+		String patientCategory = attributes.get("Patient Category");
+		PatientServiceBillItem item = (PatientServiceBillItem) parameters.get("billItem");
+		Patient patient = (Patient) parameters.get("patient");
+		
 		if (!StringUtils.isBlank(patientCategory)) {
 
 			if (patientCategory.contains("BPL")) {
@@ -57,12 +59,9 @@ public class BillCalculatorImpl implements BillCalculator {
 	/**
 	 * Determine whether a bill should be free or not. By default, all bills are
 	 * not free
-	 * 
-	 * @param patientAttributes
 	 * @return
 	 */
-	public boolean isFreeBill(Patient patient,
-			Map<String, String> patientAttributes) {
+	public boolean isFreeBill(Map<String, Object> parameters) {
 
 		return false;
 	}

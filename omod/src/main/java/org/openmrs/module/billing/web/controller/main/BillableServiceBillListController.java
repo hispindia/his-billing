@@ -24,6 +24,7 @@ import org.openmrs.module.billing.includable.billcalculator.BillCalculatorServic
 import org.openmrs.module.hospitalcore.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
+import org.openmrs.module.hospitalcore.util.HospitalCoreUtils;
 import org.openmrs.module.hospitalcore.util.PagingUtil;
 import org.openmrs.module.hospitalcore.util.PatientUtil;
 import org.openmrs.module.hospitalcore.util.RequestUtil;
@@ -52,7 +53,7 @@ public class BillableServiceBillListController {
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		Map<String, String> attributes = PatientUtil.getAttributes(patient);
 		BillCalculatorService calculator = new BillCalculatorService();		
-		model.addAttribute("freeBill", calculator.isFreeBill(patient, attributes));
+		model.addAttribute("freeBill", calculator.isFreeBill(HospitalCoreUtils.buildParameters("attributes", attributes)));
 		
 		if( patient != null ){
 			
@@ -65,7 +66,7 @@ public class BillableServiceBillListController {
 		if( billId != null ){
 			PatientServiceBill bill = billingService.getPatientServiceBillById(billId);			
 			
-			bill.setFreeBill(calculator.isFreeBill(patient, attributes));
+			bill.setFreeBill(calculator.isFreeBill(HospitalCoreUtils.buildParameters("attributes", attributes)));
 			model.addAttribute("bill", bill);
 		}
 		User user = Context.getAuthenticatedUser();
@@ -82,7 +83,7 @@ public class BillableServiceBillListController {
     		patientSerciceBill.setPrinted(true);
     		Map<String, String> attributes = PatientUtil.getAttributes(patientSerciceBill.getPatient());
 			BillCalculatorService calculator = new BillCalculatorService();
-			patientSerciceBill.setFreeBill(calculator.isFreeBill(patientSerciceBill.getPatient(), attributes));			
+			patientSerciceBill.setFreeBill(calculator.isFreeBill(HospitalCoreUtils.buildParameters("attributes", attributes)));			
     		billingService.saveBillEncounterAndOrder(patientSerciceBill);
     	}
 		return "redirect:/module/billing/patientServiceBill.list?patientId="+patientId;
