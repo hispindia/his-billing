@@ -4,6 +4,7 @@
 
 <openmrs:require privilege="View Bills" otherwise="/login.htm" redirect="/module/billing/main.form" />
 <spring:message var="pageTitle" code="billing.patient.find" scope="page"/>
+<openmrs:globalProperty key="hospitalcore.hospitalName" defaultValue="ddu" var="hospitalName"/>
 <br/>
 <p><b><a href="searchDriver.form"><spring:message code="billing.ambulance"/></a></b>&nbsp; | &nbsp;
 <b><a href="searchCompany.form"><spring:message code="billing.tender"/></a></b>&nbsp; | &nbsp;
@@ -14,8 +15,9 @@
 <script type="text/javascript">
 
 	jQuery(document).ready(function(){
-		jQuery("#searchbox").showPatientSearchBox({					
-			resultView: "/module/billing/patientsearch/billing",
+		jQuery("#searchbox").showPatientSearchBox({
+			searchBoxView: "${hospitalName}/default",
+			resultView: "/module/billing/patientsearch/${hospitalName}",
 			rowPerPage: 15,
 			beforeNewSearch: function(){
 				jQuery("#patientSearchResultSection").hide();

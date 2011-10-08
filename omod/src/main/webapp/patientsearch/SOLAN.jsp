@@ -46,7 +46,7 @@
 			<td><b>Gender</b></td>			
 			<td><b>Birthdate</b></td>
 			<td><b>Relative Name</b></td>
-			<td><b>RSBY/BPL</b></td>
+			<td><b>Phone number</b></td>
 		</tr>
 		<c:forEach items="${patients}" var="patient" varStatus="varStatus">
 			<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } patientSearchRow' onclick="PATIENTSEARCHRESULT.visit(${patient.patientId});">				
@@ -82,15 +82,10 @@
 					%>
                 </td>
 				<td> 
-                	<%
-						
-						String category = patientAttributes.get(14); 
-						if(category!=null){
-							if(category.contains("RSBY") || category.contains("BPL")){
-								out.print("<span style='color:red;'>RSBY/BPL</span>");
-							}
-						}
-						
+                	<%						
+						String phoneNumber = patientAttributes.get(16);
+						if(phoneNumber!=null)
+							out.print(phoneNumber);					
 					%>
                 </td>
 			</tr>
