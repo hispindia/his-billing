@@ -1,5 +1,5 @@
 /**
- *  Copyright 2011 Health Information Systems Project of India
+ *  Copyright 2009 Health Information Systems Project of India
  *
  *  This file is part of Billing module.
  *
