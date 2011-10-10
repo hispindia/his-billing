@@ -1,3 +1,6 @@
+3.1.7
+- Added patient search and billing calculation for SOLAN
+
 3.1.6
 - Added column RSBY/BPL in to patient search result.
 - Added tag for free bill when creating new bill.

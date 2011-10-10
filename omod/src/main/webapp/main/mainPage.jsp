@@ -17,7 +17,7 @@
 	jQuery(document).ready(function(){
 		jQuery("#searchbox").showPatientSearchBox({
 			searchBoxView: "${hospitalName}/default",
-			resultView: "/module/billing/patientsearch/${hospitalName}",
+			resultView: "/module/billing/patientsearch/${hospitalName}/main",
 			rowPerPage: 15,
 			beforeNewSearch: function(){
 				jQuery("#patientSearchResultSection").hide();
