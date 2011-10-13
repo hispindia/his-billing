@@ -33,7 +33,7 @@ public class BillCalculatorService implements BillCalculator {
 
 	private Log logger = LogFactory.getLog(getClass());
 
-	private static BillCalculator calculator = null;
+	private BillCalculator calculator = null;
 
 	/**
 	 * Get the calculator relying on the hospital name. If can't find one, a
@@ -41,24 +41,23 @@ public class BillCalculatorService implements BillCalculator {
 	 */
 	public BillCalculatorService() {
 
-		if (calculator == null) {
-			String hospitalName = GlobalPropertyUtil.getString(
-					HospitalCoreConstants.PROPERTY_HOSPITAL_NAME, "");
-			if (StringUtils.isBlank(hospitalName)) {
-				hospitalName = "common";
-				logger.warn("CAN'T FIND THE HOSPITAL NAME. ALL TESTS WILL BE CHARGED 100%");
-			}
-
-			hospitalName = hospitalName.toLowerCase();
-			String qualifiedName = "org.openmrs.module.billing.includable.billcalculator."
-					+ hospitalName + ".BillCalculatorImpl";
-			try {
-				calculator = (BillCalculator) Class.forName(qualifiedName)
-						.newInstance();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+		String hospitalName = GlobalPropertyUtil.getString(
+				HospitalCoreConstants.PROPERTY_HOSPITAL_NAME, "");
+		if (StringUtils.isBlank(hospitalName)) {
+			hospitalName = "common";
+			logger.warn("CAN'T FIND THE HOSPITAL NAME. ALL TESTS WILL BE CHARGED 100%");
 		}
+
+		hospitalName = hospitalName.toLowerCase();
+		String qualifiedName = "org.openmrs.module.billing.includable.billcalculator."
+				+ hospitalName + ".BillCalculatorImpl";
+		try {
+			calculator = (BillCalculator) Class.forName(qualifiedName)
+					.newInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	/**
