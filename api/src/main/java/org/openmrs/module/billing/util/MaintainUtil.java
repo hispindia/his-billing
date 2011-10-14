@@ -1,5 +1,5 @@
 /**
- *  Copyright 2011 Health Information Systems Project of India
+ *  Copyright 2009 Society for Health Information Systems Programmes, India (HISP India)
  *
  *  This file is part of Billing module.
  *
