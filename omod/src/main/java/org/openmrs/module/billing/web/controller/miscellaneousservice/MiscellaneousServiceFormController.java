@@ -25,7 +25,6 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
 import org.openmrs.api.context.Context;
-import org.openmrs.module.hospitalcore.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.model.MiscellaneousService;
 import org.springframework.beans.propertyeditors.CustomBooleanEditor;
@@ -60,8 +59,8 @@ public class MiscellaneousServiceFormController {
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(java.util.Date.class, new CustomDateEditor(Context.getDateFormat(), true));
-		binder.registerCustomEditor(java.lang.Boolean.class, new CustomBooleanEditor(BillingConstants.TRUE,
-		        BillingConstants.FALSE, true));
+		binder.registerCustomEditor(java.lang.Boolean.class, new CustomBooleanEditor("true",
+		        "false", true));
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
