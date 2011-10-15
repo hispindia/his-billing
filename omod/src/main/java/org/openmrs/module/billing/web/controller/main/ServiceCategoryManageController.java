@@ -54,9 +54,8 @@ public class ServiceCategoryManageController {
 		if (rootServiceconcept != null) {
 			TestTree tree = new TestTree(rootServiceconcept);
 			BillingService billingService = (BillingService) Context.getService(BillingService.class);
-			List<BillableService> bss = billingService.getAllServices();
-			
-			for(BillableService bs:bss){				
+			List<BillableService> bss = billingService.getAllServices();			
+			for(BillableService bs:bss){		
 				Concept serviceConcept = Context.getConceptService().getConcept(bs.getConceptId());				
 				if(serviceConcept!=null){
 					

@@ -130,7 +130,7 @@ public class BillableServiceBillAddController {
 			item.setAmount(itemAmount.getAmount());
 			
 			// Get the ratio for each bill item
-			Map<String, Object> parameters = HospitalCoreUtils.buildParameters("patient", patient, "attributes", attributes, "billItem", item);
+			Map<String, Object> parameters = HospitalCoreUtils.buildParameters("patient", patient, "attributes", attributes, "billItem", item, "request", request);
 			BigDecimal rate = calculator.getRate(parameters);	
 			item.setActualAmount(item.getAmount().multiply(rate));
 			totalActualAmount = totalActualAmount.add(item.getActualAmount());
