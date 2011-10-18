@@ -41,7 +41,7 @@ import org.openmrs.module.hospitalcore.model.PatientServiceBill;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
 import org.openmrs.module.hospitalcore.util.HospitalCoreUtils;
 import org.openmrs.module.hospitalcore.util.Money;
-import org.openmrs.module.hospitalcore.util.PatientUtil;
+import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -104,7 +104,7 @@ public class BillableServiceBillEditController {
 		// Get the BillCalculator to calculate the rate of bill item the patient
 		// has to pay
 		Patient patient = Context.getPatientService().getPatient(patientId);
-		Map<String, String> attributes = PatientUtil.getAttributes(patient);
+		Map<String, String> attributes = PatientUtils.getAttributes(patient);
 		BillCalculatorService calculator = new BillCalculatorService();
 
 		if ("void".equalsIgnoreCase(action)) {

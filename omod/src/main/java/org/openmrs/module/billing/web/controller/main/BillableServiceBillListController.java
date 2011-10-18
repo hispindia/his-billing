@@ -33,7 +33,7 @@ import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
 import org.openmrs.module.hospitalcore.util.HospitalCoreUtils;
 import org.openmrs.module.hospitalcore.util.PagingUtil;
-import org.openmrs.module.hospitalcore.util.PatientUtil;
+import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.openmrs.module.hospitalcore.util.RequestUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -58,7 +58,7 @@ public class BillableServiceBillListController {
 		BillingService billingService = Context.getService(BillingService.class);
 		
 		Patient patient = Context.getPatientService().getPatient(patientId);
-		Map<String, String> attributes = PatientUtil.getAttributes(patient);
+		Map<String, String> attributes = PatientUtils.getAttributes(patient);
 		BillCalculatorService calculator = new BillCalculatorService();		
 		model.addAttribute("freeBill", calculator.isFreeBill(HospitalCoreUtils.buildParameters("attributes", attributes)));
 		
@@ -88,7 +88,7 @@ public class BillableServiceBillListController {
     	PatientServiceBill patientSerciceBill = billingService.getPatientServiceBillById(billId);
     	if( patientSerciceBill != null && !patientSerciceBill.getPrinted()){
     		patientSerciceBill.setPrinted(true);
-    		Map<String, String> attributes = PatientUtil.getAttributes(patientSerciceBill.getPatient());
+    		Map<String, String> attributes = PatientUtils.getAttributes(patientSerciceBill.getPatient());
 			BillCalculatorService calculator = new BillCalculatorService();
 			patientSerciceBill.setFreeBill(calculator.isFreeBill(HospitalCoreUtils.buildParameters("attributes", attributes)));			
     		billingService.saveBillEncounterAndOrder(patientSerciceBill);
