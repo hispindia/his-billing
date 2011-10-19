@@ -1,3 +1,22 @@
+<%--
+ *  Copyright 2009 Society for Health Information Systems Programmes, India (HISP India)
+ *
+ *  This file is part of Billing module.
+ *
+ *  Billing module is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+
+ *  Billing module is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Billing module.  If not, see <http://www.gnu.org/licenses/>.
+ *
+--%>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <openmrs:require privilege="View Bills" otherwise="/login.htm"
@@ -21,13 +40,11 @@
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery.PrintArea.js"></script>
 <c:forEach items="${errors}" var="error">
 	<span class="error"><spring:message
-			code="${error.defaultMessage}" text="${error.defaultMessage}" />
-	</span>
+			code="${error.defaultMessage}" text="${error.defaultMessage}" /> </span>
 </c:forEach>
 <div>
 	<b><a href="addTenderBill.form?companyId=${companyId}">Add new
-			Tender bill</a>
-	</b>
+			Tender bill</a> </b>
 </div>
 
 <c:if test="${not empty tenderBill}">
@@ -44,8 +61,7 @@
 			<tr>
 				<td>Date:</td>
 				<td><openmrs:formatDate date="${tenderBill.createdDate}"
-						type="textbox" />
-				</td>
+						type="textbox" /></td>
 			</tr>
 			<tr>
 				<td>Bill ID:</td>
@@ -65,13 +81,11 @@
 					<td align="right"><c:choose>
 							<c:when test="${bill.unitPrice==0}"></c:when>
 							<c:otherwise>${bill.unitPrice}</c:otherwise>
-						</c:choose>
-					</td>
+						</c:choose></td>
 					<td align="right"><c:choose>
 							<c:when test="${bill.quantity==0}"></c:when>
 							<c:otherwise>${bill.quantity}</c:otherwise>
-						</c:choose>
-					</td>
+						</c:choose></td>
 					<td align="right">${bill.amount}</td>
 				</tr>
 			</c:forEach>
@@ -111,8 +125,7 @@
 			<tr>
 				<td>Date:</td>
 				<td><openmrs:formatDate date="${tenderBill.createdDate}"
-						type="textbox" />
-				</td>
+						type="textbox" /></td>
 			</tr>
 			<tr>
 				<td>Bill ID:</td>
@@ -132,13 +145,11 @@
 					<td align="right"><c:choose>
 							<c:when test="${bill.unitPrice==0}"></c:when>
 							<c:otherwise>${bill.unitPrice}</c:otherwise>
-						</c:choose>
-					</td>
+						</c:choose></td>
 					<td align="right"><c:choose>
 							<c:when test="${bill.quantity==0}"></c:when>
 							<c:otherwise>${bill.quantity}</c:otherwise>
-						</c:choose>
-					</td>
+						</c:choose></td>
 					<td align="right">${bill.amount}</td>
 				</tr>
 			</c:forEach>
@@ -148,12 +159,8 @@
 			</tr>
 		</table>
 		<br> <span style="font-size: 1.5em">Total Amount:</span> <span
-			id="totalValue" style="font-size: 1.5em"></span> <br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br /> <span style="float: right; font-size: 1.5em">Signature
+			id="totalValue" style="font-size: 1.5em"></span> <br /> <br /> <br />
+		<br /> <br /> <br /> <span style="float: right; font-size: 1.5em">Signature
 			of billing clerk/ Stamp</span>
 	</div>
 
@@ -184,14 +191,14 @@
 								<a
 									href="${pageContext.request.contextPath}/module/billing/editTenderBill.form?tenderBillId=${tenderBill.tenderBillId}&companyId=${company.companyId }">Bill
 									ID <b>${tenderBill.receipt.id}</b>, <openmrs:formatDate
-										date="${tenderBill.createdDate }" type="textbox" />
-								</a>
+										date="${tenderBill.createdDate }" type="textbox" /> </a>
 							</c:when>
 							<c:otherwise>
 		             	Bill ID <b>${tenderBill.receipt.id}</b>, <openmrs:formatDate
 									date="${tenderBill.createdDate }" />
 							</c:otherwise>
-						</c:choose></td>
+						</c:choose>
+					</td>
 					<td><input type="button" value="View"
 						onclick="javascript:window.location.href='tenderBill.list?companyId=${company.companyId}&tenderBillId=${tenderBill.tenderBillId}'" />
 					</td>

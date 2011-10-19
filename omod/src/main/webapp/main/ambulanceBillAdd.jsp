@@ -1,17 +1,51 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
-<openmrs:require privilege="Add Bill" otherwise="/login.htm" redirect="/module/billing/main.form" />
+<%--
+ *  Copyright 2009 Society for Health Information Systems Programmes, India (HISP India)
+ *
+ *  This file is part of Billing module.
+ *
+ *  Billing module is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
 
-<%@ include file="/WEB-INF/template/header.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery-ui-1.8.2.custom.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/billing/scripts/common.js"></script>
-<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/css/start/jquery-ui-1.8.2.custom.css" />
-<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/moduleResources/billing/styles/common.css" />
+ *  Billing module is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Billing module.  If not, see <http://www.gnu.org/licenses/>.
+ *
+--%>
+<%@ include file="/WEB-INF/template/include.jsp"%>
+<openmrs:require privilege="Add Bill" otherwise="/login.htm"
+	redirect="/module/billing/main.form" />
+
+<%@ include file="/WEB-INF/template/header.jsp"%>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery-ui-1.8.2.custom.min.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/common.js"></script>
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/css/start/jquery-ui-1.8.2.custom.css" />
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/moduleResources/billing/styles/common.css" />
 <style>
-	.detailDiv{z-index: 100;border:1px solid black; display: none; position: absolute; background-color:#CFE7FF;padding:3px;}
+.detailDiv {
+	z-index: 100;
+	border: 1px solid black;
+	display: none;
+	position: absolute;
+	background-color: #CFE7FF;
+	padding: 3px;
+}
 </style>
 <c:forEach items="${errors.allErrors}" var="error">
-	<span class="error"><spring:message code="${error.defaultMessage}" text="${error.defaultMessage}"/></span><
+	<span class="error"><spring:message
+			code="${error.defaultMessage}" text="${error.defaultMessage}" />
+	</span><
 </c:forEach>
 <script>
 	jQuery(document).ready(function(){
@@ -25,18 +59,21 @@
 	});
 </script>
 <c:if test="${not empty listAmbulance }">
-<div id="tabs">
-<ul>
-	<li><a href="#fragment" style="color: white"><span>List Ambulances</span></a></li>
-</ul>
-<div id="fragment">
-	<c:forEach items="${listAmbulance}" var="ambulance">
-		<div id="ambulance_${ambulance.ambulanceId}"   class="udiv boxNormal" onclick="addToBill('${ambulance.ambulanceId}', '${ambulance.name}')">
-			${ambulance.name}
+	<div id="tabs">
+		<ul>
+			<li><a href="#fragment" style="color: white"><span>List
+						Ambulances</span>
+			</a>
+			</li>
+		</ul>
+		<div id="fragment">
+			<c:forEach items="${listAmbulance}" var="ambulance">
+				<div id="ambulance_${ambulance.ambulanceId}" class="udiv boxNormal"
+					onclick="addToBill('${ambulance.ambulanceId}', '${ambulance.name}')">
+					${ambulance.name}</div>
+			</c:forEach>
 		</div>
-	</c:forEach>
-</div>
-</div>
+	</div>
 </c:if>
 
 <script type="text/javascript">
@@ -140,30 +177,40 @@
 		}
 </script>
 
-		<!-- Right side div for bill collection -->
-		<div id="billDiv">
-		<form method="POST" id="billForm" action="addAmbulanceBill.form" onsubmit="return false">
-		<div> <input type="button" id="subm" onclick="validateForm()" name="subm" value="<spring:message code='billing.bill.save'/>" />
-		<input type="button" value="<spring:message code='general.cancel'/>" onclick="javascript:window.location.href='ambulanceBill.list?driverId=${driverId}'" />
-		<input type="button" id="toogleBillBtn" value="-" onclick="toogleBill(this);" class="min" style="float: right" /></div>
-		<div id="total" style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em;margin:0.3em 0em; width: 100%;">
-		<input type='text' size='25' value='Total:' />&nbsp; 
-		<input type='text' size='3' value='' readonly="readonly" />&nbsp;
-		<input type='text' id='totalprice' name='totalprice' size='5' value='0' readonly="readonly" />&nbsp; <b>
+<!-- Right side div for bill collection -->
+<div id="billDiv">
+	<form method="POST" id="billForm" action="addAmbulanceBill.form"
+		onsubmit="return false">
+		<div>
+			<input type="button" id="subm" onclick="validateForm()" name="subm"
+				value="<spring:message code='billing.bill.save'/>" /> <input
+				type="button" value="<spring:message code='general.cancel'/>"
+				onclick="javascript:window.location.href='ambulanceBill.list?driverId=${driverId}'" />
+			<input type="button" id="toogleBillBtn" value="-"
+				onclick="toogleBill(this);" class="min" style="float: right" />
+		</div>
+		<div id="total"
+			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
+			<input type='text' size='25' value='Total:' />&nbsp; <input
+				type='text' size='3' value='' readonly="readonly" />&nbsp; <input
+				type='text' id='totalprice' name='totalprice' size='5' value='0'
+				readonly="readonly" />&nbsp; <b>
 		</div>
 
-		<input type="hidden" name="driverId" value="${driverId}"> 
-		<input type="hidden" id="serviceCount" name="serviceCount" value="0">
+		<input type="hidden" name="driverId" value="${driverId}"> <input
+			type="hidden" id="serviceCount" name="serviceCount" value="0">
 
-		<div id="extra" style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em;margin:0.3em 0em; width: 100%;">
-		<input type='text' size='25' value='Ambulance Name' readonly='readonly' />&nbsp; 
-		<input type='text' size="5" value='No. Trip' readonly="readonly" />&nbsp;
-		<input type='text' size='5' value='Amount' readonly="readonly" />&nbsp;</b>
-		<hr/>
+		<div id="extra"
+			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
+			<input type='text' size='25' value='Ambulance Name'
+				readonly='readonly' />&nbsp; <input type='text' size="5"
+				value='No. Trip' readonly="readonly" />&nbsp; <input type='text'
+				size='5' value='Amount' readonly="readonly" />&nbsp;</b>
+			<hr />
 		</div>
-	
-		
-		</form>
-		</div>
-	
-<%@ include file="/WEB-INF/template/footer.jsp" %> 
+
+
+	</form>
+</div>
+
+<%@ include file="/WEB-INF/template/footer.jsp"%>

@@ -1,6 +1,25 @@
+<%--
+ *  Copyright 2009 Society for Health Information Systems Programmes, India (HISP India)
+ *
+ *  This file is part of Billing module.
+ *
+ *  Billing module is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+
+ *  Billing module is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Billing module.  If not, see <http://www.gnu.org/licenses/>.
+ *
+--%>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
-<%@ include file="../includes/js_css.jsp" %>
+<%@ include file="../includes/js_css.jsp"%>
 <openmrs:require privilege="View Bills" otherwise="/login.htm" />
 <style type="text/css">
 .hidden {
@@ -43,12 +62,10 @@
 <p>
 	<b><a
 		href="addPatientServiceBill.form?patientId=${patient.patientId}">Add
-			new Bill</a> 
-		<c:if test="${freeBill}">
-			<span style="color:red">Free Bill</span>
-		</c:if>
-	</b>
-			
+			new Bill</a> <c:if test="${freeBill}">
+			<span style="color: red">Free Bill</span>
+		</c:if> </b>
+
 </p>
 <c:forEach items="${errors}" var="error">
 	<span class="error"><spring:message
@@ -69,7 +86,8 @@
 			<tr>
 				<td>Date:</td>
 				<td><openmrs:formatDate date="${bill.createdDate}"
-						type="textbox" /></td>
+						type="textbox" />
+				</td>
 			</tr>
 			<tr>
 				<td>Bill ID:</td>
@@ -88,33 +106,28 @@
 					<td>${item.name}</td>
 					<td align="right">${item.unitPrice}</td>
 					<td align="right">${item.quantity}</td>
-					<td class="printfont" height="20" align="right" style="">	
-						<c:choose>
+					<td class="printfont" height="20" align="right" style=""><c:choose>
 							<c:when test="${item.actualAmount eq item.amount}">
 								${item.amount}
 							</c:when>
 							<c:otherwise>
-								<span style="text-decoration:line-through;">${item.amount}</span>
-								<b>${item.actualAmount}</b>								
+								<span style="text-decoration: line-through;">${item.amount}</span>
+								<b>${item.actualAmount}</b>
 							</c:otherwise>
-						</c:choose>				
-													
-					</td>
+						</c:choose></td>
 				</tr>
 			</c:forEach>
 			<tr>
 				<td colspan="3">Total</td>
-				<td align="right">									
-					<c:choose>
-							<c:when test="${bill.actualAmount eq bill.amount}">
+				<td align="right"><c:choose>
+						<c:when test="${bill.actualAmount eq bill.amount}">
 								${bill.amount}
 							</c:when>
-							<c:otherwise>
-								<span style="text-decoration:line-through;">${bill.amount}</span>
-								<b>${bill.actualAmount}</b>								
-							</c:otherwise>
-						</c:choose>		
-				</td>
+						<c:otherwise>
+							<span style="text-decoration: line-through;">${bill.amount}</span>
+							<b>${bill.actualAmount}</b>
+						</c:otherwise>
+					</c:choose></td>
 			</tr>
 		</table>
 		<br>
@@ -169,7 +182,8 @@
 			<tr>
 				<td>Date:</td>
 				<td align="left"><openmrs:formatDate date="${bill.createdDate}"
-						type="textbox" /></td>
+						type="textbox" />
+				</td>
 			</tr>
 			<tr>
 				<td>Bill ID:</td>
@@ -190,16 +204,13 @@
 					<td class="printfont" height="20" style="">${item.name}</td>
 					<td class="printfont" height="20" align="right" style="">${item.unitPrice}</td>
 					<td class="printfont" height="20" align="right" style="">${item.quantity}</td>
-					<td class="printfont" height="20" align="right" style="">						
-						${item.actualAmount}
-					</td>
+					<td class="printfont" height="20" align="right" style="">
+						${item.actualAmount}</td>
 				</tr>
 			</c:forEach>
 			<tr>
 				<td colspan="3">Total</td>
-				<td align="right">
-					${bill.actualAmount}
-				</td>
+				<td align="right">${bill.actualAmount}</td>
 			</tr>
 		</table>
 		<br> <span class="printfont" style="margin-left: 60px;">Total

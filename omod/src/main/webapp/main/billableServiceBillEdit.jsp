@@ -1,24 +1,54 @@
-<%@ include file="/WEB-INF/template/include.jsp" %>
-<openmrs:require privilege="Edit Bill" otherwise="/login.htm" redirect="/module/billing/main.form" />
+<%--
+ *  Copyright 2009 Society for Health Information Systems Programmes, India (HISP India)
+ *
+ *  This file is part of Billing module.
+ *
+ *  Billing module is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
 
-<%@ include file="/WEB-INF/template/header.jsp" %>
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery-ui-1.8.2.custom.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/ui.core.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/ui.tabs.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/moduleResources/billing/scripts/common.js"></script>
-<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/css/start/ui.tabs.css" />
-<script type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/css/start/jquery-ui-1.8.2.custom.css"></script>
-<link type="text/css" rel="stylesheet" href="${pageContext.request.contextPath}/moduleResources/billing/styles/common.css" />
+ *  Billing module is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Billing module.  If not, see <http://www.gnu.org/licenses/>.
+ *
+--%>
+<%@ include file="/WEB-INF/template/include.jsp"%>
+<openmrs:require privilege="Edit Bill" otherwise="/login.htm"
+	redirect="/module/billing/main.form" />
+
+<%@ include file="/WEB-INF/template/header.jsp"%>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery-ui-1.8.2.custom.min.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/ui.core.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/ui.tabs.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/common.js"></script>
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/css/start/ui.tabs.css" />
+<script type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/css/start/jquery-ui-1.8.2.custom.css"></script>
+<link type="text/css" rel="stylesheet"
+	href="${pageContext.request.contextPath}/moduleResources/billing/styles/common.css" />
 <style>
-span{color:white;}
+span {
+	color: white;
+}
 </style>
 ${tabs }
 <script type="text/javascript">
 jQuery(document).ready(function(){ 
     $('#container-1 ul').tabs();
 });
-</script>	
+</script>
 
 
 <script type="text/javascript">
@@ -162,44 +192,53 @@ jQuery(document).ready(function(){
 
 </script>
 
-		<!-- Right side div for bill collection -->
-		<div id="billDiv">
-		<form method="POST" id="billForm"  onsubmit="return false">
-		<input type="hidden" value="" name="action" id="action"/>
-		<div> <input type="button" onclick="submitBillForm()" id="subm" name="subm" value="<spring:message code='billing.bill.save'/>" />
-		<input type="button"  id="voi" onclick="voidBill()"  value="<spring:message code='billing.bill.void'/>" />
-		<input type="button" value="<spring:message code='general.cancel'/>" onclick="javascript:window.location.href='patientServiceBill.list?patientId=${patientId}'" />
-		<!-- 
+<!-- Right side div for bill collection -->
+<div id="billDiv">
+	<form method="POST" id="billForm" onsubmit="return false">
+		<input type="hidden" value="" name="action" id="action" />
+		<div>
+			<input type="button" onclick="submitBillForm()" id="subm" name="subm"
+				value="<spring:message code='billing.bill.save'/>" /> <input
+				type="button" id="voi" onclick="voidBill()"
+				value="<spring:message code='billing.bill.void'/>" /> <input
+				type="button" value="<spring:message code='general.cancel'/>"
+				onclick="javascript:window.location.href='patientServiceBill.list?patientId=${patientId}'" />
+			<!-- 
 		    <select name="enctype"  tabindex="20" >
                 <c:forEach items="${encounterTypes}" var="enct">
                     <option value="${enct.encounterTypeId}">${enct.name}</option>
                 </c:forEach>
             </select>
 		 -->
-		<input type="button" id="toogleBillBtn" value="-" onclick="toogleBill(this);" class="min" style="float: right" /></div>
+			<input type="button" id="toogleBillBtn" value="-"
+				onclick="toogleBill(this);" class="min" style="float: right" />
+		</div>
 		<div id="total"
-			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em;margin:0.3em 0em; width: 100%;">
-		<input type='text' size='25' value='Total:' />&nbsp; 
-		<input type='text' size='3' value='' readonly="readonly" />&nbsp;
-		<input type='text' id='totalprice' name='totalprice' size='5' value='0' readonly="readonly" />&nbsp; <b>
+			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
+			<input type='text' size='25' value='Total:' />&nbsp; <input
+				type='text' size='3' value='' readonly="readonly" />&nbsp; <input
+				type='text' id='totalprice' name='totalprice' size='5' value='0'
+				readonly="readonly" />&nbsp; <b>
 		</div>
 
-		<div id="extra" style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em;margin:0.3em 0em; width: 100%;">
-		<input type='text' size='25' value='Service Name' readonly='readonly' />&nbsp; 
-		<input type='text' size="3" value='Qty' readonly="readonly" />&nbsp;
-		<input type='text' size='5' value='Price' readonly="readonly" />&nbsp;</b>
-		<hr/>
+		<div id="extra"
+			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
+			<input type='text' size='25' value='Service Name' readonly='readonly' />&nbsp;
+			<input type='text' size="3" value='Qty' readonly="readonly" />&nbsp;
+			<input type='text' size='5' value='Price' readonly="readonly" />&nbsp;</b>
+			<hr />
 		</div>
-	
-		
-		</form>
-		</div>
+
+
+	</form>
+</div>
 <c:forEach items="${bill.billItems}" var="item">
-	<c:set var="search" value="\'"/>
-	<c:set var="replace" value="#"/>
-	<c:set var="serviceName" value="${fn:replace(item.name,search,replace)}"/>	
+	<c:set var="search" value="\'" />
+	<c:set var="replace" value="#" />
+	<c:set var="serviceName"
+		value="${fn:replace(item.name,search,replace)}" />
 	<script type="text/javascript">
 		updateToBill(${item.service.conceptId},'${serviceName}', ${item.unitPrice},  ${item.amount}, ${item.patientServiceBillItemId}, ${item.quantity});
 	</script>
 </c:forEach>
-<%@ include file="/WEB-INF/template/footer.jsp" %> 
+<%@ include file="/WEB-INF/template/footer.jsp"%>
