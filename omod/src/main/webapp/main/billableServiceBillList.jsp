@@ -106,28 +106,47 @@
 					<td>${item.name}</td>
 					<td align="right">${item.unitPrice}</td>
 					<td align="right">${item.quantity}</td>
-					<td class="printfont" height="20" align="right" style=""><c:choose>
-							<c:when test="${item.actualAmount eq item.amount}">
-								${item.amount}
-							</c:when>
-							<c:otherwise>
-								<span style="text-decoration: line-through;">${item.amount}</span>
-								<b>${item.actualAmount}</b>
-							</c:otherwise>
-						</c:choose></td>
+					<td class="printfont" height="20" align="right" style="">
+					<c:choose>
+						<c:when test="${not empty item.actualAmount}">
+							<c:choose>
+								<c:when test="${item.actualAmount eq item.amount}">
+									${item.amount}
+								</c:when>
+								<c:otherwise>
+									<span style="text-decoration: line-through;">${item.amount}</span>
+									<b>${item.actualAmount}</b>
+								</c:otherwise>
+							</c:choose>
+						</c:when>
+						<c:otherwise>
+							${item.amount}
+						</c:otherwise>
+					</c:choose>
+					</td>
 				</tr>
 			</c:forEach>
 			<tr>
 				<td colspan="3">Total</td>
-				<td align="right"><c:choose>
-						<c:when test="${bill.actualAmount eq bill.amount}">
-								${bill.amount}
-							</c:when>
+				<td align="right">
+					<c:choose>
+						<c:when test="${not empty bill.actualAmount}">
+							<c:choose>
+								<c:when test="${bill.actualAmount eq bill.amount}">
+										${bill.amount}
+									</c:when>
+								<c:otherwise>
+									<span style="text-decoration: line-through;">${bill.amount}</span>
+									<b>${bill.actualAmount}</b>
+								</c:otherwise>
+							</c:choose>
+						</c:when>
 						<c:otherwise>
-							<span style="text-decoration: line-through;">${bill.amount}</span>
-							<b>${bill.actualAmount}</b>
+							${bill.amount}
 						</c:otherwise>
-					</c:choose></td>
+					</c:choose>
+					
+				</td>
 			</tr>
 		</table>
 		<br>
