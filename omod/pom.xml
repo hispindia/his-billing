@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>billing</artifactId>
-		<version>3.1.9</version>
+		<version>3.2.1</version>
 	</parent>
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>billing-omod</artifactId>
