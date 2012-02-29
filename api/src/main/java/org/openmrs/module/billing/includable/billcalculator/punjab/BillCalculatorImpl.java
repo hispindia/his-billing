@@ -18,7 +18,7 @@
  *
  **/
 
-package org.openmrs.module.billing.includable.billcalculator.ddu;
+package org.openmrs.module.billing.includable.billcalculator.punjab;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -31,16 +31,18 @@ public class BillCalculatorImpl implements BillCalculator {
 	/**
 	 * Get the percentage of price to pay If patient category is RSBY or BPL,
 	 * the bill should be 100% free
+	 * 
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public BigDecimal getRate(Map<String, Object> parameters) {
 		BigDecimal ratio = new BigDecimal(1);
-		Map<String, String> attributes = (Map<String, String>) parameters.get("attributes");
+		Map<String, String> attributes = (Map<String, String>) parameters
+				.get("attributes");
 		String patientCategory = attributes.get("Patient Category");
 		String bplNumber = attributes.get("BPL Number");
 		String rsbyNumber = attributes.get("RSBY Number");
-		
+
 		if (!StringUtils.isBlank(patientCategory)) {
 			if (patientCategory.contains("RSBY")) {
 				if (!StringUtils.isBlank(rsbyNumber)) {
@@ -50,6 +52,12 @@ public class BillCalculatorImpl implements BillCalculator {
 				if (!StringUtils.isBlank(bplNumber)) {
 					ratio = new BigDecimal(0);
 				}
+			} else if (patientCategory.contains("Punjab Government Employee")) {
+				ratio = new BigDecimal(0);
+			} else if (patientCategory.contains("Ex Servicemen")) {
+				ratio = new BigDecimal(0);
+			} else if (patientCategory.contains("Pensioner")) {
+				ratio = new BigDecimal(0);
 			}
 		}
 
@@ -59,11 +67,13 @@ public class BillCalculatorImpl implements BillCalculator {
 	/**
 	 * Determine whether a bill should be free or not. If patient category is
 	 * RSBY or BPL, the bill should be treated as the free bill
+	 * 
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean isFreeBill(Map<String, Object> parameters) {
-		Map<String, String> attributes = (Map<String, String>) parameters.get("attributes");
+		Map<String, String> attributes = (Map<String, String>) parameters
+				.get("attributes");
 		String patientCategory = attributes.get("Patient Category");
 		String bplNumber = attributes.get("BPL Number");
 		String rsbyNumber = attributes.get("RSBY Number");
@@ -77,6 +87,12 @@ public class BillCalculatorImpl implements BillCalculator {
 				if (!StringUtils.isBlank(bplNumber)) {
 					return true;
 				}
+			} else if (patientCategory.contains("Punjab Government Employee")) {
+				return true;
+			} else if (patientCategory.contains("Ex Servicemen")) {
+				return true;
+			} else if (patientCategory.contains("Pensioner")) {
+				return true;
 			}
 		}
 
