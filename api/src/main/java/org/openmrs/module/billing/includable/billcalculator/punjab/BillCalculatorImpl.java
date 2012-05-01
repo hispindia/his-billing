@@ -27,22 +27,29 @@ import org.apache.commons.lang.StringUtils;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculator;
 
 public class BillCalculatorImpl implements BillCalculator {
-
+	
 	/**
-	 * Get the percentage of price to pay If patient category is RSBY or BPL,
-	 * the bill should be 100% free
+	 * Get the percentage of price to pay If patient category is RSBY or BPL, the bill should be
+	 * 100% free
 	 * 
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public BigDecimal getRate(Map<String, Object> parameters) {
-		BigDecimal ratio = new BigDecimal(1);
-		Map<String, String> attributes = (Map<String, String>) parameters
-				.get("attributes");
+		BigDecimal ratio = new BigDecimal(0);
+		Map<String, String> attributes = (Map<String, String>) parameters.get("attributes");
 		String patientCategory = attributes.get("Patient Category");
+		
+		// 30/04/12 - Marta, changed to consider the new free categories. Logic has been inverted.
+		if (patientCategory.contains("General")) {
+			ratio = new BigDecimal(1);
+		}
+		
+		//This is the old function
+		/*
 		String bplNumber = attributes.get("BPL Number");
 		String rsbyNumber = attributes.get("RSBY Number");
-
+		
 		if (!StringUtils.isBlank(patientCategory)) {
 			if (patientCategory.contains("RSBY")) {
 				if (!StringUtils.isBlank(rsbyNumber)) {
@@ -59,25 +66,33 @@ public class BillCalculatorImpl implements BillCalculator {
 			} else if (patientCategory.contains("Pensioner")) {
 				ratio = new BigDecimal(0);
 			}
-		}
-
+		} */
+		
 		return ratio;
 	}
-
+	
 	/**
-	 * Determine whether a bill should be free or not. If patient category is
-	 * RSBY or BPL, the bill should be treated as the free bill
+	 * Determine whether a bill should be free or not. If patient category is RSBY or BPL, the bill
+	 * should be treated as the free bill
 	 * 
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public boolean isFreeBill(Map<String, Object> parameters) {
-		Map<String, String> attributes = (Map<String, String>) parameters
-				.get("attributes");
+		Map<String, String> attributes = (Map<String, String>) parameters.get("attributes");
 		String patientCategory = attributes.get("Patient Category");
-		String bplNumber = attributes.get("BPL Number");
+		
+		// 30/04/12 - Marta, chaged to consider the new free categories. Logic has been inverted.
+		if (patientCategory.contains("General")) {
+			return false;
+		}
+		
+		return true;
+		
+		//This is the old function
+		/*String bplNumber = attributes.get("BPL Number");
 		String rsbyNumber = attributes.get("RSBY Number");
-
+		
 		if (!StringUtils.isBlank(patientCategory)) {
 			if (patientCategory.contains("RSBY")) {
 				if (!StringUtils.isBlank(rsbyNumber)) {
@@ -95,7 +110,8 @@ public class BillCalculatorImpl implements BillCalculator {
 				return true;
 			}
 		}
-
-		return false;
+		
+		return false; 
+		*/
 	}
 }
