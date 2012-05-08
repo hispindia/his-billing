@@ -58,8 +58,6 @@ public class MiscellaneousServiceBillEditController {
 		
 		// if action is void
 		if( "void".equalsIgnoreCase(action)){
-			System.out.println("===============================================");
-			System.out.println("set it to void");
 			miscellaneousServiceBill.setVoided(true);
 			billingService.saveMiscellaneousServiceBill(miscellaneousServiceBill);
 			return "redirect:/module/billing/miscellaneousServiceBill.list";
