@@ -61,7 +61,10 @@ public class BillCalculatorImpl implements BillCalculator {
 				return new BigDecimal(0);
 			} else if (patientCategory.contains("Other Free")) {
 				return new BigDecimal(0);
-			}
+			} /*// 15/05/2012: Marta added to make Senior Citizen Free bill - Bug #188
+			  else if (patientCategory.contains("Senior Citizen")) {
+				return new BigDecimal(0);
+			}*/
 			else if (patientCategory.contains("Senior Citizen")) {
 				
 				// Get test tree map
@@ -123,6 +126,7 @@ public class BillCalculatorImpl implements BillCalculator {
 	 * 
 	 * @return
 	 */
+	@SuppressWarnings("unchecked")
 	public boolean isFreeBill(Map<String, Object> parameters) {
 		Map<String, String> attributes = (Map<String, String>) parameters.get("attributes");
 		String patientCategory = attributes.get("Patient Category");

@@ -60,6 +60,7 @@ public class BillableServiceBillListController {
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		Map<String, String> attributes = PatientUtils.getAttributes(patient);
 		BillCalculatorService calculator = new BillCalculatorService();		
+		
 		model.addAttribute("freeBill", calculator.isFreeBill(HospitalCoreUtils.buildParameters("attributes", attributes)));
 		
 		if( patient != null ){
