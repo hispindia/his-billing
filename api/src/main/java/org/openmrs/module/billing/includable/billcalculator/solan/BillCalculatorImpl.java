@@ -61,11 +61,11 @@ public class BillCalculatorImpl implements BillCalculator {
 				return new BigDecimal(0);
 			} else if (patientCategory.contains("Other Free")) {
 				return new BigDecimal(0);
-			} /*// 15/05/2012: Marta added to make Senior Citizen Free bill - Bug #188
+			} // 17/05/2012: Marta added to make Senior Citizen Free bill - Bug #188
 			  else if (patientCategory.contains("Senior Citizen")) {
 				return new BigDecimal(0);
-			}*/
-			else if (patientCategory.contains("Senior Citizen")) {
+			}
+			/*else if (patientCategory.contains("Senior Citizen")) {
 				
 				// Get test tree map
 				if (testTreeMap == null) {
@@ -89,7 +89,7 @@ public class BillCalculatorImpl implements BillCalculator {
 						return new BigDecimal(0);
 					}
 				}
-			}
+			}*/
 		}
 		
 		return rate;
