@@ -44,12 +44,22 @@ public class BillCalculatorImpl implements BillCalculator {
 	 */
 	@SuppressWarnings("unchecked")
 	public BigDecimal getRate(Map<String, Object> parameters) {
-		BigDecimal rate = new BigDecimal(1);
+		// 17/05/12 - Marta: changed to consider the new free categories. Logic has been inverted. #188
+		BigDecimal rate = new BigDecimal(0);
 		Map<String, String> attributes = (Map<String, String>) parameters.get("attributes");
 		String patientCategory = attributes.get("Patient Category");
 		PatientServiceBillItem item = (PatientServiceBillItem) parameters.get("billItem");
 		
-		if (!StringUtils.isBlank(patientCategory)) {
+		// 17/05/12 - Marta: changed to consider the new free categories. Logic has been inverted. #188
+		if (patientCategory.contains("General")) {
+			rate = new BigDecimal(1);
+		}
+		if (patientCategory.contains("Staff")) {
+			rate = new BigDecimal(1);
+		}
+		
+		//This is the old function
+		/*if (!StringUtils.isBlank(patientCategory)) {
 			
 			if (patientCategory.contains("BPL")) {
 				return new BigDecimal(0);
@@ -64,7 +74,7 @@ public class BillCalculatorImpl implements BillCalculator {
 			} // 17/05/2012: Marta added to make Senior Citizen Free bill - Bug #188
 			  else if (patientCategory.contains("Senior Citizen")) {
 				return new BigDecimal(0);
-			}
+			}*/
 			/*else if (patientCategory.contains("Senior Citizen")) {
 				
 				// Get test tree map
@@ -89,8 +99,8 @@ public class BillCalculatorImpl implements BillCalculator {
 						return new BigDecimal(0);
 					}
 				}
-			}*/
-		}
+			}
+		}*/
 		
 		return rate;
 	}
@@ -135,7 +145,9 @@ public class BillCalculatorImpl implements BillCalculator {
 		if (patientCategory.contains("General")) {
 			return false;
 		}
-		
+		if (patientCategory.contains("Staff")) {
+			return false;
+		}
 		return true;
 	}
 }
