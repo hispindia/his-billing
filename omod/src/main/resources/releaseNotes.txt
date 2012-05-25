@@ -1,3 +1,7 @@
+3.2.5
+- Fixed #177 Add 6 more new free Categories for Punjab
+	#188 Add Free Patient Category for Solan
+
 3.1.9
 - Fixed bug incorrectly showing receipt amounts. 
 
