@@ -86,13 +86,18 @@
 			<tr>
 				<td>Date:</td>
 				<td><openmrs:formatDate date="${bill.createdDate}"
-						type="textbox" />
-				</td>
+						type="textbox" /></td>
 			</tr>
 			<tr>
 				<td>Bill ID:</td>
 				<td>${bill.receipt.id}</td>
 			</tr>
+			<c:if test="${bill.voided==false }">
+				<tr>
+					<td>Bill Description:</td>
+					<td>${bill.description}</td>
+				</tr>
+			</c:if>
 		</table>
 		<table width="100%" border="1">
 			<thead>
@@ -106,30 +111,27 @@
 					<td>${item.name}</td>
 					<td align="right">${item.unitPrice}</td>
 					<td align="right">${item.quantity}</td>
-					<td class="printfont" height="20" align="right" style="">
-					<c:choose>
-						<c:when test="${not empty item.actualAmount}">
-							<c:choose>
-								<c:when test="${item.actualAmount eq item.amount}">
+					<td class="printfont" height="20" align="right" style=""><c:choose>
+							<c:when test="${not empty item.actualAmount}">
+								<c:choose>
+									<c:when test="${item.actualAmount eq item.amount}">
 									${item.amount}
 								</c:when>
-								<c:otherwise>
-									<span style="text-decoration: line-through;">${item.amount}</span>
-									<b>${item.actualAmount}</b>
-								</c:otherwise>
-							</c:choose>
-						</c:when>
-						<c:otherwise>
+									<c:otherwise>
+										<span style="text-decoration: line-through;">${item.amount}</span>
+										<b>${item.actualAmount}</b>
+									</c:otherwise>
+								</c:choose>
+							</c:when>
+							<c:otherwise>
 							${item.amount}
 						</c:otherwise>
-					</c:choose>
-					</td>
+						</c:choose></td>
 				</tr>
 			</c:forEach>
 			<tr>
 				<td colspan="3">Total</td>
-				<td align="right">
-					<c:choose>
+				<td align="right"><c:choose>
 						<c:when test="${not empty bill.actualAmount}">
 							<c:choose>
 								<c:when test="${bill.actualAmount eq bill.amount}">
@@ -144,19 +146,15 @@
 						<c:otherwise>
 							${bill.amount}
 						</c:otherwise>
-					</c:choose>
-					
-				</td>
+					</c:choose></td>
 			</tr>
 		</table>
 		<br>
 		<form method="POST" id="billForm">
 			<center>
-				<c:if test="${bill.voided==false }">
-					<input type="button"
-						value='<spring:message code="billing.print" />'
-						onClick="printDiv2();" />&nbsp;&nbsp;</c:if>
-				<a href="#" onclick="javascript:jQuery('#billContainer').hide();">Hide</a>
+				<input type="button" value='<spring:message code="billing.print" />'
+					onClick="printDiv2();" />&nbsp;&nbsp; <a href="#"
+					onclick="javascript:jQuery('#billContainer').hide();">Hide</a>
 			</center>
 		</form>
 	</div>
@@ -201,8 +199,7 @@
 			<tr>
 				<td>Date:</td>
 				<td align="left"><openmrs:formatDate date="${bill.createdDate}"
-						type="textbox" />
-				</td>
+						type="textbox" /></td>
 			</tr>
 			<tr>
 				<td>Bill ID:</td>
@@ -288,8 +285,8 @@
 							<a
 								href="${pageContext.request.contextPath}/module/billing/editPatientServiceBill.form?billId=${bill.patientServiceBillId}&patientId=${patient.patientId}">Bill
 								ID <b>${bill.receipt.id}</b>,<openmrs:formatDate
-									date="${bill.createdDate }" type="textbox" /> </a>
-				</td>
+									date="${bill.createdDate }" type="textbox" />
+							</a></td>
 				</c:when>
 				<c:otherwise>
 						Bill ID <b>${bill.receipt.id}</b>,

@@ -88,7 +88,8 @@ public class BillableServiceBillEditController {
 			@RequestParam("cons") Integer[] cons,
 			@RequestParam("patientId") Integer patientId,
 			@RequestParam("billId") Integer billId,
-			@RequestParam("action") String action) {
+			@RequestParam("action") String action,
+			@RequestParam(value = "description", required = false) String description) {
 
 		validate(cons, bindingResult, request);
 		if (bindingResult.hasErrors()) {
@@ -106,6 +107,9 @@ public class BillableServiceBillEditController {
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		Map<String, String> attributes = PatientUtils.getAttributes(patient);
 		BillCalculatorService calculator = new BillCalculatorService();
+		
+		if("" != description)
+			bill.setDescription(description);
 
 		if ("void".equalsIgnoreCase(action)) {
 			bill.setVoided(true);

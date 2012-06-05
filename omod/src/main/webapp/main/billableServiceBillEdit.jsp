@@ -47,6 +47,13 @@ ${tabs }
 <script type="text/javascript">
 jQuery(document).ready(function(){ 
     $('#container-1 ul').tabs();
+    
+    /**
+    * June 5th 2012: Thai Chuong supported issue #246
+    * [PUNJAB] Text box when bill is voided & Print out of a bill that is voided 
+    */
+	if(jQuery("#action").val() != "void")
+		jQuery('#descriptionDiv').hide();
 });
 </script>
 
@@ -185,9 +192,11 @@ jQuery(document).ready(function(){
 		}
 		function voidBill(){
 			jQuery("#action").val("void");
-			jQuery("#subm").attr("disabled", "disabled");
+			jQuery("#descriptionDiv").show();
 			jQuery("#voi").attr("disabled", "disabled");
-			jQuery("#billForm").submit();
+			return 0;
+/*			jQuery("#subm").attr("disabled", "disabled");
+			jQuery("#billForm").submit();*/
 		}
 
 </script>
@@ -221,12 +230,18 @@ jQuery(document).ready(function(){
 				readonly="readonly" />&nbsp; <b>
 		</div>
 
-		<div id="extra"
+		<div id="extra" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
 			<input type='text' size='25' value='Service Name' readonly='readonly' />&nbsp;
 			<input type='text' size="3" value='Qty' readonly="readonly" />&nbsp;
 			<input type='text' size='5' value='Price' readonly="readonly" />&nbsp;</b>
 			<hr />
+		</div>
+
+		<div id="descriptionDiv">
+			<span style="color: blue; font-style: oblique; font-weight: bolder;">
+				Description:</span> <input type="text" size="50" value=""
+				name="description" id="description" class="cancelDraggable" />
 		</div>
 
 

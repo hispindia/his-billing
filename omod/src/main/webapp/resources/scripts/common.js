@@ -36,7 +36,13 @@ jQuery(document).ready(function(){
 		var top = f_clientHeight() - billDiv.outerHeight();
 		billDiv.css({"position":"fixed","top":top+"px","left":left+"px"});
 		jQuery("div#extra",billDiv).css({"max-height":"300px","overflow":"auto"});
-		billDiv.draggable({cancel:"div#extra",containment:"window"});
+		
+	    /**
+	    * June 5th 2012: Thai Chuong supported issue #246
+	    * [PUNJAB] Text box when bill is voided & Print out of a bill that is voided
+	    * Cancel draggale to allow typing. 
+	    */
+		billDiv.draggable({cancel:".cancelDraggable",containment:"window"});
 		
 		jQuery("#toogleBillBtn").click();
 	}
