@@ -108,7 +108,7 @@ public class BillableServiceBillEditController {
 		Map<String, String> attributes = PatientUtils.getAttributes(patient);
 		BillCalculatorService calculator = new BillCalculatorService();
 		
-		if("" != description)
+		if(!"".equals( description ))
 			bill.setDescription(description);
 
 		if ("void".equalsIgnoreCase(action)) {
