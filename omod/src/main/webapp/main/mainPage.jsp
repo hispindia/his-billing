@@ -56,7 +56,16 @@
 			success: function(data){
 				jQuery("#patientSearchResultSection").show();
 			}
-		});		
+		});
+		
+		/**
+		* June 6th 2012: Thai Chuong - Supported #247
+		*/
+		jQuery("#billId", this.form).keyup(function(event){				
+			if(event.keyCode == 13){	
+				PATIENTSEARCH.searchBillId(true);
+			}
+		});
 	});
 </script>
 
@@ -69,9 +78,30 @@
 </b>
 <div class="box" id="searchbox"></div>
 <br />
+
+<!-- June 6th 2012: Thai Chuong Supported new requirement #247 -->
+
+<b class="boxHeader"><spring:message code="billing.Patient.find.byBillId" />
+</b>
+<div class="box" id="searchboxBillId">
+	<table cellspacing="10">
+		<tbody>
+			<tr>
+				<td>Bill Id </td>
+				<td>
+					<input id="billId" style="width:300px;">
+				</td>
+				<td id="searchLoaderBillId"></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<br />
+<!-- End #247 -->
+
 <div id="patientSearchResultSection" style="display: none;">
 	<div class="boxHeader">Found Patients</div>
 	<div class="box" id="patientSearchResult"></div>
-</div
+</div>
 
 <%@ include file="/WEB-INF/template/footer.jsp" %>
