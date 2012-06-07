@@ -92,7 +92,7 @@
 				<td>Bill ID:</td>
 				<td>${bill.receipt.id}</td>
 			</tr>
-			<c:if test="${bill.voided==false }">
+			<c:if test="${bill.voided==true }">
 				<tr>
 					<td>Bill Description:</td>
 					<td>${bill.description}</td>
