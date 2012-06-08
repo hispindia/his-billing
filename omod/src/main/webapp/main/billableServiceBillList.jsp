@@ -139,7 +139,16 @@
 									</c:when>
 								<c:otherwise>
 									<span style="text-decoration: line-through;">${bill.amount}</span>
-									<b>${bill.actualAmount}</b>
+									<c:choose>
+										<c:when test="${bill.voided==true }">
+											<span style="text-decoration: line-through;">
+											<b>${bill.actualAmount}</b>
+											</span>
+										</c:when>
+										<c:otherwise>
+											<b>${bill.actualAmount}</b>
+										</c:otherwise>
+									</c:choose>
 								</c:otherwise>
 							</c:choose>
 						</c:when>
@@ -271,6 +280,7 @@
 		<thead>
 			<th>#</th>
 			<th>Bill Name</th>
+			<th>Description</th>
 			<th>Action</th>
 		</thead>
 		<c:forEach items="${listBill}" var="bill" varStatus="varStatus">
@@ -293,6 +303,9 @@
 						<openmrs:formatDate date="${bill.createdDate }" />
 				</c:otherwise>
 				</c:choose>
+				<td>
+					${bill.description}
+				</td>
 				<td><input type="button" value="View"
 					onclick="javascript:window.location.href='patientServiceBill.list?patientId=${patient.patientId}&billId=${bill.patientServiceBillId}'" />
 				</td>
