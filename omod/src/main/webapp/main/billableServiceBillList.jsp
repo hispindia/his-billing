@@ -214,6 +214,12 @@
 				<td>Bill ID:</td>
 				<td>${bill.receipt.id}</td>
 			</tr>
+			<c:if test="${bill.voided==true }">
+				<tr>
+					<td>Bill Description:</td>
+					<td>${bill.description}</td>
+				</tr>
+			</c:if>
 		</table>
 		<table class="printfont"
 			style="margin-left: 60px; margin-top: 10px; font-family: 'Dot Matrix Normal', Arial, Helvetica, sans-serif; font-style: normal;"
