@@ -235,7 +235,15 @@
 			</c:forEach>
 			<tr>
 				<td colspan="3">Total</td>
-				<td align="right">${bill.actualAmount}</td>
+				<c:choose>
+					<c:when test="${bill.voided}">
+						<td align="right"><span style="text-decoration: line-through;">${bill.actualAmount}</span></td>
+						 
+					</c:when>
+					<c:otherwise>
+						<td align="right">${bill.actualAmount}</td>
+					</c:otherwise>
+				</c:choose>
 			</tr>
 		</table>
 		<br> <span class="printfont" style="margin-left: 60px;">Total
