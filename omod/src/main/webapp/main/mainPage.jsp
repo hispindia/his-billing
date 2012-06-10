@@ -61,9 +61,9 @@
 		/**
 		* June 6th 2012: Thai Chuong - Supported #247
 		*/
-		jQuery("#billId", this.form).keyup(function(event){				
+		jQuery("#billId", "#billSearch").keyup(function(event){				
 			if(event.keyCode == 13){	
-				PATIENTSEARCH.searchBillId(true);
+				jQuery("#billSearch").ajaxSubmit();
 			}
 		});
 	});
@@ -80,28 +80,40 @@
 <br />
 
 <!-- June 6th 2012: Thai Chuong Supported new requirement #247 -->
-
-<b class="boxHeader"><spring:message code="billing.Patient.find.byBillId" />
-</b>
-<div class="box" id="searchboxBillId">
-	<table cellspacing="10">
-		<tbody>
-			<tr>
-				<td>Bill Id </td>
-				<td>
-					<input id="billId" style="width:300px;">
-				</td>
-				<td id="searchLoaderBillId"></td>
-			</tr>
-		</tbody>
-	</table>
-</div>
-<br />
+<form id="billSearch" action="${pageContext.request.contextPath}/module/hospitalcore/findBill.htm" method="GET">
+	<b class="boxHeader"><spring:message code="billing.Patient.find.byBillId" />
+	</b>
+	<div class="box" id="searchboxBillId">
+		<table cellspacing="10">
+			<tbody>
+				<tr>
+					<td>Bill Id </td>
+					<td>
+						<input id="billId" name="billId" style="width:300px;">
+					</td>
+					<td id="searchLoaderBillId"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<br />
+</form>
 <!-- End #247 -->
 
 <div id="patientSearchResultSection" style="display: none;">
 	<div class="boxHeader">Found Patients</div>
 	<div class="box" id="patientSearchResult"></div>
 </div>
-
+<%
+/**
+* Use for search bill by BillId
+* Author: Thai Chuong June 10th 2012
+* Supported issue #247 & #254
+* Search bill by Bill Id
+*/
+if (request.getParameter("Found") == null) {
+} else {
+    out.println("<font color='red'><b>"+request.getParameter("Found")+"</b>!</font>");
+}
+%>
 <%@ include file="/WEB-INF/template/footer.jsp" %>
