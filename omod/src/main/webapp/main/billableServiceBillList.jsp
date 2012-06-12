@@ -309,11 +309,11 @@
 		</thead>
 		<c:forEach items="${listBill}" var="bill" varStatus="varStatus">
 			<tr
-				class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } <c:if test="${bill.voided}">retired </c:if>'>
-				<td><c:out
+				class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
+				<td class='<c:if test="${bill.voided}">retired </c:if>'><c:out
 						value="${(( pagingUtil.currentPage - 1  ) * pagingUtil.pageSize ) + varStatus.count }" />
 				</td>
-				<td><c:choose>
+				<td class='<c:if test="${bill.voided}">retired </c:if>'><c:choose>
 						<c:when
 							test="${bill.voided == false && ( bill.printed == false || ( bill.printed == true && canEdit == true ) )}">
 							<a
@@ -330,7 +330,7 @@
 				<td>
 					${bill.description}
 				</td>
-				<td><input type="button" value="View"
+				<td class='<c:if test="${bill.voided}">retired </c:if>'><input type="button" value="View"
 					onclick="javascript:window.location.href='patientServiceBill.list?patientId=${patient.patientId}&billId=${bill.patientServiceBillId}'" />
 				</td>
 			</tr>
