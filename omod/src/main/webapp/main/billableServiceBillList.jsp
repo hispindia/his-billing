@@ -126,6 +126,7 @@
 							<c:otherwise>
 							${item.amount}
 						</c:otherwise>
+						
 						</c:choose></td>
 				</tr>
 			</c:forEach>
@@ -135,8 +136,17 @@
 						<c:when test="${not empty bill.actualAmount}">
 							<c:choose>
 								<c:when test="${bill.actualAmount eq bill.amount}">
-										${bill.amount}
-									</c:when>
+									<c:choose>
+										<c:when test="${bill.voided==true }">
+											<span style="text-decoration: line-through;">
+											<b>${bill.amount}</b>
+											</span>
+										</c:when>
+										<c:otherwise>
+											<b>${bill.amount}</b>
+										</c:otherwise>
+									</c:choose>
+								</c:when>
 								<c:otherwise>
 									<span style="text-decoration: line-through;">${bill.amount}</span>
 									<c:choose>
