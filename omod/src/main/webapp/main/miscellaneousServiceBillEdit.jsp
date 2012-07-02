@@ -173,7 +173,7 @@
 
 		<input type="hidden" name="billId" value="${bill.id}">
 
-		<div id="extra"
+		<div id="extra" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
 			<input type='text' size='16' value='Service Name' readonly='readonly' />&nbsp;
 			<input type='text' size="5" value='Price' readonly="readonly" />&nbsp;
