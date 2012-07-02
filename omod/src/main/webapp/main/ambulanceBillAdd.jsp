@@ -200,7 +200,7 @@
 		<input type="hidden" name="driverId" value="${driverId}"> <input
 			type="hidden" id="serviceCount" name="serviceCount" value="0">
 
-		<div id="extra"
+		<div id="extra" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
 			<input type='text' size='25' value='Ambulance Name'
 				readonly='readonly' />&nbsp; <input type='text' size="5"
