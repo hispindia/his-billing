@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>billing</artifactId>
-		<version>3.2.6-SNAPSHOT</version>
+		<version>3.2.6</version>
 	</parent>
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>billing-omod</artifactId>
@@ -40,8 +40,7 @@
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>hospitalcore-api</artifactId>
-			<version>1.4.10.9</version>
-			<type>jar</type>
+			<version>1.4.10.10</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
