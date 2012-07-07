@@ -78,6 +78,12 @@ public class AmbulanceBillAddController {
 			
 			Integer numberOfTrip = Integer.parseInt(request.getParameter(id+"_numOfTrip"));
 			
+			//ghanshyam 07/07/2012 New Requirement #305: Additional details in Ambulance Bill
+			String patientName =(request.getParameter(id+"_patientName"));
+			Integer receiptNumber = Integer.parseInt(request.getParameter(id+"_receiptNumber"));
+			String origin =(request.getParameter(id+"_origin"));
+			String destination =(request.getParameter(id+"_destination"));
+			
 			AmbulanceBillItem item = new AmbulanceBillItem();
 			item.setName(ambulance.getName());
 			item.setCreatedDate(new Date());
@@ -85,6 +91,14 @@ public class AmbulanceBillAddController {
 			item.setAmbulance(ambulance);
 			item.setAmbulanceBill(ambulanceBill);
 			item.setAmount(itemAmount.getAmount());
+			
+			//ghanshyam 07/07/2012 New Requirement #305: Additional details in Ambulance Bill
+			item.setPatientName(patientName);
+			item.setReceiptNumber(receiptNumber);
+			item.setOrigin(origin);
+			item.setDestination(destination);
+			
+			
 			ambulanceBill.addBillItem(item);
 		}
 		ambulanceBill.setAmount(totalAmount.getAmount());

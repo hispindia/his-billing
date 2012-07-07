@@ -85,11 +85,16 @@
 		else
 		{
 			var deleteString = 'deleteInput(\"'+ambulanceId+'\")';
+			<!--  ghanshyam 07/07/2012 New Requirement #305: Additional details in Ambulance Bill -->
 
 	       	var htmlText =  " "
 	       	+"<input  name='ambulanceIds' type='checkbox' value='"+ambulanceId+"' style='display:none; visibility:hidden;' checked='true'> "
-	       	+"<input  type='text' size='25' id='"+ambulanceId+"_name' value='"+name+"'  readonly='readonly'/>"
-	    	+"<input  type='text' name='"+ambulanceId+"_numOfTrip' id='"+ambulanceId+"_qty'  value='0' onblur='checkNum(this.value)' class='numberField' size='5'/>&nbsp;"
+	       	+"<input  type='text' size='25' id='"+ambulanceId+"_name' value='"+name+"'  readonly='readonly'/>&nbsp;"
+	       	+"<input  type='text' name='"+ambulanceId+"_patientName' id='"+ambulanceId+"_patientName'  value='' class='patientNameField' size='50' />&nbsp;"
+	       	+"<input  type='text' name='"+ambulanceId+"_receiptNumber' id='"+ambulanceId+"_receiptNumber'  value='0' class='receiptNumberField' size='13'/>&nbsp;"
+	    	+"<input  type='text' name='"+ambulanceId+"_numOfTrip' id='"+ambulanceId+"_qty'  value='0' onblur='checkNum(this.value)' class='numberField' size='10'/>&nbsp;"
+	    	+"<input  type='text' name='"+ambulanceId+"_origin' id='"+ambulanceId+"_origin'  value='' class='originField' size='20'/>&nbsp;"
+	    	+"<input  type='text' name='"+ambulanceId+"_destination' id='"+ambulanceId+"_destination'  value='' class='destinationField' size='20'/>&nbsp;"
 	    	+"<input  type='text' name='"+ambulanceId+"_amount' id='"+ambulanceId+"_amount'  value='0' onblur='updatePrice("+ambulanceId+");' size='5' class='moneyField'  />"
 	    	+"<input  type='hidden' id='"+ambulanceId+"_tmpamount'   value='0' />"
 	      	+"<a style='color:red' href='#' onclick='"+deleteString+"' >&nbsp;[X]</a>";
@@ -151,7 +156,54 @@
 			$('#totalprice').focus();
 			var okNum = true;
 			var okMoney = true;
+			<!--  ghanshyam 07/07/2012 New Requirement #305: Additional details in Ambulance Bill -->
+			var okPatientName = true;
+			var okRcptNum = true;
+			var origin = true;
+			var destination = true;
+			
+			var textRegExp  = /[a-zA-Z\s-]+/;
+			jQuery(".patientNameField").each(function(){
+				var qty = jQuery(this).val();
+				if(qty=='')
+				{
+				okPatientName = true;
+				}
+				else if( !textRegExp.test(qty)){
+					okPatientName = false;
+				}
+			});
+			
 			var objRegExp  = /^ *[0-9]+ *$/;
+			jQuery(".receiptNumberField").each(function(){
+				var qty = jQuery(this).val();
+				if( !objRegExp.test(qty)){
+					okRcptNum = false;
+				}
+			});
+			
+			jQuery(".originField").each(function(){
+				var qty = jQuery(this).val();
+				if(qty=='')
+				{
+				origin = true;
+				}
+				else if( !textRegExp.test(qty)){
+					origin = false;
+				}
+			});
+			
+			jQuery(".destinationField").each(function(){
+				var qty = jQuery(this).val();
+				if(qty=='')
+				{
+				destination = true;
+				}
+				else if( !textRegExp.test(qty)){
+					destination = false;
+				}
+			});
+			
 			jQuery(".numberField").each(function(){
 				var qty = jQuery(this).val();
 				if( !objRegExp.test(qty) || qty=='' || qty <=0){
@@ -165,8 +217,17 @@
 					okMoney = false;
 				}
 			});
-			if( !okNum ) {
+			<!--  ghanshyam 07/07/2012 New Requirement #305: Additional details in Ambulance Bill -->
+			if( !okPatientName ) {
+				alert("Please enter valid patient name!");
+				}else if(!okRcptNum){
+				alert("Please enter valid receipt number!");
+				}else if( !okNum ) {
 				alert("Please enter valid number of trip!");
+			}else if(!origin){
+			alert("Please enter valid origin!");
+			}else if(!destination){
+			alert("Please enter valid destination!");
 			}else if(! jQuery("input[type='checkbox']","div#extra").length ) {
 				alert("Please select item for billing");
 			}else if( !okMoney ){
@@ -178,7 +239,8 @@
 </script>
 
 <!-- Right side div for bill collection -->
-<div id="billDiv">
+<!--  ghanshyam 07/07/2012 New Requirement #305: Additional details in Ambulance Bill -->
+<div id="billDiv" style="width: 64%;">
 	<form method="POST" id="billForm" action="addAmbulanceBill.form"
 		onsubmit="return false">
 		<div>
@@ -202,10 +264,14 @@
 
 		<div id="extra" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
-			<input type='text' size='25' value='Ambulance Name'
-				readonly='readonly' />&nbsp; <input type='text' size="5"
-				value='No. Trip' readonly="readonly" />&nbsp; <input type='text'
-				size='5' value='Amount' readonly="readonly" />&nbsp;</b>
+			<input type='text' size='25' value='Ambulance Name' readonly='readonly' />&nbsp; 
+			<!--  ghanshyam 07/07/2012 New Requirement #305: Additional details in Ambulance Bill -->
+			<input type='text' size="50" value='Patient Name' readonly="readonly" />&nbsp;
+			<input type='text' size="13" value='Receipt Number' readonly="readonly" />&nbsp;
+			<input type='text' size="10"value='No. of Trips' readonly="readonly" />&nbsp; 
+			<input type='text' size="20" value='Origin' readonly="readonly" />&nbsp;
+			<input type='text' size="20" value='Destination' readonly="readonly" />&nbsp;
+			<input type='text' size='5' value='Amount' readonly="readonly" />&nbsp;</b>
 			<hr />
 		</div>
 

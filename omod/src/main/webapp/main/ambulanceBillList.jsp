@@ -70,18 +70,26 @@
 		<table width="100%" border="1">
 			<thead>
 				<th align="center">Ambulance</th>
+				<th align="center">Patient Name</th>
+				<th align="center">Receipt Number</th>
 				<th align="center">Number Of trip</th>
+				<th align="center">Origin</th>
+				<th align="center">Destination</th>
 				<th align="center">Amount</th>
 			</thead>
 			<c:forEach items="${ambulanceBill.billItems}" var="bill">
 				<tr>
 					<td>${bill.name}</td>
+					<td align="right">${bill.patientName}</td>
+					<td align="right">${bill.receiptNumber}</td>
 					<td align="right">${bill.numberOfTrip}</td>
+					<td align="right">${bill.origin}</td>
+					<td align="right">${bill.destination}</td>
 					<td align="right">${bill.amount}</td>
 				</tr>
 			</c:forEach>
 			<tr>
-				<td colspan="2">Total</td>
+				<td colspan="6">Total</td>
 				<td align="right">${ambulanceBill.amount}</td>
 			</tr>
 		</table>
@@ -123,18 +131,26 @@
 		<table width="100%" border="1">
 			<thead>
 				<th align="center">Ambulance</th>
+				<th align="center">Patient Name</th>
+				<th align="center">Receipt Number</th>
 				<th align="center">Number Of trip</th>
+				<th align="center">Origin</th>
+				<th align="center">Destination</th>
 				<th align="center">Amount</th>
 			</thead>
 			<c:forEach items="${ambulanceBill.billItems}" var="bill">
 				<tr>
 					<td>${bill.name}</td>
+					<td align="right">${bill.patientName}</td>
+					<td align="right">${bill.receiptNumber}</td>
 					<td align="right">${bill.numberOfTrip}</td>
+					<td align="right">${bill.origin}</td>
+					<td align="right">${bill.destination}</td>
 					<td align="right">${bill.amount}</td>
 				</tr>
 			</c:forEach>
 			<tr>
-				<td colspan="2">Total</td>
+				<td colspan="6">Total</td>
 				<td align="right">${ambulanceBill.amount}</td>
 			</tr>
 		</table>
