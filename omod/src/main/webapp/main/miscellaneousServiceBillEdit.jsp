@@ -1,5 +1,4 @@
-<%--
- *  Copyright 2009 Society for Health Information Systems Programmes, India (HISP India)
+<!-- /* *  Copyright 2009 Society for Health Information Systems Programmes, India (HISP India)
  *
  *  This file is part of Billing module.
  *
@@ -15,8 +14,8 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with Billing module.  If not, see <http://www.gnu.org/licenses/>.
- *
---%>
+ */ -->
+
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <openmrs:require privilege="Add Bill" otherwise="/login.htm"
 	redirect="/module/billing/main.form" />
@@ -78,14 +77,18 @@
 
 <script type="text/javascript">
 	function addToBill(serviceId, name, price) {
+		price = parseFloat(price);
 		var colorSelected = "rgb(170, 255, 170)";
 		if(document.getElementById("billItem") != null){
 			deleteInput(serviceId, name);
-		}
-       	var htmlText =  "<input  type='text'  size='16'  value='"+name+"'  readonly='readonly'  />"
-    	+"<input  type='text'  size='5' value='"+price+"' readonly='readonly'  />"
-    	+"<input  type='text'  size='16' id='liableName' name='name'  />"
-    	+"<input  type='hidden'  name='serviceId'  value='"+serviceId+"' />"
+		}else{
+		var checkprice = '\"'+serviceId+'\", '+price+', this.value';
+       	var htmlText = "" 
+		+"<input  type='text'  size='16'  value='"+name+"'  readonly='readonly'  />&nbsp;"
+		+"<input type='text' name='"+serviceId+"_qty' id='"+serviceId+"_qty' onblur='updatePrice("+checkprice+");' value='1' size='3'/>&nbsp;"
+    	+"<input  type='text'  size='5' id='"+serviceId+"_amount' value='"+price+"' readonly='readonly'  />&nbsp;"
+    	+"<input  type='text'  size='16' id='liableName' name='name'  />&nbsp;"
+    	+"<input  type='hidden'  name='serviceId'  value='"+serviceId+"' />&nbsp;"
       	+"<a style='color:red' href='#' onclick='deleteInput("+serviceId+")' >&nbsp;[X]</a>";
        	
         var newElement = document.createElement('div');
@@ -96,26 +99,37 @@
         var fieldsArea = document.getElementById('extra');
 		fieldsArea.appendChild(newElement);
 		document.getElementById("service_"+serviceId).style.backgroundColor=colorSelected; 
+		}
 	}
-	function updateToBill(serviceId, name, price, liableName) {
+	//07/07/2012:kesavulu: New Requirement #306 Add field quantity in Miscellaneous Services Bill
+	function updateToBill(serviceId, name, price, amount, liableName, billId, billQty) {
+		price = parseFloat(price);
+		amount = parseFloat(amount);
 		var colorSelected = "rgb(170, 255, 170)";
 		if(document.getElementById("billItem") != null){
 			deleteInput(serviceId, name);
-		}
-       	var htmlText =  "<input  type='text'  size='16'  value='"+name+"'  readonly='readonly'  />"
-    	+"<input  type='text'  size='5' value='"+price+"' readonly='readonly' />"
-    	+"<input  type='text'  size='16' id='liableName' name='name'  value='"+liableName+"'/>"
-    	+"<input  type='hidden'  name='serviceId'  value='"+serviceId+"' />"
+		}else{
+		var checkprice = '\"'+serviceId+'\", '+price+', this.value';
+		
+       	var htmlText =  "<input  type='text'  size='16'  value='"+name+"'  readonly='readonly'  />&nbsp;"
+		+"<input type='text' name='"+serviceId+"_qty' id='"+serviceId+"_qty'  onblur='updatePrice("+checkprice+");' value='"+billQty+"' size='3'/>&nbsp;"
+    	+"<input type='text' id='"+serviceId+"_amount'  value='"+amount+"' size='5'  readonly='readonly'/>"
+    	+"<input  type='text'  size='16' id='liableName' name='name'  value='"+liableName+"'/>&nbsp;"
+    	+"<input name='serviceId'  size='25' value='"+serviceId+"'  type='hidden'/>"
+		+"<input name='"+serviceId+"_itemId'  size='25' value='"+billId+"'  type='hidden'/>"
       	+"<a style='color:red' href='#' onclick='deleteInput("+serviceId+")' >&nbsp;[X]</a>";
        	
         var newElement = document.createElement('div');
         newElement.setAttribute("id", "billItem");
-        document.getElementById('totalprice').value = price;
+       
 	 	newElement.innerHTML = htmlText;
 
         var fieldsArea = document.getElementById('extra');
 		fieldsArea.appendChild(newElement);
+		var totalprice = parseFloat(document.getElementById('totalprice').value);
+			document.getElementById('totalprice').value = totalprice  + amount;
 		document.getElementById("service_"+serviceId).style.backgroundColor=colorSelected; 
+		}
 	}
 		function deleteInput( serviceId ) {
 			var parentDiv = 'extra';
@@ -131,6 +145,20 @@
 		        return false;
 		   }
 		}
+		function updatePrice(serviceId, servicePrice, qty){
+		 var objRegExp  = /^ *[0-9]+ *$/;
+			if( !objRegExp.test(qty) || qty==''){
+				alert("Please enter valid quantity!!!");
+				var ele = document.getElementById(serviceId+'_qty');
+				setTimeout(function(){ele.focus()}, 10);
+			}else{		
+		var initvalue = parseFloat(document.getElementById(serviceId+'_amount').value);
+		document.getElementById(serviceId+'_amount').value = servicePrice * qty;
+		var diff = parseFloat((servicePrice * qty) - initvalue);
+		var total = parseFloat(document.getElementById('totalprice').value);
+		document.getElementById('totalprice').value = total + diff;
+		}
+	}
 		function validateForm(){
 			$('#totalprice').focus();
 			var liableName = jQuery("#liableName").val();
@@ -176,17 +204,19 @@
 		<div id="extra" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
 			<input type='text' size='16' value='Service Name' readonly='readonly' />&nbsp;
+			<input type='text' size="5" value='Qty' readonly="readonly" />&nbsp;
 			<input type='text' size="5" value='Price' readonly="readonly" />&nbsp;
 			<input type='text' size='16' value='Name' readonly="readonly" />&nbsp;</b>
 			<hr />
-		</div>
+		</div>	
 
 
 	</form>
 </div>
 <c:if test="${not empty bill }">
 	<script>
-		updateToBill(${bill.service.id},'${bill.service.name}', ${bill.amount}, '${bill.liableName}')
+		updateToBill(${bill.service.id},'${bill.service.name}', ${bill.service.price}, ${bill.amount}, '${bill.liableName}', ${bill.id}, ${bill.quantity})
 	</script>
 </c:if>
 <%@ include file="/WEB-INF/template/footer.jsp"%>
+			

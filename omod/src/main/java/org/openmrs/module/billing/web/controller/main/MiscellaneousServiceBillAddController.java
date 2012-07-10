@@ -20,6 +20,7 @@
 
 package org.openmrs.module.billing.web.controller.main;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +32,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.model.MiscellaneousService;
 import org.openmrs.module.hospitalcore.model.MiscellaneousServiceBill;
+import org.openmrs.module.hospitalcore.util.Money;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,25 +50,38 @@ public class MiscellaneousServiceBillAddController {
 	@RequestMapping(method=RequestMethod.POST)
 	public String onSubmit(Model model,
 			@RequestParam("serviceId") Integer miscellaneousServiceId, 
-			@RequestParam("name") String name, Object command, BindingResult binding ){
+			@RequestParam("name") String name,HttpServletRequest request, Object command, BindingResult binding ){
 
 		
 		BillingService billingService = (BillingService) Context.getService(BillingService.class);
+		
+		//07/07/2012:kesavulu: New Requirement #306 Add field quantity in Miscellaneous Services Bill
 
+		MiscellaneousService miscellaneousService = null;
+		int quantity = 0;
+		Money itemAmount;
+		Money totalAmount = new Money(BigDecimal.ZERO);
+		
+		miscellaneousService = billingService.getMiscellaneousServiceById(miscellaneousServiceId);
+		quantity =Integer.parseInt(request.getParameter(miscellaneousServiceId+"_qty"));
+		itemAmount = new Money(miscellaneousService.getPrice());
+		itemAmount = itemAmount.times(quantity);
+		totalAmount = totalAmount.plus(itemAmount);	
+		
 		MiscellaneousServiceBill miscellaneousServiceBill = new MiscellaneousServiceBill();
 		miscellaneousServiceBill.setCreatedDate(new Date());
 		miscellaneousServiceBill.setCreator(Context.getAuthenticatedUser().getUserId());
-		miscellaneousServiceBill.setLiableName(name);
-		
-		MiscellaneousService miscellaneousService = billingService.getMiscellaneousServiceById(miscellaneousServiceId);
-		miscellaneousServiceBill.setAmount(miscellaneousService.getPrice());
+		miscellaneousServiceBill.setLiableName(name);		
+		 
+		miscellaneousServiceBill.setAmount(totalAmount.getAmount());		
 		miscellaneousServiceBill.setService(miscellaneousService);
-		miscellaneousServiceBill.setReceipt(billingService.createReceipt());
+		miscellaneousServiceBill.setQuantity(quantity);
+		miscellaneousServiceBill.setReceipt(billingService.createReceipt());		
 		miscellaneousServiceBill = billingService.saveMiscellaneousServiceBill(miscellaneousServiceBill);
 
 		return "redirect:/module/billing/miscellaneousServiceBill.list?serviceId="+miscellaneousServiceId+"&billId="+miscellaneousServiceBill.getId();
-	}
-	
+	}	
+
 	@RequestMapping(method=RequestMethod.GET)
 	public String displayForm(@ModelAttribute("command") Object command,  HttpServletRequest request, Model model){
 

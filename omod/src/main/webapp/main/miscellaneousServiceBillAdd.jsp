@@ -78,14 +78,19 @@
 
 <script type="text/javascript">
 	function addToBill(serviceId, name, price) {
+		price = parseFloat(price);
 		var colorSelected = "rgb(170, 255, 170)";
 		if(document.getElementById("billItem") != null){
 			deleteInput(serviceId, name);
-		}
-       	var htmlText =  "<input  type='text'  size='16'  value='"+name+"'  readonly='readonly'  />"
-    	+"<input  type='text'  size='5' value='"+price+"' readonly='readonly' />"
-    	+"<input  type='text'  size='16' id='liableName' name='name'  />"
-    	+"<input  type='hidden'  name='serviceId'  value='"+serviceId+"' />"
+		}else{
+			
+			var checkprice = '\"'+serviceId+'\", '+price+', this.value';
+			
+       	var htmlText =  "<input  type='text'  size='16'  value='"+name+"'  readonly='readonly'  />&nbsp;"
+       	+"<input  type='text'  id='"+serviceId+"_qty' name='"+serviceId+"_qty' onblur='updatePrice("+checkprice+");' value='1' size='3' />&nbsp;"
+     	+"<input  type='text'  size='5' id='"+serviceId+"_price' value='"+price+"' readonly='readonly' />&nbsp;"
+    	+"<input  type='text'  size='16' id='liableName' name='name'  />&nbsp;"
+    	+"<input  type='hidden'  name='serviceId'  value='"+serviceId+"' />&nbsp;"
       	+"<a style='color:red' href='#' onclick='deleteInput("+serviceId+")' >&nbsp;[X]</a>";
        	
         var newElement = document.createElement('div');
@@ -95,7 +100,8 @@
 
         var fieldsArea = document.getElementById('extra');
 		fieldsArea.appendChild(newElement);
-		document.getElementById("service_"+serviceId).style.backgroundColor=colorSelected; 
+		document.getElementById("service_"+serviceId).style.backgroundColor=colorSelected;
+		}
 	}
 		function deleteInput( serviceId ) {
 			var parentDiv = 'extra';
@@ -111,6 +117,23 @@
 		        return false;
 		   }
 		}
+		//07/07/2012:kesavulu: New Requirement #306 Add field quantity in Miscellaneous Services Bill
+		
+		function updatePrice(serviceId, servicePrice, qty){
+			var objRegExp  = /^ *[0-9]+ *$/;
+			if( !objRegExp.test(qty) || qty=='' || qty <=0){
+					alert("Please enter valid quantity!!!");
+					var ele = document.getElementById(serviceId+'_qty');
+					setTimeout(function(){ele.focus()}, 10);
+				}else{		
+			var initvalue = parseFloat(document.getElementById(serviceId+'_price').value);
+			document.getElementById(serviceId+'_price').value = servicePrice * qty;
+			var diff = parseFloat((servicePrice * qty) - initvalue);
+			var total = parseFloat(document.getElementById('totalprice').value);
+			document.getElementById('totalprice').value = total + diff;
+			}
+		}
+		
 		function validateForm(){
 			$('#totalprice').focus();
 			var liableName = jQuery("#liableName").val();
@@ -148,6 +171,7 @@
 		<div id="extra" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
 			<input type='text' size='16' value='Service Name' readonly='readonly' />&nbsp;
+			<input type='text' size="6" value='Qty' readonly="readonly" />&nbsp;
 			<input type='text' size="5" value='Price' readonly="readonly" />&nbsp;
 			<input type='text' size='16' value='Name' readonly="readonly" />&nbsp;</b>
 			<hr />

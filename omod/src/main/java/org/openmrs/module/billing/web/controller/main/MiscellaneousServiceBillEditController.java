@@ -20,6 +20,7 @@
 
 package org.openmrs.module.billing.web.controller.main;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.model.MiscellaneousService;
 import org.openmrs.module.hospitalcore.model.MiscellaneousServiceBill;
+import org.openmrs.module.hospitalcore.util.Money;
 import org.openmrs.web.WebConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,11 +48,11 @@ public class MiscellaneousServiceBillEditController {
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public String onSubmit(Model model,
-			@RequestParam("serviceId") Integer miscellaneousServiceId, 
+			@RequestParam(value = "serviceId") Integer miscellaneousServiceId, 
 			@RequestParam("billId") Integer billId,
 			@RequestParam("name") String name,
 			@RequestParam("action") String action,
-			Object command, BindingResult binding ){
+			Object command, BindingResult binding,HttpServletRequest request ){
 
 		
 		BillingService billingService = (BillingService) Context.getService(BillingService.class);
@@ -63,17 +65,31 @@ public class MiscellaneousServiceBillEditController {
 			return "redirect:/module/billing/miscellaneousServiceBill.list";
 		}
 		
+		//07/07/2012:kesavulu: New Requirement #306 Add field quantity in Miscellaneous Services Bill
+
+		MiscellaneousService miscellaneousService = null;
+		int quantity = 0;
+		Money itemAmount;
+		Money totalAmount = new Money(BigDecimal.ZERO);
+		
+		miscellaneousService = billingService.getMiscellaneousServiceById(miscellaneousServiceId);
+		quantity =Integer.parseInt(request.getParameter(miscellaneousServiceId+"_qty"));
+		itemAmount = new Money(miscellaneousService.getPrice());
+		itemAmount = itemAmount.times(quantity);
+		totalAmount = totalAmount.plus(itemAmount);	
 		miscellaneousServiceBill.setLiableName(name);
-		MiscellaneousService miscellaneousService = billingService.getMiscellaneousServiceById(miscellaneousServiceId);
-		miscellaneousServiceBill.setAmount(miscellaneousService.getPrice());
+		
+		 miscellaneousService = billingService.getMiscellaneousServiceById(miscellaneousServiceId);
+		miscellaneousServiceBill.setAmount(totalAmount.getAmount());
 		miscellaneousServiceBill.setService(miscellaneousService);
+		miscellaneousServiceBill.setQuantity(quantity);
 		miscellaneousServiceBill = billingService.saveMiscellaneousServiceBill(miscellaneousServiceBill);
 
 		return "redirect:/module/billing/miscellaneousServiceBill.list?serviceId="+miscellaneousServiceId+"&billId="+miscellaneousServiceBill.getId();
 	}
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String displayForm(@ModelAttribute("command") Object command, 	@RequestParam("billId") Integer billId,  HttpServletRequest request, Model model){
+	public String displayForm(@ModelAttribute("command") Object command, @RequestParam("billId") Integer billId,  HttpServletRequest request, Model model){
 
 		BillingService billingService = (BillingService) Context.getService(BillingService.class);
 		
@@ -86,7 +102,7 @@ public class MiscellaneousServiceBillEditController {
 			model.addAttribute("listMiscellaneousService", listMiscellaneousService);
 		}
 		
-		MiscellaneousServiceBill bill = billingService.getMiscellaneousServiceBillById(billId);
+		MiscellaneousServiceBill bill = billingService.getMiscellaneousServiceBillById(billId);		
 		model.addAttribute("bill", bill);
 		
 		return "module/billing/main/miscellaneousServiceBillEdit";

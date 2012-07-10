@@ -69,17 +69,20 @@
 			</tr>
 		</table>
 		<table width="100%" border="1">
-			<thead>
-				<th align="center">Service</th>
-				<th align="center">Price</th>
-			</thead>
 			<tr>
-				<td>${bill.service.name}</td>
-				<td align="right">${bill.amount}</td>
+				<th align="center">Service</th>
+				<th align="center">Quantity</th>
+				<th align="center">Price (Rs)</th>
 			</tr>
 			<tr>
-				<td>Total</td>
-				<td align="right">${bill.amount}</td>
+				<td align="center">${bill.service.name}</td>
+				<td align="center">${bill.quantity}</td>
+				<td align="center">${bill.amount}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td  align="center"><b>Total</b></td>				
+				<td align="center">${bill.amount}</td>
 			</tr>
 		</table>
 		<br>
@@ -118,17 +121,20 @@
 			</tr>
 		</table>
 		<table width="100%" border="1">
-			<thead>
-				<th align="center">Service</th>
-				<th align="center">Price</th>
-			</thead>
 			<tr>
-				<td>${bill.service.name}</td>
-				<td align="right">${bill.amount}</td>
+				<th align="center">Service</th>
+				<th align="center">Quantity</th>
+				<th align="center">Price (Rs)</th>
 			</tr>
 			<tr>
-				<td>Total</td>
-				<td align="right">${bill.amount}</td>
+				<td align="center">${bill.service.name}</td>
+				<td align="center">${bill.quantity}</td>
+				<td align="center">${bill.amount}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td align="center"><b>Total</b></td>				
+				<td align="center">${bill.amount}</td>
 			</tr>
 		</table>
 		<br> <span style="font-size: 1.5em">Total Amount:</span> <span
