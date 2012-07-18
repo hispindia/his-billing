@@ -90,9 +90,9 @@
 	       	var htmlText =  " "
 	       	+"<input  name='ambulanceIds' type='checkbox' value='"+ambulanceId+"' style='display:none; visibility:hidden;' checked='true'> "
 	       	+"<input  type='text' size='25' id='"+ambulanceId+"_name' value='"+name+"'  readonly='readonly'/>&nbsp;"
-	       	+"<input  type='text' name='"+ambulanceId+"_patientName' id='"+ambulanceId+"_patientName'  value='' class='patientNameField' size='50' />&nbsp;"
-	       	+"<input  type='text' name='"+ambulanceId+"_receiptNumber' id='"+ambulanceId+"_receiptNumber'  value='0' class='receiptNumberField' size='13'/>&nbsp;"
-	    	+"<input  type='text' name='"+ambulanceId+"_numOfTrip' id='"+ambulanceId+"_qty'  value='0' onblur='checkNum(this.value)' class='numberField' size='10'/>&nbsp;"
+	       	+"<input  type='text' name='"+ambulanceId+"_patientName' id='"+ambulanceId+"_patientName'  value='' class='patientNameField' size='30' />&nbsp;"
+	       	+"<input  type='text' name='"+ambulanceId+"_receiptNumber' id='"+ambulanceId+"_receiptNumber'  value='0' class='receiptNumberField' size='9'/>&nbsp;"
+	    	+"<input  type='text' name='"+ambulanceId+"_numOfTrip' id='"+ambulanceId+"_qty'  value='0' onblur='checkNum(this.value)' class='numberField' size='9'/>&nbsp;"
 	    	+"<input  type='text' name='"+ambulanceId+"_origin' id='"+ambulanceId+"_origin'  value='' class='originField' size='20'/>&nbsp;"
 	    	+"<input  type='text' name='"+ambulanceId+"_destination' id='"+ambulanceId+"_destination'  value='' class='destinationField' size='20'/>&nbsp;"
 	    	+"<input  type='text' name='"+ambulanceId+"_amount' id='"+ambulanceId+"_amount'  value='0' onblur='updatePrice("+ambulanceId+");' size='5' class='moneyField'  />"
@@ -240,7 +240,7 @@
 
 <!-- Right side div for bill collection -->
 <!--  ghanshyam 07/07/2012 New Requirement #305: Additional details in Ambulance Bill -->
-<div id="billDiv" style="width: 64%;">
+<div id="billDiv" style="width: 55%;">
 	<form method="POST" id="billForm" action="addAmbulanceBill.form"
 		onsubmit="return false">
 		<div>
@@ -266,9 +266,9 @@
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
 			<input type='text' size='25' value='Ambulance Name' readonly='readonly' />&nbsp; 
 			<!--  ghanshyam 07/07/2012 New Requirement #305: Additional details in Ambulance Bill -->
-			<input type='text' size="50" value='Patient Name' readonly="readonly" />&nbsp;
-			<input type='text' size="13" value='Receipt Number' readonly="readonly" />&nbsp;
-			<input type='text' size="10"value='No. of Trips' readonly="readonly" />&nbsp; 
+			<input type='text' size="30" value='Patient Name' readonly="readonly" />&nbsp;
+			<input type='text' size="9" value='Receipt No.' readonly="readonly" />&nbsp;
+			<input type='text' size="9"value='No. of Trips' readonly="readonly" />&nbsp; 
 			<input type='text' size="20" value='Origin' readonly="readonly" />&nbsp;
 			<input type='text' size="20" value='Destination' readonly="readonly" />&nbsp;
 			<input type='text' size='5' value='Amount' readonly="readonly" />&nbsp;</b>
