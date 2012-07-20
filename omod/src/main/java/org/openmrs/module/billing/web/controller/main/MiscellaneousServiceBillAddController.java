@@ -51,7 +51,6 @@ public class MiscellaneousServiceBillAddController {
 	public String onSubmit(Model model,
 			@RequestParam("serviceId") Integer miscellaneousServiceId, 
 			@RequestParam("name") String name,HttpServletRequest request, Object command, BindingResult binding ){
-
 		
 		BillingService billingService = (BillingService) Context.getService(BillingService.class);
 		
@@ -64,15 +63,16 @@ public class MiscellaneousServiceBillAddController {
 		
 		miscellaneousService = billingService.getMiscellaneousServiceById(miscellaneousServiceId);
 		quantity =Integer.parseInt(request.getParameter(miscellaneousServiceId+"_qty"));
-		itemAmount = new Money(miscellaneousService.getPrice());
+		
+		itemAmount = new Money(new BigDecimal(request.getParameter(miscellaneousServiceId+"_price")));
 		itemAmount = itemAmount.times(quantity);
 		totalAmount = totalAmount.plus(itemAmount);	
-		
+	
 		MiscellaneousServiceBill miscellaneousServiceBill = new MiscellaneousServiceBill();
 		miscellaneousServiceBill.setCreatedDate(new Date());
 		miscellaneousServiceBill.setCreator(Context.getAuthenticatedUser().getUserId());
 		miscellaneousServiceBill.setLiableName(name);		
-		 
+		
 		miscellaneousServiceBill.setAmount(totalAmount.getAmount());		
 		miscellaneousServiceBill.setService(miscellaneousService);
 		miscellaneousServiceBill.setQuantity(quantity);

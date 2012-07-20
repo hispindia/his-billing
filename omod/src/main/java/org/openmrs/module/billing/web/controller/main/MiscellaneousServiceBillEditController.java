@@ -74,7 +74,8 @@ public class MiscellaneousServiceBillEditController {
 		
 		miscellaneousService = billingService.getMiscellaneousServiceById(miscellaneousServiceId);
 		quantity =Integer.parseInt(request.getParameter(miscellaneousServiceId+"_qty"));
-		itemAmount = new Money(miscellaneousService.getPrice());
+		itemAmount = new Money(new BigDecimal(request.getParameter(miscellaneousServiceId+"_amount")));
+		
 		itemAmount = itemAmount.times(quantity);
 		totalAmount = totalAmount.plus(itemAmount);	
 		miscellaneousServiceBill.setLiableName(name);
@@ -85,6 +86,7 @@ public class MiscellaneousServiceBillEditController {
 		miscellaneousServiceBill.setQuantity(quantity);
 		miscellaneousServiceBill = billingService.saveMiscellaneousServiceBill(miscellaneousServiceBill);
 
+		
 		return "redirect:/module/billing/miscellaneousServiceBill.list?serviceId="+miscellaneousServiceId+"&billId="+miscellaneousServiceBill.getId();
 	}
 	

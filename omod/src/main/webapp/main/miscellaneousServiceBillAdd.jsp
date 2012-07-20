@@ -88,7 +88,7 @@
 			
        	var htmlText =  "<input  type='text'  size='16'  value='"+name+"'  readonly='readonly'  />&nbsp;"
        	+"<input  type='text'  id='"+serviceId+"_qty' name='"+serviceId+"_qty' onblur='updatePrice("+checkprice+");' value='1' size='3' />&nbsp;"
-     	+"<input  type='text'  size='5' id='"+serviceId+"_price' value='"+price+"' readonly='readonly' />&nbsp;"
+     	+"<input  type='text'  size='5' name='"+serviceId+"_price' id='"+serviceId+"_price' value='"+price+"' onblur='updatePrice("+checkprice+");' />&nbsp;"
     	+"<input  type='text'  size='16' id='liableName' name='name'  />&nbsp;"
     	+"<input  type='hidden'  name='serviceId'  value='"+serviceId+"' />&nbsp;"
       	+"<a style='color:red' href='#' onclick='deleteInput("+serviceId+")' >&nbsp;[X]</a>";
@@ -121,16 +121,20 @@
 		
 		function updatePrice(serviceId, servicePrice, qty){
 			var objRegExp  = /^ *[0-9]+ *$/;
+			servicePrice=document.getElementById(serviceId+'_price').value;
+			qty=document.getElementById(serviceId+'_qty').value;
+			
 			if( !objRegExp.test(qty) || qty=='' || qty <=0){
 					alert("Please enter valid quantity!!!");
 					var ele = document.getElementById(serviceId+'_qty');
 					setTimeout(function(){ele.focus()}, 10);
 				}else{		
 			var initvalue = parseFloat(document.getElementById(serviceId+'_price').value);
-			document.getElementById(serviceId+'_price').value = servicePrice * qty;
-			var diff = parseFloat((servicePrice * qty) - initvalue);
-			var total = parseFloat(document.getElementById('totalprice').value);
-			document.getElementById('totalprice').value = total + diff;
+			//document.getElementById(serviceId+'_price').value = servicePrice * qty;
+			var result=parseFloat((servicePrice * qty));
+			//var diff = parseFloat((servicePrice * qty) - initvalue);
+			//var total = parseFloat(document.getElementById('totalprice').value);
+			document.getElementById('totalprice').value = result;
 			}
 		}
 		
