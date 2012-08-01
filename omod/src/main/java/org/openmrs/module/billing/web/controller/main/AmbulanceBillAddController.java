@@ -80,7 +80,8 @@ public class AmbulanceBillAddController {
 			
 			//ghanshyam 07/07/2012 New Requirement #305: Additional details in Ambulance Bill
 			String patientName =(request.getParameter(id+"_patientName"));
-			Integer receiptNumber = Integer.parseInt(request.getParameter(id+"_receiptNumber"));
+			//ghanshyam 1/08/2012 feedback of New Requirement #305: Additional details in Ambulance Bill
+			String receiptNumber =(request.getParameter(id+"_receiptNumber"));
 			String origin =(request.getParameter(id+"_origin"));
 			String destination =(request.getParameter(id+"_destination"));
 			

@@ -91,7 +91,8 @@
 	       	+"<input  name='ambulanceIds' type='checkbox' value='"+ambulanceId+"' style='display:none; visibility:hidden;' checked='true'> "
 	       	+"<input  type='text' size='25' id='"+ambulanceId+"_name' value='"+name+"'  readonly='readonly'/>&nbsp;"
 	       	+"<input  type='text' name='"+ambulanceId+"_patientName' id='"+ambulanceId+"_patientName'  value='' class='patientNameField' size='30' />&nbsp;"
-	       	+"<input  type='text' name='"+ambulanceId+"_receiptNumber' id='"+ambulanceId+"_receiptNumber'  value='0' class='receiptNumberField' size='9'/>&nbsp;"
+	       	<!--  ghanshyam 1/08/2012 feedback of New Requirement #305: Additional details in Ambulance Bill -->
+	       	+"<input  type='text' name='"+ambulanceId+"_receiptNumber' id='"+ambulanceId+"_receiptNumber'  value='' class='receiptNumberField' size='9'/>&nbsp;"
 	    	+"<input  type='text' name='"+ambulanceId+"_numOfTrip' id='"+ambulanceId+"_qty'  value='0' onblur='checkNum(this.value)' class='numberField' size='9'/>&nbsp;"
 	    	+"<input  type='text' name='"+ambulanceId+"_origin' id='"+ambulanceId+"_origin'  value='' class='originField' size='20'/>&nbsp;"
 	    	+"<input  type='text' name='"+ambulanceId+"_destination' id='"+ambulanceId+"_destination'  value='' class='destinationField' size='20'/>&nbsp;"
@@ -174,10 +175,14 @@
 				}
 			});
 			
-			var objRegExp  = /^ *[0-9]+ *$/;
+			var objRegExp  = /^ *[a-zA-Z0-9]+ *$/;
 			jQuery(".receiptNumberField").each(function(){
 				var qty = jQuery(this).val();
-				if( !objRegExp.test(qty)){
+				if(qty=='')
+				{
+				okRcptNum = true;
+				}
+				else if( !objRegExp.test(qty)){
 					okRcptNum = false;
 				}
 			});
