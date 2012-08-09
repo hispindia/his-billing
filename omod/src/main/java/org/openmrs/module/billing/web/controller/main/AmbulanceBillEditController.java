@@ -123,6 +123,12 @@ public class AmbulanceBillEditController {
 
 			Integer numberOfTrip = Integer.parseInt(request.getParameter(id+"_numOfTrip"));
 			
+			//ghanshyam 9-august-2012 New Requirement #333 [Billing]Edit ambulance bill with all details
+			String patientName =(request.getParameter(id+"_patientName"));
+			String receiptNumber =(request.getParameter(id+"_receiptNumber"));
+			String origin =(request.getParameter(id+"_origin"));
+			String destination =(request.getParameter(id+"_destination"));
+			
 			String sItemId = request.getParameter(id+"_itemId");
 			
 			if( sItemId != null ){
@@ -131,6 +137,11 @@ public class AmbulanceBillEditController {
 				item.setVoidedDate(null);
 				item.setAmount(itemAmount.getAmount());
 				item.setNumberOfTrip(numberOfTrip);
+				//ghanshyam 9-august-2012 New Requirement #333 [Billing]Edit ambulance bill with all details
+				item.setPatientName(patientName);
+				item.setReceiptNumber(receiptNumber);
+				item.setOrigin(origin);
+				item.setDestination(destination);
 			}else{
 				item = new AmbulanceBillItem();
 				item.setName(ambulance.getName());
@@ -139,6 +150,11 @@ public class AmbulanceBillEditController {
 				item.setAmbulanceBill(ambulanceBill);
 				item.setAmount(itemAmount.getAmount());
 				item.setNumberOfTrip(numberOfTrip);
+				//ghanshyam 9-august-2012 New Requirement #333 [Billing]Edit ambulance bill with all details
+				item.setPatientName(patientName);
+				item.setReceiptNumber(receiptNumber);
+				item.setOrigin(origin);
+				item.setDestination(destination);
 				ambulanceBill.addBillItem(item);
 			}
 		}

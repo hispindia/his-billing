@@ -88,8 +88,15 @@
 
 	       	var htmlText =  " "
 	       	+"<input  name='ambulanceIds' type='checkbox' value='"+ambulanceId+"' style='display:none; visibility:hidden;' checked='true'> "
-	       	+"<input  type='text' size='25' id='"+ambulanceId+"_name' value='"+name+"'  readonly='readonly'/>"
-	    	+"<input  type='text' name='"+ambulanceId+"_numOfTrip' id='"+ambulanceId+"_qty' value='0' onblur='checkNum(this.value)' class='numberField' size='5'/>&nbsp;"
+	       	
+	       	<!--  ghanshyam 9-august-2012 New Requirement #333 [Billing]Edit ambulance bill with all details  -->
+	       	+"<input  type='text' size='25' id='"+ambulanceId+"_name' value='"+name+"'  readonly='readonly'/>&nbsp;"
+	       	+"<input  type='text' name='"+ambulanceId+"_patientName' id='"+ambulanceId+"_patientName'  value='' class='patientNameField' size='30' />&nbsp;"
+	       	+"<input  type='text' name='"+ambulanceId+"_receiptNumber' id='"+ambulanceId+"_receiptNumber'  value='' class='receiptNumberField' size='9'/>&nbsp;"
+	    	+"<input  type='text' name='"+ambulanceId+"_numOfTrip' id='"+ambulanceId+"_qty' value='0' onblur='checkNum(this.value)' class='numberField' size='9'/>&nbsp;"
+	    	+"<input  type='text' name='"+ambulanceId+"_origin' id='"+ambulanceId+"_origin'  value='' class='originField' size='20'/>&nbsp;"
+	    	+"<input  type='text' name='"+ambulanceId+"_destination' id='"+ambulanceId+"_destination'  value='' class='destinationField' size='20'/>&nbsp;"
+	    	
 	    	+"<input  type='text' name='"+ambulanceId+"_amount' id='"+ambulanceId+"_amount' value='0' onblur='updatePrice("+ambulanceId+");' size='5' class='moneyField'  />"
 	    	+"<input  type='hidden' id='"+ambulanceId+"_tmpamount'   value='0' />"
 	      	+"<a style='color:red' href='#' onclick='"+deleteString+"' >&nbsp;[X]</a>";
@@ -107,7 +114,7 @@
 			jQuery("#"+ambulanceId+"_name").val(serName);
 		}
 	}
-	function updateBill(ambulanceId, name, numOfTrip, amount, billItemId) {
+	function updateBill(ambulanceId, name, patientName,receiptNumber,numOfTrip, origin,destination,amount, billItemId) {
 		var colorSelected = "rgb(170, 255, 170)";
 		if(document.getElementById("billItem_"+ambulanceId) != null){
 			deleteInput(ambulanceId, name);
@@ -118,9 +125,16 @@
 
 	       	var htmlText =  " "
 	       	+"<input  name='ambulanceIds' type='checkbox' value='"+ambulanceId+"' style='display:none; visibility:hidden;' checked='true'> "
-	       	+"<input  type='text' size='25' id='"+ambulanceId+"_name' value='"+name+"'  readonly='readonly'/>"
+	       	
+	       	<!--  ghanshyam 9-august-2012 New Requirement #333 [Billing]Edit ambulance bill with all details  -->
+	       	+"<input  type='text' size='25' id='"+ambulanceId+"_name' value='"+name+"'  readonly='readonly'/>&nbsp;"
+	       	+"<input  type='text' name='"+ambulanceId+"_patientName' id='"+ambulanceId+"_patientName'  value='"+patientName+"' class='patientNameField' size='30' />&nbsp;"
+	       	+"<input  type='text' name='"+ambulanceId+"_receiptNumber' id='"+ambulanceId+"_receiptNumber'  value='"+receiptNumber+"' class='receiptNumberField' size='9'/>&nbsp;"
 	       	+"<input  type='hidden' name='"+ambulanceId+"_itemId'   value='"+billItemId+"' />"
-	    	+"<input  type='text' name='"+ambulanceId+"_numOfTrip' id='"+ambulanceId+"_qty' value='"+numOfTrip+"'  onblur='checkNum(this.value)' class='numberField' size='5'/>&nbsp;"
+	    	+"<input  type='text' name='"+ambulanceId+"_numOfTrip' id='"+ambulanceId+"_qty' value='"+numOfTrip+"'  onblur='checkNum(this.value)' class='numberField' size='9'/>&nbsp;"
+	    	+"<input  type='text' name='"+ambulanceId+"_origin' id='"+ambulanceId+"_origin'  value='"+origin+"' class='originField' size='20'/>&nbsp;"
+	    	+"<input  type='text' name='"+ambulanceId+"_destination' id='"+ambulanceId+"_destination'  value='"+destination+"' class='destinationField' size='20'/>&nbsp;"
+	    	
 	    	+"<input  type='text' name='"+ambulanceId+"_amount' id='"+ambulanceId+"_amount' value='"+amount+"' onblur='updatePrice("+ambulanceId+");' size='5' class='moneyField'  />"
 	    	+"<input  type='hidden' id='"+ambulanceId+"_tmpamount'   value='"+amount+"' />"
 	      	+"<a style='color:red' href='#' onclick='"+deleteString+"' >&nbsp;[X]</a>";
@@ -182,35 +196,96 @@
 			document.getElementById(ambulanceId+'_tmpamount').value = amount;
 		}
 	}
-
+	
+ 	<!--  ghanshyam 9-august-2012 New Requirement #333 [Billing]Edit ambulance bill with all details  -->
 	function validateForm(){
-		$('#totalprice').focus();
-		var okNum = true;
-		var okMoney = true;
-		var objRegExp  = /^ *[0-9]+ *$/;
-		jQuery(".numberField").each(function(){
-			var qty = jQuery(this).val();
-			if( !objRegExp.test(qty) || qty=='' || qty <=0){
-				okNum = false;
+			$('#totalprice').focus();
+			var okNum = true;
+			var okMoney = true;
+			var okPatientName = true;
+			var okRcptNum = true;
+			var origin = true;
+			var destination = true;
+			
+			var textRegExp  = /[a-zA-Z\s-]+/;
+			jQuery(".patientNameField").each(function(){
+				var qty = jQuery(this).val();
+				if(qty=='')
+				{
+				okPatientName = true;
+				}
+				else if( !textRegExp.test(qty)){
+					okPatientName = false;
+				}
+			});
+			
+			var objRegExp  = /^ *[a-zA-Z0-9]+ *$/;
+			jQuery(".receiptNumberField").each(function(){
+				var qty = jQuery(this).val();
+				if(qty=='')
+				{
+				okRcptNum = true;
+				}
+				else if( !objRegExp.test(qty)){
+					okRcptNum = false;
+				}
+			});
+			
+			jQuery(".originField").each(function(){
+				var qty = jQuery(this).val();
+				if(qty=='')
+				{
+				origin = true;
+				}
+				else if( !textRegExp.test(qty)){
+					origin = false;
+				}
+			});
+			
+			jQuery(".destinationField").each(function(){
+				var qty = jQuery(this).val();
+				if(qty=='')
+				{
+				destination = true;
+				}
+				else if( !textRegExp.test(qty)){
+					destination = false;
+				}
+			});
+			
+			jQuery(".numberField").each(function(){
+				var qty = jQuery(this).val();
+				if( !objRegExp.test(qty) || qty=='' || qty <=0){
+					okNum = false;
+				}
+			});
+			var moneyReg = /^\d+(\.\d+)?$/;
+			jQuery(".moneyField").each(function(){
+				var val = jQuery(this).val();
+				if( !moneyReg.test(val) || val=='' || val <=0){
+					okMoney = false;
+				}
+			});
+		
+			if( !okPatientName ) {
+				alert("Please enter valid patient name!");
+				}else if(!okRcptNum){
+				alert("Please enter valid receipt number!");
+				}else if( !okNum ) {
+				alert("Please enter valid number of trip!");
+			}else if(!origin){
+			alert("Please enter valid origin!");
+			}else if(!destination){
+			alert("Please enter valid destination!");
+			}else if(! jQuery("input[type='checkbox']","div#extra").length ) {
+				alert("Please select item for billing");
+			}else if( !okMoney ){
+				alert("Please enter valid amount!");
+			}else{
+				jQuery("#billForm").submit()
 			}
-		});
-		var moneyReg = /^\d+(\.\d+)?$/;
-		jQuery(".moneyField").each(function(){
-			var val = jQuery(this).val();
-			if( !moneyReg.test(val) || val=='' || val <=0){
-				okMoney = false;
-			}
-		});
-		if( !okNum ) {
-			alert("Please enter valid number of trip!");
-		}else if(! jQuery("input[type='checkbox']","div#extra").length ) {
-			alert("Please select item for billing");
-		}else if( !okMoney ){
-			alert("Please enter valid amount!");
-		}else{
-			jQuery("#billForm").submit()
 		}
-	}
+		
 	function voidBill(){
 		jQuery("#action").val("void");
 		jQuery("#subm").attr("disabled", "disabled");
@@ -220,7 +295,7 @@
 </script>
 
 <!-- Right side div for bill collection -->
-<div id="billDiv">
+<div id="billDiv" style="width: 55%;">
 	<form method="POST" id="billForm" action="editAmbulanceBill.form"
 		onsubmit="return false">
 		<input type="hidden" value="" name="action" id="action" />
@@ -249,10 +324,13 @@
 
 		<div id="extra" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
-			<input type='text' size='25' value='Ambulance Name'
-				readonly='readonly' />&nbsp; <input type='text' size="5"
-				value='No. Trip' readonly="readonly" />&nbsp; <input type='text'
-				size='5' value='Amount' readonly="readonly" />&nbsp;</b>
+			<input type='text' size='25' value='Ambulance Name' readonly="readonly" />&nbsp; 
+			<input type='text' size="30" value='Patient Name' readonly="readonly" />&nbsp;
+			<input type='text' size="9" value='Receipt No.' readonly="readonly" />&nbsp;
+			<input type='text' size="9" value='No. of Trips' readonly="readonly" />&nbsp; 
+			<input type='text' size="20" value='Origin' readonly="readonly" />&nbsp;
+			<input type='text' size="20" value='Destination' readonly="readonly" />&nbsp;
+			<input type='text' size='5' value='Amount' readonly="readonly" />&nbsp;</b>
 			<hr />
 		</div>
 
@@ -265,8 +343,10 @@
 	<c:set var="replace" value="#" />
 	<c:set var="serviceName"
 		value="${fn:replace(bill.name,search,replace)}" />
+	<!--  ghanshyam 9-august-2012 New Requirement #333 [Billing]Edit ambulance bill with all details  -->
 	<script type="text/javascript">
-		updateBill(${bill.ambulance.ambulanceId},'${serviceName}', ${bill.numberOfTrip},  ${bill.amount}, ${bill.ambulanceBillItemId});
+		updateBill(${bill.ambulance.ambulanceId}, '${serviceName}', "${bill.patientName}", "${bill.receiptNumber}", ${bill.numberOfTrip}, "${bill.origin}",
+		 "${bill.destination}", ${bill.amount}, ${bill.ambulanceBillItemId});
 	</script>
 </c:forEach>
 
