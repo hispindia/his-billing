@@ -32,6 +32,7 @@ import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
+import org.openmrs.Order;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculatorService;
@@ -128,6 +129,10 @@ public class BillableServiceBillEditController {
 		for (PatientServiceBillItem item : bill.getBillItems()) {
 			item.setVoided(true);
 			item.setVoidedDate(new Date());
+			//ghanshyam-kesav 16-08-2012 Bug #323 [BILLING] When a bill with a lab\radiology order is edited the order is re-sent
+			Order ord=item.getOrder();
+			ord.setDateVoided(new Date());
+			item.setOrder(ord);
 			mapOldItems.put(item.getPatientServiceBillItemId(), item);
 		}
 		bill.setAmount(BigDecimal.ZERO);
