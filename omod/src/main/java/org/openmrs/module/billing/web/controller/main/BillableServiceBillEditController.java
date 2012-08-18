@@ -131,7 +131,12 @@ public class BillableServiceBillEditController {
 			item.setVoidedDate(new Date());
 			//ghanshyam-kesav 16-08-2012 Bug #323 [BILLING] When a bill with a lab\radiology order is edited the order is re-sent
 			Order ord=item.getOrder();
+			/*ghanshyam 18-08-2012 [Billing - Bug #337] [3.2.7 snap shot][billing(DDU,DDU SDMX,Tanda,mohali)]error in edit bill.
+			  the problem was while we are editing the bill of other than lab and radiology.
+			*/
+			if(ord!=null){
 			ord.setDateVoided(new Date());
+			}
 			item.setOrder(ord);
 			mapOldItems.put(item.getPatientServiceBillItemId(), item);
 		}
