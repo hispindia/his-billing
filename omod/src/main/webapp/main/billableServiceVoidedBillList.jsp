@@ -1,5 +1,5 @@
 <%--
- *  Copyright 2009 Society for Health Information Systems Programmes, India (HISP India)
+ *  Copyright 2012 Society for Health Information Systems Programmes, India (HISP India)
  *
  *  This file is part of Billing module.
  *
@@ -15,7 +15,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with Billing module.  If not, see <http://www.gnu.org/licenses/>.
- *
+ *  author ghanshyam
 --%>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
@@ -107,8 +107,6 @@
 				<th>Amount</th>
 			</thead>
 			<c:forEach items="${bill.billItems}" var="item" varStatus="status">
-			<%-- ghanshyam Support #339 [Billing]print of void bill [3.2.7 snapshot][DDU,Mohali,Solan,Tanda,] --%>
-            <c:if test="${item.voidedDate==null}">
 				<tr>
 					<td>${item.name}</td>
 					<td align="right">${item.unitPrice}</td>
@@ -128,10 +126,8 @@
 							<c:otherwise>
 							${item.amount}
 						</c:otherwise>
-						
 						</c:choose></td>
 				</tr>
-				</c:if>
 			</c:forEach>
 			<tr>
 				<td colspan="3">Total</td>
@@ -244,8 +240,6 @@
 				<th class="printfont" style="">Amount</th>
 			</thead>
 			<c:forEach items="${bill.billItems}" var="item" varStatus="status">
-			<%-- ghanshyam Support #339 [Billing]print of void bill [3.2.7 snapshot][DDU,Mohali,Solan,Tanda,] --%>
-            <c:if test="${item.voidedDate==null}">
 				<tr>
 					<td class="printfont" height="20" style="">${item.name}</td>
 					<td class="printfont" height="20" align="right" style="">${item.unitPrice}</td>
@@ -253,14 +247,12 @@
 					<td class="printfont" height="20" align="right" style="">
 						${item.actualAmount}</td>
 				</tr>
-				</c:if>
 			</c:forEach>
 			<tr>
 				<td colspan="3">Total</td>
 				<c:choose>
 					<c:when test="${bill.voided}">
-						<td align="right"><span style="text-decoration: line-through;">${bill.actualAmount}</span></td>
-						 
+						<td align="right"><span style="text-decoration: line-through;">${bill.actualAmount}</span></td> 
 					</c:when>
 					<c:otherwise>
 						<td align="right">${bill.actualAmount}</td>
@@ -337,7 +329,6 @@
 					${bill.description}
 				</td>
 				<td class='<c:if test="${bill.voided}">retired </c:if>'>
-				<%-- ghanshyam Support #339 [Billing]print of void bill [3.2.7 snapshot][DDU,Mohali,Solan,Tanda,] --%>
 				<c:choose>
 				<c:when test="${bill.voided}"> <input type="button" value="View"
 					onclick="javascript:window.location.href='patientServiceVoidedBillView.list?patientId=${patient.patientId}&billId=${bill.patientServiceBillId}'" />

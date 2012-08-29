@@ -248,6 +248,8 @@ jQuery(document).ready(function(){
 	</form>
 </div>
 <c:forEach items="${bill.billItems}" var="item">
+<%-- ghanshyam Support #339 [Billing]print of void bill [3.2.7 snapshot][DDU,Mohali,Solan,Tanda,] --%>
+<c:if test="${item.voidedDate==null}">
 	<c:set var="search" value="\'" />
 	<c:set var="replace" value="#" />
 	<c:set var="serviceName"
@@ -255,5 +257,6 @@ jQuery(document).ready(function(){
 	<script type="text/javascript">
 		updateToBill(${item.service.conceptId},'${serviceName}', ${item.unitPrice},  ${item.amount}, ${item.patientServiceBillItemId}, ${item.quantity});
 	</script>
+	</c:if>
 </c:forEach>
 <%@ include file="/WEB-INF/template/footer.jsp"%>
