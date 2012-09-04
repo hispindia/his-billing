@@ -113,7 +113,9 @@ jQuery(document).ready(function(){
 	       	 +"<input id='"+conceptId+"_name'  name='"+conceptId+"_name' type='text' size='25' value='"+serviceName+"'  readonly='readonly'/>&nbsp;"
 	       	 +"<input name='"+conceptId+"_unitPrice' value='"+servicePrice+"' type='hidden'/>"
 	       	 +"<input name='"+conceptId+"_itemId' value='"+billItemId+"' type='hidden'/>" 
-	       	 +"<input type='text' name='"+conceptId+"_qty' id='"+conceptId+"_qty'  class='qtyField' onblur='updatePrice("+checkprice+");' value='1' size='3'/>&nbsp;"
+	       	 <%-- ghanshyam 04-sept-2012 Support #342 [edit quantity of service after print](BILLING-3.2.7-Snap shot)-DDU,MOHALI,SOLAN 
+	       	 previously value='1' modified to value='"+qty+"' --%>
+	       	 +"<input type='text' name='"+conceptId+"_qty' id='"+conceptId+"_qty'  class='qtyField' onblur='updatePrice("+checkprice+");' value='"+qty+"' size='3'/>&nbsp;"
 	       	 +"<input type='text' id='"+conceptId+"_price' name='"+conceptId+"_price' value='"+amount+"' size='5'  readonly='readonly'/>"
 	      	 +"<a style='color:red' href='#' onclick='"+deleteString+"' >[X]</a>"					
 	       	 +"</div>";
