@@ -118,9 +118,18 @@ public class BillableServiceBillEditController {
 			for (PatientServiceBillItem item : bill.getBillItems()) {
 				item.setVoided(true);
 				item.setVoidedDate(new Date());
+				/*ghanshyam 7-sept-2012 these 5 lines of code written only due to voided item is being updated in "billing_patient_service_bill_item" table
+				  but not being updated in "orders" table */
+				Order ord=item.getOrder();
+				if(ord!=null){
+					ord.setVoided(true);
+					ord.setDateVoided(new Date());
+					}
+					item.setOrder(ord);
 			}
 			billingService.savePatientServiceBill(bill);
-			return "redirect:/module/billing/patientServiceBill.list?patientId="
+			//ghanshyam 7-sept-2012 Support #343 [Billing][3.2.7-SNAPSHOT]No Queue to be generated from Old bill
+			return "redirect:/module/billing/patientServiceBillEdit.list?patientId="
 					+ patientId;
 		}
 
@@ -200,6 +209,13 @@ public class BillableServiceBillEditController {
 
 				item.setVoided(false);
 				item.setVoidedDate(null);
+				// ghanshyam-kesav 16-08-2012 Bug #323 [BILLING] When a bill with a lab\radiology order is edited the order is re-sent
+				Order ord=item.getOrder();
+				if(ord!=null){
+					ord.setVoided(false);
+					ord.setDateVoided(null);
+					}
+				item.setOrder(ord);
 				item.setQuantity(quantity);
 				item.setAmount(itemAmount.getAmount());
 				item.setActualAmount(item.getAmount().multiply(rate));
@@ -217,7 +233,8 @@ public class BillableServiceBillEditController {
 		logger.info("Is free bill: " + bill.getFreeBill());
 
 		bill = billingService.savePatientServiceBill(bill);
-		return "redirect:/module/billing/patientServiceBill.list?patientId="
+		//ghanshyam 7-sept-2012 Support #343 [Billing][3.2.7-SNAPSHOT]No Queue to be generated from Old bill
+		return "redirect:/module/billing/patientServiceBillEdit.list?patientId="
 				+ patientId + "&billId=" + billId;
 	}
 
