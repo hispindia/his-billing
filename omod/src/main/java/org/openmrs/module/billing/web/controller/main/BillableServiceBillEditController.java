@@ -144,6 +144,7 @@ public class BillableServiceBillEditController {
 			  the problem was while we are editing the bill of other than lab and radiology.
 			*/
 			if(ord!=null){
+			ord.setVoided(true);	
 			ord.setDateVoided(new Date());
 			}
 			item.setOrder(ord);
