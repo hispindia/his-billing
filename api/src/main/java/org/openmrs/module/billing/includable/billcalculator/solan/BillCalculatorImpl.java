@@ -49,12 +49,18 @@ public class BillCalculatorImpl implements BillCalculator {
 		Map<String, String> attributes = (Map<String, String>) parameters.get("attributes");
 		String patientCategory = attributes.get("Patient Category");
 		PatientServiceBillItem item = (PatientServiceBillItem) parameters.get("billItem");
+		//ghanshyam 12-sept-2012 Bug #358 [Billing][3.2.7-SNAPSHOT][DDU, DDU_SDMX] Error screen appears on selecting patients for billing
+		if(patientCategory!=null){
 		
 		// 17/05/12 - Marta: changed to consider the new free categories. Logic has been inverted. #188
 		if (patientCategory.contains("General")) {
 			rate = new BigDecimal(1);
-		}
+		 }
 		if (patientCategory.contains("Staff")) {
+			rate = new BigDecimal(1);
+		 }
+		}
+		else{
 			rate = new BigDecimal(1);
 		}
 		
@@ -140,12 +146,18 @@ public class BillCalculatorImpl implements BillCalculator {
 	public boolean isFreeBill(Map<String, Object> parameters) {
 		Map<String, String> attributes = (Map<String, String>) parameters.get("attributes");
 		String patientCategory = attributes.get("Patient Category");
-		
+		//ghanshyam 12-sept-2012 Bug #358 [Billing][3.2.7-SNAPSHOT][DDU, DDU_SDMX] Error screen appears on selecting patients for billing
+		if(patientCategory!=null){
+			
 		// 11/05/12 - Thai Chuong, chaged to consider the new free categories. Fixed bug#188
 		if (patientCategory.contains("General")) {
 			return false;
-		}
+		 }
 		if (patientCategory.contains("Staff")) {
+			return false;
+		 }
+		}
+		else{
 			return false;
 		}
 		return true;
