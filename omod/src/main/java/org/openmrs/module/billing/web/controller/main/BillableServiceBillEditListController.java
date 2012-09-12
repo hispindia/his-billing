@@ -86,6 +86,6 @@ public class BillableServiceBillEditListController {
 	@RequestMapping(method=RequestMethod.POST)
 	public String onSubmit(@RequestParam("patientId") Integer patientId, @RequestParam("billId") Integer billId){
 		
-		return "redirect:/module/billing/patientServiceBillEdit.list?patientId="+patientId;
+		return "redirect:/module/billing/patientServiceBill.list?patientId="+patientId;
 	}
 }

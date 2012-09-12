@@ -66,7 +66,8 @@ public class BillableServiceBillListController {
 		if( patient != null ){
 			
 			int total = billingService.countListPatientServiceBillByPatient(patient);
-			PagingUtil pagingUtil = new PagingUtil(RequestUtil.getCurrentLink(request), pageSize, currentPage, total);
+			// ghanshyam 12-sept-2012 Bug #357 [billing][3.2.7-SNAPSHOT] Error screen appears on clicking next page or changing page size in list of bills
+			PagingUtil pagingUtil = new PagingUtil(RequestUtil.getCurrentLink(request), pageSize, currentPage, total, patientId);
 			model.addAttribute("pagingUtil", pagingUtil);
 			model.addAttribute("patient", patient);
 			model.addAttribute("listBill", billingService.listPatientServiceBillByPatient(pagingUtil.getStartPos(), pagingUtil.getPageSize(), patient));
