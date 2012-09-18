@@ -101,9 +101,13 @@
 
 	<div id="printDiv" class="hidden"
 		style="margin: 10px auto; width: 981px; font-size: 1.5em; font-family: 'Dot Matrix Normal', Arial, Helvetica, sans-serif;">
+		<%-- ghanshyam 18-sept-2012 Support #386 [Solan][billing-3.2.7 snap shot]-misc services print out(note:-commented below line for that) --%>
+		<%-- 
 		<img
 			src="${pageContext.request.contextPath}/moduleResources/billing/HEADEROPDSLIP.jpg"
 			width="981" height="170"></img>
+		--%>
+			
 		<table>
 			<tr>
 				<td>Liable name:</td>
