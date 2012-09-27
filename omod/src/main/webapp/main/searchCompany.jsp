@@ -50,8 +50,8 @@
 	</table>
 </form>
 
-<br />
-<span class="boxHeader">List Companies</span>
+<br />  <!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --update title-->
+<span class="boxHeader">List of Companies</span>
 <table class="box">
 	<tr>
 		<th><b><spring:message code="general.name" />

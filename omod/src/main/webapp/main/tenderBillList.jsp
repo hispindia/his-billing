@@ -69,12 +69,12 @@
 			</tr>
 		</table>
 		<table width="100%" border="1">
-			<thead>
-				<th>Service Name</th>
-				<th>Price (Rs)</th>
-				<th>Quantity</th>
-				<th>Amount</th>
-			</thead>
+			<tr> <!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --Adjust allignment in table-->
+				<th align="center">Service Name</th>
+				<th align="center">Price (Rs)</th>
+				<th align="center">Quantity</th>
+				<th align="center">Amount</th>
+			</tr>
 			<c:forEach items="${tenderBill.billItems}" var="bill">
 				<tr>
 					<td>${bill.name}</td>
@@ -89,8 +89,8 @@
 					<td align="right">${bill.amount}</td>
 				</tr>
 			</c:forEach>
-			<tr>
-				<td colspan="3">Total</td>
+			<tr> <!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --Adjust allignment in table-->
+				<td colspan="3" align="right"><b>Total</td>
 				<td align="right">${tenderBill.amount}</td>
 			</tr>
 		</table>
@@ -170,8 +170,8 @@
 
 <!--List old bills -->
 <div>
-	<c:if test="${not empty tenderBills}">
-		<span class="boxHeader">List Tender bills</span>
+	<c:if test="${not empty tenderBills}">  <!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --update title-->
+		<span class="boxHeader">List of Tender bills</span>
 		<table class="box">
 			<thead>
 				<th>#</th>

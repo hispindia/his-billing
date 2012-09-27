@@ -69,20 +69,20 @@
 			</tr>
 		</table>
 		<table width="100%" border="1">
-			<tr>
+			<tr> <!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --Adjust allignment in table-->
 				<th align="center">Service</th>
 				<th align="center">Quantity</th>
 				<th align="center">Price (Rs)</th>
 			</tr>
-			<tr>
-				<td align="center">${bill.service.name}</td>
-				<td align="center">${bill.quantity}</td>
-				<td align="center">${bill.amount}</td>
+			<tr> <!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --Adjust allignment in table-->
+				<td align="left">${bill.service.name}</td>
+				<td align="right">${bill.quantity}</td>
+				<td align="right">${bill.amount}</td>
 			</tr>
 			<tr>
-				<td></td>
-				<td  align="center"><b>Total</b></td>				
-				<td align="center">${bill.amount}</td>
+				<td></td> <!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --Adjust allignment in table-->
+				<td  align="right"><b>Total</b></td>				
+				<td align="right">${bill.amount}</td>
 			</tr>
 		</table>
 		<br>
@@ -168,8 +168,8 @@
 			</c:forEach>
 		</select>
 	</form>
-	<c:if test="${not empty listBills}">
-		<span class="boxHeader">List MiscellaneousService bills</span>
+	<c:if test="${not empty listBills}"> <!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --update title-->
+		<span class="boxHeader">List of Miscellaneous Services Bills</span>
 		<table class="box">
 			<thead>
 				<th>#</th>

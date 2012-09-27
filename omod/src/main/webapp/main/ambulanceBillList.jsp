@@ -68,7 +68,7 @@
 			</tr>
 		</table>
 		<table width="100%" border="1">
-			<thead>
+			<tr>  <!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --Adjust allignment in table-->
 				<th align="center">Ambulance</th>
 				<th align="center">Patient Name</th>
 				<th align="center">Receipt Number</th>
@@ -76,7 +76,7 @@
 				<th align="center">Origin</th>
 				<th align="center">Destination</th>
 				<th align="center">Amount</th>
-			</thead>
+			</tr>
 			<c:forEach items="${ambulanceBill.billItems}" var="bill">
 				<tr>
 					<td>${bill.name}</td>
@@ -88,8 +88,8 @@
 					<td align="right">${bill.amount}</td>
 				</tr>
 			</c:forEach>
-			<tr>
-				<td colspan="6">Total</td>
+			<tr> <!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --Adjust allignment in table-->
+				<td colspan="6" align="right"><b>Total</td>
 				<td align="right">${ambulanceBill.amount}</td>
 			</tr>
 		</table>
@@ -169,9 +169,9 @@
 
 
 <!--List old bills -->
-<div>
-	<c:if test="${not empty ambulanceBills}">
-		<span class="boxHeader">List Ambulance bills</span>
+<div> 
+	<c:if test="${not empty ambulanceBills}"> <!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --update title-->
+		<span class="boxHeader">List of Ambulance bills</span>
 		<table class="box">
 			<thead>
 				<th>#</th>
