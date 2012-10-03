@@ -337,4 +337,28 @@
 			DEFAULT NULL;
 		</sql>
 	</diff>
+	<!-- ghanshyam 07/07/2012 New Requirement #305: Additional details in Ambulance Bill-->
+	<diff>
+		<version>3.1.6</version>
+		<author>ghanshyam</author>
+		<date>July 7 2012</date>
+		<description>
+			Add column patient_name,receipt_number,origin,destination for billing_ambulance_bill_item table
+		</description>
+		<sql>
+		<!-- ghanshyam 1/08/2012 feedback of New Requirement #305: Additional details in Ambulance Bill changed receiptNumber from Integer to varchar -->
+			ALTER TABLE billing_ambulance_bill_item ADD(`patient_name`  varchar(50),`receipt_number`  varchar(13),`origin`  varchar(20),`destination`  varchar(20));
+		</sql>
+	</diff>
+	<diff>
+		<version>3.1.7</version>
+		<author>kesavulu</author>
+		<date>July 10 2012</date>
+		<description>
+			Add column quantity for 'billing_miscellaneous_service_bill' table
+		</description>
+		<sql>
+			ALTER TABLE billing_miscellaneous_service_bill ADD quantity integer NOT NULL;
+		</sql>
+	</diff>
 </sqldiff>
