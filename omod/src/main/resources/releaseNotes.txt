@@ -1,3 +1,13 @@
+3.2.7
+Bug #323: [BILLING] When a bill with a lab\radiology order is edited the order is re-sent
+Support #339: [Billing]print of void bill [3.2.7 snapshot][DDU,Mohali,Solan,Tanda,]
+Support #342: [BILLING-3.2.7-Snap shot]edit quantity of service after print -DDU,MOHALI,SOLAN
+New Requirement #305: [BILLING] Additional details in Ambulance Bill
+New Requirement #306: [BILLING] Add field quantity in Miscellaneous Services Bill
+New Requirement #317: [BILLING] Advanced Search in Find Patient(s)
+New Requirement #321: [BILLING] Edit Price in Miscellaneous Service
+New Requirement #333: [Billing]Edit ambulance bill with all details 
+
 3.2.6
 - Fixed Bug #210: text box pop up after voiding patient bill(solan)
 	Bug #252: Coding error in String comparison
