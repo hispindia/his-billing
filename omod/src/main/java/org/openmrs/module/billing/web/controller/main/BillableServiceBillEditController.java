@@ -208,8 +208,15 @@ public class BillableServiceBillEditController {
 								attributes, "billItem", item);
 				BigDecimal rate = calculator.getRate(parameters);
 
-				item.setVoided(false);
-				item.setVoidedDate(null);
+				//ghanshyam 5-oct-2012 [Billing - Support #344] [Billing] Edited Quantity and Amount information is lost in database
+				if(quantity!=item.getQuantity()){
+					item.setVoided(true);
+					item.setVoidedDate(new Date());
+				}
+				else{
+					item.setVoided(false);
+					item.setVoidedDate(null);	
+				}
 				// ghanshyam-kesav 16-08-2012 Bug #323 [BILLING] When a bill with a lab\radiology order is edited the order is re-sent
 				Order ord=item.getOrder();
 				if(ord!=null){
@@ -217,7 +224,17 @@ public class BillableServiceBillEditController {
 					ord.setDateVoided(null);
 					}
 				item.setOrder(ord);
+				//ghanshyam 5-oct-2012 [Billing - Support #344] [Billing] Edited Quantity and Amount information is lost in database
+				if(quantity!=item.getQuantity()){
+				item = new PatientServiceBillItem();
+				item.setService(service);
+				item.setUnitPrice(unitPrice);
 				item.setQuantity(quantity);
+			    item.setName(name);
+			    item.setCreatedDate(new Date());
+			    item.setOrder(ord);
+			    bill.addBillItem(item);
+				}
 				item.setAmount(itemAmount.getAmount());
 				item.setActualAmount(item.getAmount().multiply(rate));
 				totalActualAmount = totalActualAmount.add(item
