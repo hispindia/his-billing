@@ -39,7 +39,7 @@
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>hospitalcore-api</artifactId>
-			<version>1.4.10.11</version>
+			<version>1.4.10.12-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
