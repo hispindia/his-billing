@@ -107,8 +107,8 @@ var tn = ['ten','eleven','twelve','thirteen', 'fourteen','fifteen','sixteen', 's
 var tw = ['twenty','thirty','forty','fifty', 'sixty','seventy','eighty','ninety']; 
 
 function toWords(s){
-	s = s.toString();
-	if (s == "zero"){
+//ghanshyam 12-dec-2012 Bug #458 [BILLING 3.2.8-SNAPSHOT] Edit in patient category, the amount in figures and words in the print out of the previous bill is not same
+	if (s == 0.00){
 		return "zero";
 	}
 if( s.indexOf('.') != -1 ){
