@@ -16,6 +16,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Billing module.  If not, see <http://www.gnu.org/licenses/>.
  *
+ *  author: ghanshyam
+ *  date: 7-01-2013
+ *  This file added for Searching as per HospitalCore name
 --%>
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ page import="java.util.Map"%>
