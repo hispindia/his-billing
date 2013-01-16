@@ -108,6 +108,16 @@
 			<name>OpenMRS Nexus Repository</name>
 			<url>http://mavenrepo.openmrs.org/nexus/content/repositories/public</url>
 		</repository>
+		<repsitory>
+			<id>shimla-nexus-snapshots</id>
+			<name>OpenMRS Nexus Repository</name>
+			<url>http://hospdev.hispindia.org/nexus/content/repositories/bd-snapshots</url>
+		</repository>
+		<repsitory>
+			<id>shimla-nexus-releases</id>
+			<name>OpenMRS Nexus Repository</name>
+			<url>http://hospdev.hispindia.org/nexus/content/repositories/bd-releases</url>
+		</repository>
 	</repositories>
 
 	<pluginRepositories>
