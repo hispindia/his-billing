@@ -137,6 +137,14 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
+				<pluginRepository>
+			<id>shimla-nexus-releases</id>
+			<name>shimla nexus releases</name>
+			<url>http://hospdev.hispindia.org/nexus/content/repositories/bd-releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
 	</pluginRepositories>
 
 	<modules>
