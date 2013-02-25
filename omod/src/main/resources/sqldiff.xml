@@ -5,11 +5,14 @@
 	<help>
 		USE:
 		The diffs are ordered by datamodel version number.
-		The script can be run in a top down fashion and is
-		expected to not failor overwrite old data
+		The script
+		can be run in a top down fashion and is
+		expected to not failor
+		overwrite old data
 
 		EXPECT:
-		- "use business-database-name;" was called prior to
+		- "use business-database-name;" was called
+		prior to
 		calling this script
 	</help>
 	<diff>
@@ -21,24 +24,32 @@
 		</description>
 		<sql>
 			CREATE TABLE IF NOT EXISTS `billing_tender` (
-			`tender_id` int(11) NOT NULL auto_increment,
+			`tender_id` int(11)
+			NOT NULL auto_increment,
 			`number` int(11) default NULL,
-			`name` varchar(255) default NULL,
+			`name`
+			varchar(255) default NULL,
 			`description` varchar(255) default NULL,
 			`price` decimal(19,2) default NULL,
-			`opening_date` datetime default NULL,
+			`opening_date` datetime default
+			NULL,
 			`closing_date` datetime default NULL,
-			`created_date` datetime default NULL,
+			`created_date` datetime
+			default NULL,
 			`retired` bit(1) default NULL,
-			`retired_date` datetime default NULL,
+			`retired_date` datetime
+			default NULL,
 			PRIMARY KEY (`tender_id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			) ENGINE=InnoDB DEFAULT
+			CHARSET=utf8;
 
 			CREATE TABLE IF NOT EXISTS `billing_company` (
 			`company_id` int(11) NOT NULL auto_increment,
-			`name` varchar(255) default NULL,
+			`name` varchar(255)
+			default NULL,
 			`address` varchar(255) default NULL,
-			`description` varchar(255) default NULL,
+			`description`
+			varchar(255) default NULL,
 			`phone` varchar(20) default NULL,
 			`created_date` datetime default NULL,
 			`retired` bit(1) default NULL,
@@ -46,32 +57,43 @@
 			PRIMARY KEY (`company_id`)
 			)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-			CREATE TABLE IF NOT EXISTS `billing_ambulance` (
+			CREATE TABLE IF NOT EXISTS
+			`billing_ambulance` (
 			`ambulance_id` int(11) NOT NULL auto_increment,
 			`name` varchar(255) default NULL,
-			`description` varchar(255) default NULL,
+			`description` varchar(255) default
+			NULL,
 			`created_date` datetime default NULL,
-			`retired` bit(1) default NULL,
+			`retired` bit(1) default
+			NULL,
 			`retired_date` datetime default NULL,
-			PRIMARY KEY (`ambulance_id`)
+			PRIMARY KEY
+			(`ambulance_id`)
 			)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-			CREATE TABLE IF NOT EXISTS `billing_driver` (
-			`driver_id` int(11) NOT NULL auto_increment,
+			CREATE TABLE IF
+			NOT EXISTS `billing_driver` (
+			`driver_id` int(11) NOT NULL
+			auto_increment,
 			`name` varchar(255) default NULL,
-			`address` varchar(255) default NULL,
+			`address`
+			varchar(255) default NULL,
 			`description` varchar(255) default NULL,
 			`phone` varchar(20) default NULL,
-			`created_date` datetime default NULL,
+			`created_date` datetime default
+			NULL,
 			`retired` bit(1) default NULL,
-			`retired_date` datetime default NULL,
+			`retired_date` datetime default
+			NULL,
 			PRIMARY KEY (`driver_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 			CREATE TABLE IF NOT EXISTS `billing_service` (
-			`service_id` int(11) NOT NULL auto_increment,
+			`service_id` int(11)
+			NOT NULL auto_increment,
 			`concept_id` int(11) default NULL,
-			`name` varchar(255) default NULL,
+			`name`
+			varchar(255) default NULL,
 			`short_name` varchar(255) default NULL,
 			`price` decimal(19,2) default NULL,
 			`disable` bit(1) default NULL,
@@ -80,122 +102,172 @@
 
 			CREATE TABLE IF NOT EXISTS `billing_ambulance_bill` (
 			`ambulance__bill_id` int(11) NOT NULL auto_increment,
-			`description` varchar(255) default NULL,
+			`description`
+			varchar(255) default NULL,
 			`creator` int(11) default NULL,
-			`amount` decimal(19,2) default NULL,
+			`amount`
+			decimal(19,2) default NULL,
 			`printed` bit(1) default NULL,
 			`created_date` datetime default NULL,
 			`voided` bit(1) default NULL,
 			`voided_date` datetime default NULL,
 			`driver_id` int(11) default NULL,
 			PRIMARY KEY (`ambulance__bill_id`),
-			KEY `fk_ambulancebill_driver` (`driver_id`),
+			KEY `fk_ambulancebill_driver`
+			(`driver_id`),
 			KEY `fk_ambulancebill_user` (`creator`),
-			CONSTRAINT `fk_ambulancebill_user` FOREIGN KEY (`creator`) REFERENCES `users`
+			CONSTRAINT
+			`fk_ambulancebill_user` FOREIGN KEY (`creator`) REFERENCES `users`
 			(`user_id`),
-			CONSTRAINT `fk_ambulancebill_driver` FOREIGN KEY (`driver_id`) REFERENCES
+			CONSTRAINT `fk_ambulancebill_driver` FOREIGN KEY
+			(`driver_id`) REFERENCES
 			`billing_driver` (`driver_id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			) ENGINE=InnoDB
+			DEFAULT CHARSET=utf8;
 
-			CREATE TABLE IF NOT EXISTS `billing_ambulance_bill_item` (
-			`ambulance__bill_item_id` int(11) NOT NULL auto_increment,
+			CREATE TABLE IF NOT EXISTS
+			`billing_ambulance_bill_item` (
+			`ambulance__bill_item_id` int(11) NOT
+			NULL auto_increment,
 			`ambulance_id` int(11) default NULL,
 			`ambulance_bill_id` int(11) default NULL,
-			`number_of_trip` int(11) default NULL,
+			`number_of_trip` int(11)
+			default NULL,
 			`amount` decimal(19,2) default NULL,
-			`name` varchar(255) default NULL,
+			`name` varchar(255)
+			default NULL,
 			`created_date` datetime default NULL,
-			`voided` bit(1) default NULL,
+			`voided` bit(1)
+			default NULL,
 			`voided_date` datetime default NULL,
-			PRIMARY KEY (`ambulance__bill_item_id`),
-			KEY `fk_ambulancebillitem_ambulancebill` (`ambulance_bill_id`),
-			KEY `fk_ambulancebillitem_ambulance` (`ambulance_id`),
-			CONSTRAINT `fk_ambulancebillitem_ambulance` FOREIGN KEY (`ambulance_id`)
+			PRIMARY KEY
+			(`ambulance__bill_item_id`),
+			KEY `fk_ambulancebillitem_ambulancebill`
+			(`ambulance_bill_id`),
+			KEY `fk_ambulancebillitem_ambulance`
+			(`ambulance_id`),
+			CONSTRAINT `fk_ambulancebillitem_ambulance` FOREIGN
+			KEY (`ambulance_id`)
 			REFERENCES `billing_ambulance` (`ambulance_id`),
 			CONSTRAINT `fk_ambulancebillitem_ambulancebill` FOREIGN KEY
 			(`ambulance_bill_id`) REFERENCES `billing_ambulance_bill`
 			(`ambulance__bill_id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-			CREATE TABLE IF NOT EXISTS `billing_patient_service_bill` (
+			CREATE
+			TABLE IF NOT EXISTS `billing_patient_service_bill` (
 			`patient_service_bill_id` int(11) NOT NULL auto_increment,
 			`description` varchar(255) default NULL,
-			`creator` int(11) default NULL,
+			`creator` int(11) default
+			NULL,
 			`amount` decimal(19,2) default NULL,
-			`printed` bit(1) default NULL,
+			`printed` bit(1) default
+			NULL,
 			`created_date` datetime default NULL,
-			`voided` bit(1) default NULL,
+			`voided` bit(1) default
+			NULL,
 			`voided_date` datetime default NULL,
-			`patient_id` int(11) default NULL,
+			`patient_id` int(11) default
+			NULL,
 			PRIMARY KEY (`patient_service_bill_id`),
-			KEY `fk_patientservicebill_patient` (`patient_id`),
-			KEY `fk_patientservicebill_user` (`creator`),
-			CONSTRAINT `fk_patientservicebill_user` FOREIGN KEY (`creator`) REFERENCES
+			KEY
+			`fk_patientservicebill_patient` (`patient_id`),
+			KEY
+			`fk_patientservicebill_user` (`creator`),
+			CONSTRAINT
+			`fk_patientservicebill_user` FOREIGN KEY (`creator`) REFERENCES
 			`users` (`user_id`),
-			CONSTRAINT `fk_patientservicebill_patient` FOREIGN KEY (`patient_id`)
+			CONSTRAINT `fk_patientservicebill_patient`
+			FOREIGN KEY (`patient_id`)
 			REFERENCES `patient` (`patient_id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			)
+			ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-			CREATE TABLE IF NOT EXISTS `billing_patient_service_bill_item` (
-			`patient_service_bill_item_id` int(11) NOT NULL auto_increment,
+			CREATE TABLE IF NOT EXISTS
+			`billing_patient_service_bill_item` (
+			`patient_service_bill_item_id`
+			int(11) NOT NULL auto_increment,
 			`service_id` int(11) default NULL,
 			`patient_service_bill_id` int(11) default NULL,
-			`unitPrice` decimal(19,2) default NULL,
+			`unitPrice`
+			decimal(19,2) default NULL,
 			`amount` decimal(19,2) default NULL,
 			`quantity` int(11) default NULL,
 			`name` varchar(255) default NULL,
 			`created_date` datetime default NULL,
 			`voided` bit(1) default NULL,
 			`voided_date` datetime default NULL,
-			PRIMARY KEY (`patient_service_bill_item_id`),
-			KEY `fk_patientservicebillitem_service` (`service_id`),
-			KEY `fk_patientservicebillitem_patientservicebill`
+			PRIMARY KEY
+			(`patient_service_bill_item_id`),
+			KEY
+			`fk_patientservicebillitem_service` (`service_id`),
+			KEY
+			`fk_patientservicebillitem_patientservicebill`
 			(`patient_service_bill_id`),
-			CONSTRAINT `fk_patientservicebillitem_patientservicebill` FOREIGN KEY
+			CONSTRAINT
+			`fk_patientservicebillitem_patientservicebill` FOREIGN KEY
 			(`patient_service_bill_id`) REFERENCES `billing_patient_service_bill`
 			(`patient_service_bill_id`),
-			CONSTRAINT `fk_patientservicebillitem_service` FOREIGN KEY (`service_id`)
+			CONSTRAINT
+			`fk_patientservicebillitem_service` FOREIGN KEY (`service_id`)
 			REFERENCES `billing_service` (`service_id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			) ENGINE=InnoDB DEFAULT
+			CHARSET=utf8;
 
 			CREATE TABLE IF NOT EXISTS `billing_tender_bill` (
 			`tender_bill_id` int(11) NOT NULL auto_increment,
-			`description` varchar(255) default NULL,
+			`description`
+			varchar(255) default NULL,
 			`creator` int(11) default NULL,
-			`amount` decimal(19,2) default NULL,
+			`amount`
+			decimal(19,2) default NULL,
 			`printed` bit(1) default NULL,
 			`created_date` datetime default NULL,
 			`voided` bit(1) default NULL,
 			`voided_date` datetime default NULL,
-			`company_id` int(11) default NULL,
+			`company_id` int(11) default
+			NULL,
 			PRIMARY KEY (`tender_bill_id`),
-			KEY `fk_tenderbill_company` (`company_id`),
+			KEY `fk_tenderbill_company`
+			(`company_id`),
 			KEY `fk_tenderbill_user` (`creator`),
-			CONSTRAINT `fk_tenderbill_user` FOREIGN KEY (`creator`) REFERENCES `users`
+			CONSTRAINT
+			`fk_tenderbill_user` FOREIGN KEY (`creator`) REFERENCES `users`
 			(`user_id`),
-			CONSTRAINT `fk_tenderbill_company` FOREIGN KEY (`company_id`) REFERENCES
+			CONSTRAINT `fk_tenderbill_company` FOREIGN KEY
+			(`company_id`) REFERENCES
 			`billing_company` (`company_id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			)
+			ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-			CREATE TABLE IF NOT EXISTS `billing_tender_bill_item` (
-			`tender_bill_item_id` int(11) NOT NULL auto_increment,
+			CREATE TABLE IF NOT EXISTS
+			`billing_tender_bill_item` (
+			`tender_bill_item_id` int(11) NOT NULL
+			auto_increment,
 			`name` varchar(255) default NULL,
-			`amount` decimal(19,2) default NULL,
+			`amount`
+			decimal(19,2) default NULL,
 			`unit_price` decimal(19,2) default NULL,
 			`quantity` int(11) default NULL,
 			`created_date` datetime default NULL,
 			`voided` bit(1) default NULL,
 			`voided_date` datetime default NULL,
 			`tender_id` int(11) default NULL,
-			`tender_bill_id` int(11) default NULL,
+			`tender_bill_id` int(11) default
+			NULL,
 			PRIMARY KEY (`tender_bill_item_id`),
-			KEY `fk_tenderbillitem_tenderbill` (`tender_bill_id`),
-			KEY `fk_tenderbillitem_tender` (`tender_id`),
-			CONSTRAINT `fk_tenderbillitem_tender` FOREIGN KEY (`tender_id`) REFERENCES
+			KEY
+			`fk_tenderbillitem_tenderbill` (`tender_bill_id`),
+			KEY
+			`fk_tenderbillitem_tender` (`tender_id`),
+			CONSTRAINT
+			`fk_tenderbillitem_tender` FOREIGN KEY (`tender_id`) REFERENCES
 			`billing_tender` (`tender_id`),
-			CONSTRAINT `fk_tenderbillitem_tenderbill` FOREIGN KEY (`tender_bill_id`)
+			CONSTRAINT
+			`fk_tenderbillitem_tenderbill` FOREIGN KEY (`tender_bill_id`)
 			REFERENCES `billing_tender_bill` (`tender_bill_id`)
-			)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			)ENGINE=InnoDB
+			DEFAULT CHARSET=utf8;
 		</sql>
 	</diff>
 
@@ -227,35 +299,50 @@
 		</description>
 		<sql>
 			CREATE TABLE IF NOT EXISTS `billing_miscellaneous_service` (
-			`id` int(11) NOT NULL auto_increment,
+			`id`
+			int(11) NOT NULL auto_increment,
 			`name` varchar(255) default NULL,
 			`description` varchar(255) default NULL,
-			`price` decimal(19,2) default NULL,
+			`price` decimal(19,2) default
+			NULL,
 			`retired` bit(1) default NULL,
-			`retired_date` datetime default NULL,
+			`retired_date` datetime default
+			NULL,
 			`creator` int(11) default NULL,
-			`created_date` datetime default NULL,
+			`created_date` datetime default
+			NULL,
 			PRIMARY KEY (`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-			CREATE TABLE IF NOT EXISTS `billing_miscellaneous_service_bill` (
-			`id` int(11) NOT NULL auto_increment,
-			`liable_name` varchar(255) default NULL,
+			CREATE
+			TABLE IF NOT EXISTS `billing_miscellaneous_service_bill` (
+			`id`
+			int(11) NOT NULL auto_increment,
+			`liable_name` varchar(255) default
+			NULL,
 			`description` varchar(255) default NULL,
-			`amount` decimal(19,2) default NULL,
+			`amount` decimal(19,2)
+			default NULL,
 			`printed` bit(1) default NULL,
-			`creator` int(11) default NULL,
+			`creator` int(11) default
+			NULL,
 			`created_date` datetime default NULL,
-			`voided` bit(1) default NULL,
+			`voided` bit(1) default
+			NULL,
 			`voided_date` datetime default NULL,
-			`service_id` int(11) default NULL,
+			`service_id` int(11) default
+			NULL,
 			PRIMARY KEY (`id`),
-			KEY `fk_miscellaneous_service_bill_miscellaneous_service_service`
+			KEY
+			`fk_miscellaneous_service_bill_miscellaneous_service_service`
 			(`service_id`),
-			CONSTRAINT `fk_miscellaneous_service_bill_miscellaneous_service_service`
-			FOREIGN KEY (`service_id`) REFERENCES `billing_miscellaneous_service`
+			CONSTRAINT
+			`fk_miscellaneous_service_bill_miscellaneous_service_service`
+			FOREIGN
+			KEY (`service_id`) REFERENCES `billing_miscellaneous_service`
 			(`id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			)
+			ENGINE=InnoDB DEFAULT CHARSET=utf8;
 		</sql>
 	</diff>
 
@@ -268,18 +355,23 @@
 		</description>
 		<sql>
 			CREATE TABLE IF NOT EXISTS `billing_receipt` (
-			`id` int(11) NOT NULL auto_increment,
+			`id` int(11) NOT
+			NULL auto_increment,
 			`paid_date` datetime default NULL,
-			PRIMARY KEY (`id`)
+			PRIMARY KEY
+			(`id`)
 			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-			ALTER TABLE billing_patient_service_bill
+			ALTER TABLE
+			billing_patient_service_bill
 			ADD COLUMN `receipt_id` int(11)
-			default NULL,
+			default
+			NULL,
 			ADD CONSTRAINT `fk_patientservicebill_receipt` FOREIGN KEY
 			(`receipt_id`) REFERENCES `billing_receipt` (`id`);
 
-			ALTER TABLE billing_ambulance_bill
+			ALTER TABLE
+			billing_ambulance_bill
 			ADD COLUMN `receipt_id` int(11) default
 			NULL,
 			ADD CONSTRAINT `fk_ambulance_receipt` FOREIGN KEY (`receipt_id`)
@@ -288,13 +380,17 @@
 			ALTER TABLE billing_tender_bill
 			ADD COLUMN `receipt_id` int(11) default
 			NULL,
-			ADD CONSTRAINT `fk_tender_receipt` FOREIGN KEY (`receipt_id`) REFERENCES
+			ADD CONSTRAINT
+			`fk_tender_receipt` FOREIGN KEY (`receipt_id`) REFERENCES
 			`billing_receipt` (`id`);
 
-			ALTER TABLE billing_miscellaneous_service_bill
+			ALTER TABLE
+			billing_miscellaneous_service_bill
 			ADD COLUMN `receipt_id`
-			int(11) default NULL,
-			ADD CONSTRAINT `fk_miscellaneous_receipt` FOREIGN KEY (`receipt_id`)
+			int(11)
+			default NULL,
+			ADD CONSTRAINT `fk_miscellaneous_receipt` FOREIGN KEY
+			(`receipt_id`)
 			REFERENCES `billing_receipt` (`id`);
 		</sql>
 	</diff>
@@ -308,16 +404,21 @@
 		</description>
 		<sql>
 			ALTER TABLE billing_patient_service_bill
-			ADD COLUMN `free_bill` bit(1)
+			ADD COLUMN `free_bill`
+			bit(1)
 			default NULL;
 
 			ALTER TABLE billing_patient_service_bill_item
-			ADD COLUMN `order_id` int(11)
+			ADD
+			COLUMN `order_id` int(11)
 			default NULL,
-			ADD CONSTRAINT `fk_patientservicebillitem_order` FOREIGN KEY
-			(`order_id`) REFERENCES `orders` (`order_id`);
+			ADD CONSTRAINT
+			`fk_patientservicebillitem_order` FOREIGN KEY
+			(`order_id`) REFERENCES
+			`orders` (`order_id`);
 			ALTER TABLE
-			billing_billable_service ADD category INT(11);
+			billing_billable_service ADD
+			category INT(11);
 		</sql>
 	</diff>
 	<diff>
@@ -337,17 +438,22 @@
 			DEFAULT NULL;
 		</sql>
 	</diff>
-	<!-- ghanshyam 07/07/2012 New Requirement #305: Additional details in Ambulance Bill-->
+	<!-- ghanshyam 07/07/2012 New Requirement #305: Additional details in Ambulance 
+		Bill -->
 	<diff>
 		<version>3.1.6</version>
 		<author>ghanshyam</author>
 		<date>July 7 2012</date>
 		<description>
-			Add column patient_name,receipt_number,origin,destination for billing_ambulance_bill_item table
+			Add column patient_name,receipt_number,origin,destination
+			for billing_ambulance_bill_item table
 		</description>
 		<sql>
-		<!-- ghanshyam 1/08/2012 feedback of New Requirement #305: Additional details in Ambulance Bill changed receiptNumber from Integer to varchar -->
-			ALTER TABLE billing_ambulance_bill_item ADD(`patient_name`  varchar(50),`receipt_number`  varchar(13),`origin`  varchar(20),`destination`  varchar(20));
+			<!-- ghanshyam 1/08/2012 feedback of New Requirement #305: Additional 
+				details in Ambulance Bill changed receiptNumber from Integer to varchar -->
+			ALTER TABLE billing_ambulance_bill_item ADD(`patient_name`
+			varchar(50),`receipt_number` varchar(13),`origin`
+			varchar(20),`destination` varchar(20));
 		</sql>
 	</diff>
 	<diff>
@@ -355,10 +461,26 @@
 		<author>kesavulu</author>
 		<date>July 10 2012</date>
 		<description>
-			Add column quantity for 'billing_miscellaneous_service_bill' table
+			Add column quantity for
+			'billing_miscellaneous_service_bill' table
 		</description>
 		<sql>
-			ALTER TABLE billing_miscellaneous_service_bill ADD quantity integer NOT NULL;
+			ALTER TABLE billing_miscellaneous_service_bill ADD quantity
+			integer NOT NULL;
+		</sql>
+	</diff>
+	<!-- ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module-->
+	<diff>
+		<version>3.1.8</version>
+		<author>ghanshyam</author>
+		<date>February 25 2013</date>
+		<description>
+			Add column 'comment' for 'billing_patient_service_bill'
+			table
+		</description>
+		<sql>
+			ALTER TABLE billing_patient_service_bill ADD(`comment`
+			varchar(50));
 		</sql>
 	</diff>
 </sqldiff>
