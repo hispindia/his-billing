@@ -60,7 +60,7 @@
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery-ui-1.8.2.custom.min.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery.PrintArea.js"></script>
-//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module
+<%-- ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module --%>
 <script type="text/javascript">
 	jQuery(document).ready(
 			function() {	
@@ -95,14 +95,12 @@ function validate(){
 			onclick="window.location.href='addPatientServiceBillForBD.form?patientId=${patient.patientId}&billType=paid'" />
 	</td>
 		<td><input type="button" value="Add Free Bill" style="color: red"
-			onclick="showAndHide();" />
-	</td>
+			onclick="showAndHide();" /></td>
 		<td><span id="commentField">Comment <input id="comment"
-				name="comment" /> </span></td>
+				name="comment" /> </span>
+	</td>
 		<td><span id="okButton"><input type="button" value="Ok"
-				onclick="return validate();" />
-		</span>
-	</td> </b>
+				onclick="return validate();" /> </span></td> </b>
 
 </p>
 <c:forEach items="${errors}" var="error">
@@ -124,8 +122,7 @@ function validate(){
 			<tr>
 				<td>Date:</td>
 				<td><openmrs:formatDate date="${bill.createdDate}"
-						type="textbox" />
-				</td>
+						type="textbox" /></td>
 			</tr>
 			<tr>
 				<td>Bill ID:</td>
@@ -169,8 +166,7 @@ function validate(){
 							${item.amount}
 						</c:otherwise>
 
-							</c:choose>
-						</td>
+							</c:choose></td>
 					</tr>
 				</c:if>
 			</c:forEach>
@@ -209,8 +205,7 @@ function validate(){
 						<c:otherwise>
 							${bill.amount}
 						</c:otherwise>
-					</c:choose>
-				</td>
+					</c:choose></td>
 			</tr>
 		</table>
 		<br>
@@ -263,8 +258,7 @@ function validate(){
 			<tr>
 				<td>Date:</td>
 				<td align="left"><openmrs:formatDate date="${bill.createdDate}"
-						type="textbox" />
-				</td>
+						type="textbox" /></td>
 			</tr>
 			<tr>
 				<td>Bill ID:</td>
@@ -390,7 +384,8 @@ function validate(){
 							<input type="button" value="View"
 								onclick="javascript:window.location.href='patientServiceBill.list?patientId=${patient.patientId}&billId=${bill.patientServiceBillId}'" />
 						</c:otherwise>
-					</c:choose></td>
+					</c:choose>
+				</td>
 			</tr>
 		</c:forEach>
 		<tr class="paging-container">
