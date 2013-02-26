@@ -361,8 +361,9 @@ function validate(){
 				<td class='<c:if test="${bill.voided}">retired </c:if>'><c:choose>
 						<c:when
 							test="${bill.voided == false && ( bill.printed == false || ( bill.printed == true && canEdit == true ) )}">
+							<%-- ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module --%>
 							<a
-								href="${pageContext.request.contextPath}/module/billing/editPatientServiceBill.form?billId=${bill.patientServiceBillId}&patientId=${patient.patientId}">Bill
+								href="${pageContext.request.contextPath}/module/billing/editPatientServiceBillForBD.form?billId=${bill.patientServiceBillId}&patientId=${patient.patientId}">Bill
 								ID <b>${bill.receipt.id}</b>,<openmrs:formatDate
 									date="${bill.createdDate }" type="textbox" /> </a>
 				</td>
