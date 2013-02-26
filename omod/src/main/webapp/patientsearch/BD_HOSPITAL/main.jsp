@@ -30,7 +30,8 @@
 		oldBackgroundColor: "",
 		
 		/** Click to view patient info */
-		visit: function(patientId){			
+		visit: function(patientId){	
+		//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module		
 			window.location.href = openmrsContextPath + "/module/billing/patientServiceBillForBD.list?patientId=" + patientId;
 		}
 	};
