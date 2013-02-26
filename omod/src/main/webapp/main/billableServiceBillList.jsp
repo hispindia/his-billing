@@ -101,8 +101,9 @@
 		</table>
 		<table width="100%" border="1">
 			<tr> <!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --Adjust allignment in table-->
+			<%--Kesavulu 26-2-2013 support #962 [Billing]change RS to TK for Bangladesh module --%>
 				<th align="center">Service Name</th>
-				<th align="center">Price (Rs)</th>
+				<th align="center">Price (Tk)</th>
 				<th align="center">Quantity</th>
 				<th align="center">Amount</th>
 			</tr>
@@ -239,7 +240,8 @@
 			width="80%">
 			<thead>
 				<th class="printfont" style="">Service Name</th>
-				<th class="printfont" style="">Price (Rs)</th>
+				<%--Kesavulu 26-2-2013 support #962 [Billing]change RS to TK for Bangladesh module --%>
+				<th class="printfont" style="">Price (Tk)</th>
 				<th class="printfont" style="">Quantity</th>
 				<th class="printfont" style="">Amount</th>
 			</thead>
@@ -268,8 +270,9 @@
 				</c:choose>
 			</tr>
 		</table>
+		<!-- Kesavulu 26-2-2013 support #962 [Billing]change RS to TK for Bangladesh module --> 
 		<br> <span class="printfont" style="margin-left: 60px;">Total
-			Amount:</span> Rupees <span id="totalValue2" class="printfont"> </span> only
+			Amount:</span> Taka <span id="totalValue2" class="printfont"> </span> only
 		<br /> <br /> <br /> <br /> <br /> <br /> <span
 			class="printfont" style="margin-left: 200px;">Signature of
 			billing clerk/ Stamp</span>
