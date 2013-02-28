@@ -63,14 +63,6 @@ public class BillableServiceBillEditListForBDController {
 		//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module
 		BillCalculatorForBDService calculator = new BillCalculatorForBDService();
 		PatientServiceBill bill = billingService.getPatientServiceBillById(billId);
-		//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module
-		if (bill.getFreeBill().equals(true)) {
-			String billType = "free";
-			model.addAttribute("freeBill", calculator.isFreeBill(billType));
-		} else {
-			String billType = "paid";
-			model.addAttribute("freeBill", calculator.isFreeBill(billType));
-		}
 		
 		if (patient != null) {
 			
