@@ -1,3 +1,11 @@
+3.2.8
+- #966               Add Paid Bill/Add Free Bill for Bangladesh module
+- #962               change RS to TK for Bangladesh module
+- #648               bill must generate according to patient category in all Bangladesh hospital
+- #512               Update registration page and print out page for NIKDU Hospital, Bangladesh i.e BD_SPECIALIZED or(BD_HOSPITAL)
+- #511               Update registration page and print out page for MCHTI Hospital, Bangladesh
+- #510               Update registration page and print out page for Govenment Employee Hospital, Bangladesh
+
 3.2.7
 Bug #323: [BILLING] When a bill with a lab\radiology order is edited the order is re-sent
 Support #339: [Billing]print of void bill [3.2.7 snapshot][DDU,Mohali,Solan,Tanda,]
