@@ -58,14 +58,47 @@
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery-ui-1.8.2.custom.min.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery.PrintArea.js"></script>
-
+<%-- ghanshyam 12-april-2013 Support #1362 [Billing]in view screen minor modification in Bangladesh module --%>
+<script type="text/javascript">
+	jQuery(document).ready(
+			function() {	
+			// hide comment
+				jQuery("#commentField").hide();
+				jQuery("#okButton").hide();
+			});
+</script>
+<script type="text/javascript">
+function showAndHide() {
+		jQuery("#commentField").toggle();	
+		jQuery("#okButton").toggle()	
+		}
+</script>
+<script type="text/javascript">
+function validate(){
+	if (StringUtils.isBlank(jQuery("#comment").val())) {
+				alert("Please enter comment");
+				return false;
+			}	
+	else{
+	var patientId = ${patient.patientId};
+	var billType = "free";
+	var comment = jQuery("#comment").val();
+	window.location.href="addPatientServiceBillForBD.form?patientId="+patientId+"&billType="+billType+"&comment="+comment;
+	}
+}
+</script>	
 <p>
-	<b><a
-		href="addPatientServiceBill.form?patientId=${patient.patientId}">Add
-			new Bill</a> <c:if test="${freeBill}">
-			<span style="color: red">Free Bill</span>
-		</c:if> </b>
-
+<b>
+		<td><input type="button" value="Add Paid Bill"
+			onclick="window.location.href='addPatientServiceBillForBD.form?patientId=${patient.patientId}&billType=paid'" />
+	</td>
+		<td><input type="button" value="Add Free Bill" style="color: red"
+			onclick="showAndHide();" /></td>
+		<td><span id="commentField">Comment <input id="comment"
+				name="comment" /> </span>
+	</td>
+		<td><span id="okButton"><input type="button" value="Ok"
+				onclick="return validate();" /> </span></td> </b>
 </p>
 <c:forEach items="${errors}" var="error">
 	<span class="error"><spring:message
