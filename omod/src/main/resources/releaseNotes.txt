@@ -1,4 +1,14 @@
+3.2.8
+released by ghanshyam on 20-may-2013
+- #343	Queue is being generated from Saving and printing the old bill from a previous date which should not happen[Billing][3.2.7-SNAPSHOT]
+- #357	 Error screen appears on clicking next page or changing page size in list of bills[Billing][3.2.7-SNAPSHOT]
+- #358	[DDU, DDU_SDMX] Error screen appears on selecting patients for billing[Billing][3.2.7-SNAPSHOT]
+- #386	On printing the misc services bill ,the print out shows DDU logo on the header part[Solan][billing-3.2.7 snap shot]
+- #458	 On editing the patient's category, the bill amount in figures and words in the print out of the previous bill of the same patient is not same[BILLING 3.2.8-SNAPSHOT] 
+- #1048	Unable to view the entire bill of the patient, no breakup of bill is shown but just the total amount(in mandi)
+
 3.2.7
+released by harsh
 Bug #323: [BILLING] When a bill with a lab\radiology order is edited the order is re-sent
 Support #339: [Billing]print of void bill [3.2.7 snapshot][DDU,Mohali,Solan,Tanda,]
 Support #342: [BILLING-3.2.7-Snap shot]edit quantity of service after print -DDU,MOHALI,SOLAN
@@ -6,6 +16,7 @@ New Requirement #305: [BILLING] Additional details in Ambulance Bill
 New Requirement #306: [BILLING] Add field quantity in Miscellaneous Services Bill
 New Requirement #317: [BILLING] Advanced Search in Find Patient(s)
 New Requirement #321: [BILLING] Edit Price in Miscellaneous Service
+Bug #332:[Billing] java.lang.NullPointerException when searching for bill id 8000
 New Requirement #333: [Billing]Edit ambulance bill with all details 
 
 3.2.6
