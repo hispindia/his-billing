@@ -1,5 +1,5 @@
 /**
- *  Copyright 2012 Society for Health Information Systems Programmes, India (HISP India)
+ *  Copyright 2013 Society for Health Information Systems Programmes, India (HISP India)
  *
  *  This file is part of Billing module.
  *
@@ -16,9 +16,8 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Billing module.  If not, see <http://www.gnu.org/licenses/>.
  *  
- *  author: ghanshyam
- *  date: 7-01-2013
- *  issue: New Requirement #648 [Billing]bill must generate according to patient category in all Bangladesh hospital
+ *  author: Ghanshyam
+ *  date:   20-02-2013
  **/
 
 package org.openmrs.module.billing.includable.billcalculator.bd_teaching;
@@ -28,14 +27,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.openmrs.Concept;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.billing.includable.billcalculator.BillCalculator;
+import org.openmrs.module.billing.includable.billcalculator.BillCalculatorForBD;
 import org.openmrs.module.hospitalcore.concept.TestTree;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
 
-public class BillCalculatorImpl implements BillCalculator {
+public class BillCalculatorImpl implements BillCalculatorForBD {
 	
 	private static Map<String, Set<Concept>> testTreeMap;
 	
@@ -46,18 +44,11 @@ public class BillCalculatorImpl implements BillCalculator {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public BigDecimal getRate(Map<String, Object> parameters) {
+	public BigDecimal getRate(Map<String, Object> parameters, String billType) {
 		BigDecimal rate = new BigDecimal(0);
-		Map<String, String> attributes = (Map<String, String>) parameters.get("attributes");
-		String patientCategory = attributes.get("Patient Category");
 		PatientServiceBillItem item = (PatientServiceBillItem) parameters.get("billItem");
-		if(patientCategory!=null){
-			
-		if (patientCategory.contains("General")) {
-			rate = new BigDecimal(1);
-		 }
-		}
-		else{
+		
+		if (billType.equals("paid")) {
 			rate = new BigDecimal(1);
 		}
 		
@@ -95,19 +86,14 @@ public class BillCalculatorImpl implements BillCalculator {
 	 * 
 	 * @return
 	 */
+	//ghanshyam 3-june-2013 New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue
 	@SuppressWarnings("unchecked")
-	public boolean isFreeBill(Map<String, Object> parameters) {
-		Map<String, String> attributes = (Map<String, String>) parameters.get("attributes");
-		String patientCategory = attributes.get("Patient Category");
-		if(patientCategory!=null){
-
-		if (patientCategory.contains("General")) {
-			return false;
-		 }
+	public int isFreeBill(String billType) {
+		
+		if (billType.equals("paid")) {
+			return 0;
 		}
-		else{
-			return false;
-		}
-		return true;
+		
+		return 1;
 	}
 }

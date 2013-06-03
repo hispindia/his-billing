@@ -77,10 +77,12 @@ public class BillCalculatorForBDService implements BillCalculatorForBD {
 	 * Determine whether a bill should be free or not. If the `calculator` found, it will be used to
 	 * determine. Otherwise, it will return `false` which means the bill is not free.
 	 */
-	public boolean isFreeBill(String billType) {
-		if (calculator != null) {
-			return calculator.isFreeBill(billType);
+	//ghanshyam 3-june-2013 New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue
+	public int isFreeBill(String billType) {
+		if (billType.equals("free")) {
+			return 1;
+		} else {
+			return 0;
 		}
-		return false;
 	}
 }

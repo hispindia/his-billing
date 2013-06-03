@@ -382,11 +382,11 @@ function validate(){
 					<c:choose>
 						<c:when test="${bill.voided}">
 							<input type="button" value="View"
-								onclick="javascript:window.location.href='patientServiceVoidedBillView.list?patientId=${patient.patientId}&billId=${bill.patientServiceBillId}'" />
+								onclick="javascript:window.location.href='patientServiceVoidedBillViewForBD.list?patientId=${patient.patientId}&billId=${bill.patientServiceBillId}'" />
 						</c:when>
 						<c:otherwise>
 							<input type="button" value="View"
-								onclick="javascript:window.location.href='patientServiceBill.list?patientId=${patient.patientId}&billId=${bill.patientServiceBillId}'" />
+								onclick="javascript:window.location.href='patientServiceBillForBD.list?patientId=${patient.patientId}&billId=${bill.patientServiceBillId}'" />
 						</c:otherwise>
 					</c:choose>
 				</td>

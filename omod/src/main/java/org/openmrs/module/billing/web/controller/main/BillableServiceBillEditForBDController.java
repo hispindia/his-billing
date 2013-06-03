@@ -175,18 +175,19 @@ public class BillableServiceBillEditForBDController {
 				// Get the ratio for each bill item
 				Map<String, Object> parameters = HospitalCoreUtils.buildParameters("patient", patient, "attributes",
 				    attributes, "billItem", item);
+				BigDecimal rate;
 				//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module
-				if (bill.getFreeBill().equals(true)) {
+				//ghanshyam 3-june-2013 New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue
+				if (bill.getFreeBill().equals(1)) {
 					String billType = "free";
-					BigDecimal rate = calculator.getRate(parameters, billType);
-					item.setActualAmount(item.getAmount().multiply(rate));
+					rate = calculator.getRate(parameters, billType);
 				} else {
 					String billType = "paid";
-					BigDecimal rate = calculator.getRate(parameters, billType);
-					item.setActualAmount(item.getAmount().multiply(rate));
+					rate = calculator.getRate(parameters, billType);
 				}
 				
 				item.setAmount(itemAmount.getAmount());
+				item.setActualAmount(item.getAmount().multiply(rate));
 				totalActualAmount = totalActualAmount.add(item.getActualAmount());
 				item.setCreatedDate(new Date());
 				item.setName(name);
@@ -202,15 +203,15 @@ public class BillableServiceBillEditForBDController {
 				// Get the ratio for each bill item
 				Map<String, Object> parameters = HospitalCoreUtils.buildParameters("patient", patient, "attributes",
 				    attributes, "billItem", item);
+				BigDecimal rate;
 				//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module
-				if (bill.getFreeBill().equals(true)) {
+				//ghanshyam 3-june-2013 New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue
+				if (bill.getFreeBill().equals(1)) {
 					String billType = "free";
-					BigDecimal rate = calculator.getRate(parameters, billType);
-					item.setActualAmount(item.getAmount().multiply(rate));
+					rate = calculator.getRate(parameters, billType);
 				} else {
 					String billType = "paid";
-					BigDecimal rate = calculator.getRate(parameters, billType);
-					item.setActualAmount(item.getAmount().multiply(rate));
+					rate = calculator.getRate(parameters, billType);
 				}
 				
 				//ghanshyam 5-oct-2012 [Billing - Support #344] [Billing] Edited Quantity and Amount information is lost in database
@@ -240,6 +241,7 @@ public class BillableServiceBillEditForBDController {
 					bill.addBillItem(item);
 				}
 				item.setAmount(itemAmount.getAmount());
+				item.setActualAmount(item.getAmount().multiply(rate));
 				
 				totalActualAmount = totalActualAmount.add(item.getActualAmount());
 			}
@@ -250,7 +252,8 @@ public class BillableServiceBillEditForBDController {
 		// Determine whether the bill is free or not
 		
 		//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module
-		if (bill.getFreeBill().equals(true)) {
+		//ghanshyam 3-june-2013 New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue
+		if (bill.getFreeBill().equals(1)) {
 			String billType = "free";
 			bill.setFreeBill(calculator.isFreeBill(billType));
 		} else {

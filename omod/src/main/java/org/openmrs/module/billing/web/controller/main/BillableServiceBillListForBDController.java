@@ -77,7 +77,8 @@ public class BillableServiceBillListForBDController {
 		if (billId != null) {
 			PatientServiceBill bill = billingService.getPatientServiceBillById(billId);
 			//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module
-			if (bill.getFreeBill().equals(true)) {
+			//ghanshyam 3-june-2013 New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue
+			if (bill.getFreeBill().equals(1)) {
 				String billType = "free";
 				bill.setFreeBill(calculator.isFreeBill(billType));
 			} else {
@@ -96,22 +97,23 @@ public class BillableServiceBillListForBDController {
 	@RequestMapping(method = RequestMethod.POST)
 	public String onSubmit(@RequestParam("patientId") Integer patientId, @RequestParam("billId") Integer billId) {
 		BillingService billingService = (BillingService) Context.getService(BillingService.class);
-		PatientServiceBill patientSerciceBill = billingService.getPatientServiceBillById(billId);
-		if (patientSerciceBill != null && !patientSerciceBill.getPrinted()) {
-			patientSerciceBill.setPrinted(true);
-			Map<String, String> attributes = PatientUtils.getAttributes(patientSerciceBill.getPatient());
+		PatientServiceBill patientServiceBill = billingService.getPatientServiceBillById(billId);
+		if (patientServiceBill != null && !patientServiceBill.getPrinted()) {
+			patientServiceBill.setPrinted(true);
+			Map<String, String> attributes = PatientUtils.getAttributes(patientServiceBill.getPatient());
 			//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module
 			BillCalculatorForBDService calculator = new BillCalculatorForBDService();
 			
-			if (patientSerciceBill.getFreeBill().equals(true)) {
+			//ghanshyam 3-june-2013 New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue
+			if (patientServiceBill.getFreeBill().equals(1)) {
 				String billType = "free";
-				patientSerciceBill.setFreeBill(calculator.isFreeBill(billType));
+				patientServiceBill.setFreeBill(calculator.isFreeBill(billType));
 			} else {
 				String billType = "paid";
-				patientSerciceBill.setFreeBill(calculator.isFreeBill(billType));
+				patientServiceBill.setFreeBill(calculator.isFreeBill(billType));
 			}
 			
-			billingService.saveBillEncounterAndOrder(patientSerciceBill);
+			billingService.saveBillEncounterAndOrder(patientServiceBill);
 		}
 		return "redirect:/module/billing/patientServiceBillForBD.list?patientId=" + patientId;
 	}
