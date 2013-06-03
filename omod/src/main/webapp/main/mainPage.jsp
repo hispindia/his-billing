@@ -38,6 +38,11 @@
 				code="billing.miscellaneousService" />
 	</a>
 	</b>
+	 <!-- ghanshyam 3-june-2013 New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue -->
+	&nbsp; | &nbsp; <b><a href="billingqueue.form"><spring:message
+				code="billing.billingqueue" />
+	</a>
+	</b>
 </p>
 <br />
 <openmrs:require privilege="View Patients" otherwise="/login.htm"
