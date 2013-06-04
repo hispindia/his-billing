@@ -37,6 +37,7 @@ $('.serquncalc').keyup(function() {
         return result;
     });
 });
+
 });
 </script>
 
@@ -50,6 +51,20 @@ var unipriid=con.concat("unitprice");
 serqun=jQuery("#"+serqunid).val();
 unpri=jQuery("#"+unipriid).val();
 jQuery("#"+serpriid).val(serqun*unpri);
+}
+</script>
+
+<script type="text/javascript">
+function disable(incon){
+var icon=incon.toString();
+if(jQuery("#"+icon+"selectservice").attr('checked')) {
+  jQuery("#"+icon+"servicequantity").removeAttr("disabled");
+  jQuery("#"+icon+"paybill").removeAttr("disabled");
+} 
+else{
+ jQuery("#"+icon+"servicequantity").attr("disabled", "disabled"); 
+ jQuery("#"+icon+"paybill").attr("disabled", "disabled"); 
+}
 }
 </script>
 
@@ -98,7 +113,7 @@ jQuery("#"+serpriid).val(serqun*unpri);
 					<td align="center"><input type="checkbox"
 						id="${index.count}selectservice"
 						name="${index.count}selectservice" checked="checked"
-						value="billed">
+						value="billed" onclick="disable(${index.count});">
 					</td>
 					<!-- 
 					<td align="center"><input type="text"
