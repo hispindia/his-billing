@@ -59,7 +59,7 @@ jQuery("#"+serpriid).val(serqun*unpri);
 <br />
 
 <form id="orderBillingForm"
-	action="procedureinvestigationorder.form?patientId=${patientId}&indCount=${serviceOrderSize}&billType=mixed"
+	action="procedureinvestigationorder.form?patientId=${patientId}&encounterId=${encounterId}&indCount=${serviceOrderSize}&billType=mixed"
 	method="POST">
 	<table id="myTable" class="tablesorter" class="thickbox">
 		<thead>
@@ -68,7 +68,9 @@ jQuery("#"+serpriid).val(serqun*unpri);
 				<th style="text-align: center;">Service</th>
 				<th style="text-align: center;">Quantity</th>
 				<th style="text-align: center;">Select</th>
+				<!-- 
 				<th style="text-align: center;">Reschedule</th>
+				 -->
 				<th style="text-align: center;">Pay</th>
 				<th style="text-align: right;">Unit Price</th>
 				<th style="text-align: right;">Q*Unit Price</th>
@@ -87,40 +89,48 @@ jQuery("#"+serpriid).val(serqun*unpri);
 				<tr class="${klass}" id="">
 					<td align="center">${index.count}</td>
 					<td align="center"><input type="text"
-						id="${index.count}service" name="${index.count}service" value="${sol.name}"
-						readOnly="true">
-					</td>
+						id="${index.count}service" name="${index.count}service"
+						value="${sol.name}" readOnly="true"></td>
 					<td align="center"><input type="text"
-						id="${index.count}servicequantity" name="${index.count}servicequantity" size="7"
-						onkeyup="updatePrice(${index.count});" class="serquncalc" />
+						id="${index.count}servicequantity"
+						name="${index.count}servicequantity" size="7"
+						onkeyup="updatePrice(${index.count});" class="serquncalc" /></td>
+					<td align="center"><input type="checkbox"
+						id="${index.count}selectservice"
+						name="${index.count}selectservice" checked="checked"
+						value="billed">
 					</td>
-					<td align="center"><input type="checkbox" id="${index.count}selectservice"
-						name="${index.count}selectservice" checked="checked" value="billed"></td>
-					<td align="center"></td>
-					<td align="center"><input type="checkbox" id="${index.count}paybill"
-						name="${index.count}paybill" checked="checked" value="pay"></td>
+					<!-- 
+					<td align="center"><input type="text"
+						id="${index.count}reschedule" name="${index.count}reschedule"
+						size="12" readOnly="true">
+						 -->
+					</td>
+					<td align="center"><input type="checkbox"
+						id="${index.count}paybill" name="${index.count}paybill"
+						checked="checked" value="pay">
+					</td>
 					<td align="right"><input type="text"
-						id="${index.count}unitprice" name="${index.count}unitprice" size="7"
-						value="${sol.price}" readOnly="true">
-					</td>
+						id="${index.count}unitprice" name="${index.count}unitprice"
+						size="7" value="${sol.price}" readOnly="true"></td>
 					<td align="right"><input type="text"
-						id="${index.count}serviceprice" name="serviceprice" size="7"
-						value="0" readOnly="true" class="serpricalc">
-					</td>
+						id="${index.count}serviceprice" name="${index.count}serviceprice"
+						size="7" value="0" readOnly="true" class="serpricalc"></td>
 				</tr>
 			</c:forEach>
 		</tbody>
 		<tr>
-			<td colspan="7" align="right">Total</td>
+			<td colspan="6" align="right">Total</td>
 			<td align="right"><input type="text" id="total" name="total"
-				size="7" value="0" readOnly="true" />
-			</td>
+				size="7" value="0" readOnly="true" /></td>
 		</tr>
 	</table>
 	<tr>
-		<td><input type="submit" value="Save bill"></td>
+		<td><input type="submit" value="Save bill">
+		</td>
 		<td><input type="button"
 			onclick="javascript:window.location.href='billingqueue.form?'"
-			value="Cancel"></td>
+			value="Cancel">
+		</td>
 	</tr>
 </form>

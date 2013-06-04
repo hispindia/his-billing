@@ -34,7 +34,9 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculatorForBDService;
 import org.openmrs.module.hospitalcore.BillingService;
+import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.BillableService;
+import org.openmrs.module.hospitalcore.model.OpdOrder;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
 import org.openmrs.module.hospitalcore.util.HospitalCoreUtils;
@@ -50,12 +52,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/module/billing/procedureinvestigationorder.form")
 public class ProcedureInvestigationOrderController {
 	@RequestMapping(method = RequestMethod.GET)
-	public String main(Model model, @RequestParam("patientId") Integer patientId) {
+	public String main(Model model, @RequestParam("patientId") Integer patientId,
+			@RequestParam("encounterId") Integer encounterId) {
 		BillingService billingService = Context.getService(BillingService.class);
-		List<BillableService> serviceOrderList = billingService.listOfServiceOrder(patientId);
+		List<BillableService> serviceOrderList = billingService.listOfServiceOrder(patientId,encounterId);
 		model.addAttribute("serviceOrderList", serviceOrderList);
 		model.addAttribute("serviceOrderSize", serviceOrderList.size());
 		model.addAttribute("patientId", patientId);
+		model.addAttribute("encounterId", encounterId);
 		return "/module/billing/queue/procedureInvestigationOrder";
 	}
 
@@ -63,10 +67,13 @@ public class ProcedureInvestigationOrderController {
 	public String onSubmit(Model model, Object command,
 			HttpServletRequest request,
 			@RequestParam("patientId") Integer patientId,
+			@RequestParam("encounterId") Integer encounterId,
 			@RequestParam("indCount") Integer indCount,
 			@RequestParam(value = "billType", required = false) String billType) {
 
 		BillingService billingService = Context.getService(BillingService.class);
+		
+		PatientDashboardService patientDashboardService = Context.getService(PatientDashboardService.class);
 
 		PatientService patientService = Context.getPatientService();
 
@@ -86,6 +93,7 @@ public class ProcedureInvestigationOrderController {
 		int quantity = 0;
 		String selectservice;
 		BigDecimal unitPrice;
+		String reschedule;
 		String paybill;
 		BillableService service;
 		Money mUnitPrice;
@@ -94,11 +102,13 @@ public class ProcedureInvestigationOrderController {
 		BigDecimal rate;
 		String billTyp;
 		BigDecimal totalActualAmount = new BigDecimal(0);
+		OpdOrder opdOrder=new OpdOrder();
 	
 		for (Integer i = 1; i <= indCount; i++) {
 			servicename = request.getParameter(i.toString() + "service");
 			quantity = NumberUtils.createInteger(request.getParameter(i.toString()+ "servicequantity"));
 			selectservice = request.getParameter(i.toString() + "selectservice");
+			reschedule = request.getParameter(i.toString() + "reschedule");
 			paybill = request.getParameter(i.toString() + "paybill");
 			unitPrice = NumberUtils.createBigDecimal(request.getParameter(i.toString() + "unitprice"));
 			//ConceptService conceptService = Context.getConceptService();
@@ -136,6 +146,17 @@ public class ProcedureInvestigationOrderController {
 			item.setActualAmount(item.getAmount().multiply(rate));
 			totalActualAmount = totalActualAmount.add(item.getActualAmount());
 			bill.addBillItem(item);
+		
+			if(selectservice.equals("billed")){
+			opdOrder=billingService.getOpdTestOrder(encounterId,service.getConceptId());
+			opdOrder.setBillingStatus(1);
+			patientDashboardService.saveOrUpdateOpdOrder(opdOrder);
+			}
+			else{
+				opdOrder=billingService.getOpdTestOrder(encounterId,service.getConceptId());
+				opdOrder.setCancelStatus(1);
+				patientDashboardService.saveOrUpdateOpdOrder(opdOrder);
+			}
 		}
 
 		bill.setAmount(totalAmount.getAmount());

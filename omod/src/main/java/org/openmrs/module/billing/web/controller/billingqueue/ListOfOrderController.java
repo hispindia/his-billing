@@ -24,23 +24,31 @@
 package org.openmrs.module.billing.web.controller.billingqueue;
 
 import java.util.List;
+
+import org.openmrs.Patient;
+import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.BillingService;
-import org.openmrs.module.hospitalcore.model.PatientSearch;
+import org.openmrs.module.hospitalcore.model.OpdOrder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
-@Controller("BillingQueueController")
-@RequestMapping("/module/billing/billingqueue.form")
-public class BillingQueueController {
-	@RequestMapping(method=RequestMethod.GET)
-	public String main(Model model){
-		BillingService billingService = Context.getService(BillingService.class);
-		List<PatientSearch> patientList=billingService.listOfPatient();
-		model.addAttribute("patientList", patientList);
-		return "/module/billing/queue/billingQueueMainPage";
+@Controller("ListOfOrderController")
+@RequestMapping("/module/billing/listoforder.form")
+public class ListOfOrderController {
+	@RequestMapping(method = RequestMethod.GET)
+	public String main(Model model, @RequestParam("patientId") Integer patientId) {
+		BillingService billingService = Context
+				.getService(BillingService.class);
+		PatientService patientService = Context.getPatientService();
+		Patient patient = patientService.getPatient(patientId);
+		List<OpdOrder> listOfOrders = billingService.listOfOrder(patient);
+		model.addAttribute("listOfOrders", listOfOrders);
+		//model.addAttribute("serviceOrderSize", serviceOrderList.size());
+		model.addAttribute("patientId", patientId);
+		return "/module/billing/queue/listOfOrder";
 	}
-
 }

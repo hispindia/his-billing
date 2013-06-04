@@ -45,7 +45,7 @@
 		/** Click to view patient info */
 		visit: function(patientId){	
 		//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module		
-			window.location.href = openmrsContextPath + "/module/billing/procedureinvestigationorder.form?patientId=" + patientId;
+			window.location.href = openmrsContextPath + "/module/billing/listoforder.form?patientId=" + patientId;
 		}
 	};
 
@@ -82,6 +82,9 @@ jQuery.ajax({
 					searchKey			: searchKey
 				}),
 				success : function(data) {
+				    //jQuery("#radiologyResultContainer").remove();	
+				    //location.reload();
+				    //jQuery("#billingQueue").hide();		
 					jQuery("#searchResultContainer").html(data);	
 				}
 });
@@ -90,7 +93,7 @@ jQuery.ajax({
 
 <div style="max-height: 50px; max-width: 1000px;">
 	<b class="boxHeader">Search Patient In Queue <input type="text"
-		id="searchPatientInQueue" name="searchPatientInQueue" onkeyup="searchPatientInQueue()" /> </b>
+		id="searchPatientInQueue" name="searchPatientInQueue" /> </b>
 </div>
 <br />
 
@@ -99,6 +102,9 @@ jQuery.ajax({
 </div>
 <br />
 
+<td id="searchResultContainer">
+
+<div id="billingQueue">
 <c:choose>
 	<c:when test="${not empty patientList}">
 		<table style="width: 100%">
@@ -115,7 +121,7 @@ jQuery.ajax({
 				<tr
 					class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } patientSearchRow'
 					onclick="PATIENTSEARCHRESULTT.visit(${patient.patientId});">
-					<td>${patient.patientIdentifier.identifier}</td>
+					<td>${patient.identifier}</td>
 					<td>${patient.givenName} ${patient.middleName}
 						${patient.familyName}</td>
 					<td><c:choose>
@@ -140,4 +146,5 @@ jQuery.ajax({
 	No Patient found.
 	</c:otherwise>
 </c:choose>
+</div>
 <%@ include file="/WEB-INF/template/footer.jsp"%>
