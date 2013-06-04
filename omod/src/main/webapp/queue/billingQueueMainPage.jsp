@@ -91,13 +91,13 @@ jQuery.ajax({
 }
 </script>
 
-<div style="max-height: 50px; max-width: 1000px;">
+<div style="max-height: 50px; max-width: 1800px;">
 	<b class="boxHeader">Search Patient In Queue <input type="text"
 		id="searchPatientInQueue" name="searchPatientInQueue" /> </b>
 </div>
 <br />
 
-<div style="max-height: 50px; max-width: 1000px;">
+<div style="max-height: 50px; max-width: 1800px;">
 	<b class="boxHeader">Patient Billing Queue</b>
 </div>
 <br />
@@ -114,8 +114,10 @@ jQuery.ajax({
 				<td><b>Age</b></td>
 				<td><b>Gender</b></td>
 				<td><b>Birthdate</b></td>
+				<!--  
 				<td><b>Relative Name</b></td>
 				<td><b>Phone number</b></td>
+				-->
 			</tr>
 				<c:forEach items="${patientList}" var="patient" varStatus="varStatus">
 				<tr
@@ -143,7 +145,7 @@ jQuery.ajax({
 		</table>
 	</c:when>
 	<c:otherwise>
-	No Patient found.
+	No Patient in Queue.
 	</c:otherwise>
 </c:choose>
 </div>

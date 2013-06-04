@@ -24,7 +24,7 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="../includes/js_css.jsp"%>
 
-<div style="max-height: 50px; max-width: 1000px;">
+<div style="max-height: 50px; max-width: 1800px;">
 	<b class="boxHeader">List of Order</b>
 </div>
 <br />

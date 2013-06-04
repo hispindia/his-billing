@@ -53,7 +53,7 @@ jQuery("#"+serpriid).val(serqun*unpri);
 }
 </script>
 
-<div style="max-height: 50px; max-width: 1000px;">
+<div style="max-height: 50px; max-width: 1800px;">
 	<b class="boxHeader">List of procedure and investigation</b>
 </div>
 <br />
@@ -134,3 +134,4 @@ jQuery("#"+serpriid).val(serqun*unpri);
 		</td>
 	</tr>
 </form>
+<%@ include file="/WEB-INF/template/footer.jsp"%>
