@@ -483,4 +483,18 @@
 			varchar(50));
 		</sql>
 	</diff>
+	<!-- ghanshyam 3-june-2013 New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue -->
+	<diff>
+		<version>3.1.9</version>
+		<author>ghanshyan</author>
+		<date>June 3rd 2013</date>
+		<description>
+			Alter 'free_bill' column
+		</description>
+		<sql>
+			ALTER TABLE
+			billing_patient_service_bill MODIFY
+			free_bill INT(1);
+		</sql>
+	</diff>
 </sqldiff>
