@@ -37,6 +37,10 @@ $('.serquncalc').keyup(function() {
         return result;
     });
 });
+var sos=${serviceOrderSize};
+if(sos==0){
+jQuery("#savebill").hide(); 
+  }
 
 });
 </script>
@@ -141,7 +145,7 @@ else{
 		</tr>
 	</table>
 	<tr>
-		<td><input type="submit" value="Save bill">
+		<td><input type="submit" id="savebill" name="savebill" value="Save bill">
 		</td>
 		<td><input type="button"
 			onclick="javascript:window.location.href='billingqueue.form?'"

@@ -105,9 +105,10 @@ public class ProcedureInvestigationOrderController {
 		OpdOrder opdOrder=new OpdOrder();
 	
 		for (Integer i = 1; i <= indCount; i++) {
+			selectservice = request.getParameter(i.toString() + "selectservice");
+			if("billed".equals(selectservice)){
 			servicename = request.getParameter(i.toString() + "service");
 			quantity = NumberUtils.createInteger(request.getParameter(i.toString()+ "servicequantity"));
-			selectservice = request.getParameter(i.toString() + "selectservice");
 			reschedule = request.getParameter(i.toString() + "reschedule");
 			paybill = request.getParameter(i.toString() + "paybill");
 			unitPrice = NumberUtils.createBigDecimal(request.getParameter(i.toString() + "unitprice"));
@@ -146,13 +147,15 @@ public class ProcedureInvestigationOrderController {
 			item.setActualAmount(item.getAmount().multiply(rate));
 			totalActualAmount = totalActualAmount.add(item.getActualAmount());
 			bill.addBillItem(item);
-		
-			if(selectservice.equals("billed")){
+	
 			opdOrder=billingService.getOpdTestOrder(encounterId,service.getConceptId());
 			opdOrder.setBillingStatus(1);
 			patientDashboardService.saveOrUpdateOpdOrder(opdOrder);
-			}
+			
+		  }
 			else{
+				servicename = request.getParameter(i.toString() + "service");
+				service = billingService.getServiceByConceptName(servicename);
 				opdOrder=billingService.getOpdTestOrder(encounterId,service.getConceptId());
 				opdOrder.setCancelStatus(1);
 				patientDashboardService.saveOrUpdateOpdOrder(opdOrder);
@@ -164,7 +167,7 @@ public class ProcedureInvestigationOrderController {
 		bill.setFreeBill(2);
 		bill.setReceipt(billingService.createReceipt());
 		bill = billingService.savePatientServiceBill(bill);
-	
+	    
 		return "redirect:/module/billing/patientServiceBillForBD.list?patientId=" + patientId + "&billId="
         + bill.getPatientServiceBillId() + "&billType=" + billType;
 	}
