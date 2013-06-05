@@ -45,7 +45,7 @@ public class ListOfOrderController {
 				.getService(BillingService.class);
 		PatientService patientService = Context.getPatientService();
 		Patient patient = patientService.getPatient(patientId);
-		List<OpdOrder> listOfOrders = billingService.listOfOrder(patient);
+		List<OpdOrder> listOfOrders = billingService.listOfOrder(patientId);
 		model.addAttribute("listOfOrders", listOfOrders);
 		//model.addAttribute("serviceOrderSize", serviceOrderList.size());
 		model.addAttribute("patientId", patientId);
