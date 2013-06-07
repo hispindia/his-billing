@@ -75,7 +75,7 @@
 <script type="text/javascript">
 function searchPatientInQueue(){
 		var searchKey = jQuery("#searchPatientInQueue").val();
-		if(searchKey.length>5){
+		if(searchKey.length>4){
 jQuery.ajax({
 				type : "GET",
 				url : getContextPath() + "/module/billing/patientsearchbillingqueue.form",
