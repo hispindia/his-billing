@@ -39,7 +39,7 @@
 
 <script type="text/javascript">
 	
-	PATIENTSEARCHRESULTT = {
+	PATIENTSEARCHRESULT = {
 		oldBackgroundColor: "",
 		
 		/** Click to view patient info */
@@ -58,7 +58,7 @@
 				while(obj.tagName!="TR"){
 					obj = obj.parentNode;
 				}
-				PATIENTSEARCHRESULTT.oldBackgroundColor = jQuery(obj).css("background-color");
+				PATIENTSEARCHRESULT.oldBackgroundColor = jQuery(obj).css("background-color");
 				jQuery(obj).css("background-color", "#00FF99");									
 			}, 
 			function(event){
@@ -66,7 +66,7 @@
 				while(obj.tagName!="TR"){
 					obj = obj.parentNode;
 				}
-				jQuery(obj).css("background-color", PATIENTSEARCHRESULTT.oldBackgroundColor);				
+				jQuery(obj).css("background-color", PATIENTSEARCHRESULT.oldBackgroundColor);				
 			}
 		);
 	});
@@ -75,25 +75,25 @@
 <script type="text/javascript">
 function searchPatientInQueue(){
 		var searchKey = jQuery("#searchPatientInQueue").val();
+		if(searchKey.length>5){
 jQuery.ajax({
 				type : "GET",
 				url : getContextPath() + "/module/billing/patientsearchbillingqueue.form",
 				data : ({
 					searchKey			: searchKey
 				}),
-				success : function(data) {
-				    //jQuery("#radiologyResultContainer").remove();	
-				    //location.reload();
-				    //jQuery("#billingQueue").hide();		
+				success : function(data) {	
 					jQuery("#searchResultContainer").html(data);	
+					jQuery("#billingQueue").hide();	
 				}
-});
+         });
+     }
 }
 </script>
 
 <div style="max-height: 50px; max-width: 1800px;">
 	<b class="boxHeader">Search Patient In Queue <input type="text"
-		id="searchPatientInQueue" name="searchPatientInQueue" /> </b>
+		id="searchPatientInQueue" name="searchPatientInQueue" onkeyup="searchPatientInQueue();" /> Enter at least 5 characters</b>
 </div>
 <br />
 
@@ -102,7 +102,7 @@ jQuery.ajax({
 </div>
 <br />
 
-<td id="searchResultContainer">
+<div id="searchResultContainer"></div>
 
 <div id="billingQueue">
 <c:choose>
@@ -122,7 +122,7 @@ jQuery.ajax({
 				<c:forEach items="${patientList}" var="patient" varStatus="varStatus">
 				<tr
 					class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } patientSearchRow'
-					onclick="PATIENTSEARCHRESULTT.visit(${patient.patientId});">
+					onclick="PATIENTSEARCHRESULT.visit(${patient.patientId});">
 					<td>${patient.identifier}</td>
 					<td>${patient.givenName} ${patient.middleName}
 						${patient.familyName}</td>

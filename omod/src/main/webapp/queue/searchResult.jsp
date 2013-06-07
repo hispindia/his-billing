@@ -21,8 +21,56 @@
  *  issue no: #1632
 --%>
 
+<%@ include file="/WEB-INF/template/include.jsp"%>
+
+<script type="text/javascript">
+// get context path in order to build controller url
+	function getContextPath(){		
+		pn = location.pathname;
+		len = pn.indexOf("/", 1);				
+		cp = pn.substring(0, len);
+		return cp;
+	}
+</script>
+
+<script type="text/javascript">
+	
+	PATIENTSEARCHRESULT = {
+		oldBackgroundColor: "",
+		
+		/** Click to view patient info */
+		visit: function(patientId){	
+		//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module		
+			window.location.href = openmrsContextPath + "/module/billing/listoforder.form?patientId=" + patientId;
+		}
+	};
+
+	jQuery(document).ready(function(){
+	
+		// hover rows
+		jQuery(".patientSearchRow").hover(
+			function(event){					
+				obj = event.target;
+				while(obj.tagName!="TR"){
+					obj = obj.parentNode;
+				}
+				PATIENTSEARCHRESULT.oldBackgroundColor = jQuery(obj).css("background-color");
+				jQuery(obj).css("background-color", "#00FF99");									
+			}, 
+			function(event){
+				obj = event.target;
+				while(obj.tagName!="TR"){
+					obj = obj.parentNode;
+				}
+				jQuery(obj).css("background-color", PATIENTSEARCHRESULT.oldBackgroundColor);				
+			}
+		);
+		
+	});
+</script>
+
 <c:choose>
-	<c:when test="${not empty patientListt}">
+	<c:when test="${not empty patientList}">
 		<table style="width: 100%">
 			<tr>
 				<td><b>Identifier</b></td>
@@ -30,13 +78,15 @@
 				<td><b>Age</b></td>
 				<td><b>Gender</b></td>
 				<td><b>Birthdate</b></td>
+				<!--  
 				<td><b>Relative Name</b></td>
 				<td><b>Phone number</b></td>
+				-->
 			</tr>
-				<c:forEach items="${patientListt}" var="patient" varStatus="varStatus">
+				<c:forEach items="${patientList}" var="patient" varStatus="varStatus">
 				<tr
 					class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } patientSearchRow'
-					onclick="PATIENTSEARCHRESULTT.visit(${patient.patientId});">
+					onclick="PATIENTSEARCHRESULT.visit(${patient.patientId});">
 					<td>${patient.identifier}</td>
 					<td>${patient.givenName} ${patient.middleName}
 						${patient.familyName}</td>
@@ -59,6 +109,6 @@
 		</table>
 	</c:when>
 	<c:otherwise>
-	No Patient founddddddddddddddddddddd.
+	No Result Found.
 	</c:otherwise>
 </c:choose>

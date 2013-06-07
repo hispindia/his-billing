@@ -43,6 +43,6 @@ public class PatientSearchForBillingQueueController {
 		BillingService billingService = Context.getService(BillingService.class);
 		List<PatientSearch> patientSearchResult = billingService.searchListOfPatient(searchKey);
 		model.addAttribute("patientList", patientSearchResult);
-		return "/module/billing/queue/billingQueueMainPage";
+		return "/module/billing/queue/searchResult";
 	}
 }
