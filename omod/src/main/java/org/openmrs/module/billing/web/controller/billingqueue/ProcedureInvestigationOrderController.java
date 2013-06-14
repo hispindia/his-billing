@@ -36,7 +36,7 @@ import org.openmrs.module.billing.includable.billcalculator.BillCalculatorForBDS
 import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.BillableService;
-import org.openmrs.module.hospitalcore.model.OpdOrder;
+import org.openmrs.module.hospitalcore.model.OpdTestOrder;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
 import org.openmrs.module.hospitalcore.util.HospitalCoreUtils;
@@ -102,7 +102,7 @@ public class ProcedureInvestigationOrderController {
 		BigDecimal rate;
 		String billTyp;
 		BigDecimal totalActualAmount = new BigDecimal(0);
-		OpdOrder opdOrder=new OpdOrder();
+		OpdTestOrder opdTestOrder=new OpdTestOrder();
 	
 		for (Integer i = 1; i <= indCount; i++) {
 			selectservice = request.getParameter(i.toString() + "selectservice");
@@ -148,17 +148,17 @@ public class ProcedureInvestigationOrderController {
 			totalActualAmount = totalActualAmount.add(item.getActualAmount());
 			bill.addBillItem(item);
 	
-			opdOrder=billingService.getOpdTestOrder(encounterId,service.getConceptId());
-			opdOrder.setBillingStatus(1);
-			patientDashboardService.saveOrUpdateOpdOrder(opdOrder);
+			opdTestOrder=billingService.getOpdTestOrder(encounterId,service.getConceptId());
+			opdTestOrder.setBillingStatus(1);
+			patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
 			
 		  }
 			else{
 				servicename = request.getParameter(i.toString() + "service");
 				service = billingService.getServiceByConceptName(servicename);
-				opdOrder=billingService.getOpdTestOrder(encounterId,service.getConceptId());
-				opdOrder.setCancelStatus(1);
-				patientDashboardService.saveOrUpdateOpdOrder(opdOrder);
+				opdTestOrder=billingService.getOpdTestOrder(encounterId,service.getConceptId());
+				opdTestOrder.setCancelStatus(1);
+				patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
 			}
 		}
 
