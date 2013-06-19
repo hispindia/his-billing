@@ -23,6 +23,9 @@
 
 package org.openmrs.module.billing.web.controller.billingqueue;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.openmrs.Patient;
@@ -40,12 +43,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/module/billing/listoforder.form")
 public class ListOfOrderController {
 	@RequestMapping(method = RequestMethod.GET)
-	public String main(Model model, @RequestParam("patientId") Integer patientId) {
+	public String main(Model model, @RequestParam("patientId") Integer patientId,
+			@RequestParam(value = "date", required = false) String dateStr) {
 		BillingService billingService = Context
 				.getService(BillingService.class);
 		PatientService patientService = Context.getPatientService();
 		Patient patient = patientService.getPatient(patientId);
-		List<OpdTestOrder> listOfOrders = billingService.listOfOrder(patientId);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date date = null;
+			try {
+				date = sdf.parse(dateStr);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		List<OpdTestOrder> listOfOrders = billingService.listOfOrder(patientId,date);
 		model.addAttribute("listOfOrders", listOfOrders);
 		//model.addAttribute("serviceOrderSize", serviceOrderList.size());
 		model.addAttribute("patientId", patientId);

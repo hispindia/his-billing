@@ -21,6 +21,8 @@
  *  issue no: #1632
 --%>
 <%@ include file="/WEB-INF/template/include.jsp"%>
+<openmrs:require privilege="Add Bill" otherwise="/login.htm"
+	redirect="/module/billing/main.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="../includes/js_css.jsp"%>
 <%@ include file="../queue/billingQueueHeader.jsp"%>

@@ -23,10 +23,8 @@
 
 package org.openmrs.module.billing.web.controller.billingqueue;
 
-import java.util.List;
-import org.openmrs.api.context.Context;
-import org.openmrs.module.hospitalcore.BillingService;
-import org.openmrs.module.hospitalcore.model.PatientSearch;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,10 +35,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class BillingQueueController {
 	@RequestMapping(method=RequestMethod.GET)
 	public String main(Model model){
-		BillingService billingService = Context.getService(BillingService.class);
-		List<PatientSearch> patientList=billingService.listOfPatient();
-		model.addAttribute("patientList", patientList);
-		return "/module/billing/queue/billingQueueMainPage";
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		String dateStr = sdf.format(new Date());
+		model.addAttribute("currentDate", dateStr);
+		return "/module/billing/queue/patientQueueTestOrder";
 	}
 
 }

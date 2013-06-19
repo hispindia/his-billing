@@ -23,8 +23,12 @@
 
 package org.openmrs.module.billing.web.controller.billingqueue;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.hospitalcore.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,17 +36,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.openmrs.module.hospitalcore.model.PatientSearch;
+import org.openmrs.module.hospitalcore.util.PagingUtil;
 
 @Controller("PatientSearchForBillingQueueController")
 @RequestMapping("/module/billing/patientsearchbillingqueue.form")
 public class PatientSearchForBillingQueueController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String main(
-			Model model,
-			@RequestParam(value = "searchKey", required = false) String searchKey) {
+			@RequestParam(value = "date", required = false) String dateStr,
+			@RequestParam(value = "searchKey", required = false) String searchKey,
+			@RequestParam(value = "currentPage", required = false) Integer currentPage,
+			Model model) {
 		BillingService billingService = Context.getService(BillingService.class);
-		List<PatientSearch> patientSearchResult = billingService.searchListOfPatient(searchKey);
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date date = null;
+		try {
+			date = sdf.parse(dateStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		List<PatientSearch> patientSearchResult = billingService.searchListOfPatient(date, searchKey, currentPage);
+		currentPage = 1;
+		int total = patientSearchResult.size();
+		PagingUtil pagingUtil = new PagingUtil(BillingConstants.PAGESIZE,
+				currentPage, total);
+		model.addAttribute("pagingUtil", pagingUtil);
 		model.addAttribute("patientList", patientSearchResult);
+		model.addAttribute("date", dateStr);
 		return "/module/billing/queue/searchResult";
 	}
 }
+
