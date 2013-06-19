@@ -34,9 +34,11 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculatorForBDService;
 import org.openmrs.module.hospitalcore.BillingService;
+import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
 import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.OpdTestOrder;
+import org.openmrs.module.hospitalcore.model.PatientSearch;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
 import org.openmrs.module.hospitalcore.util.HospitalCoreUtils;
@@ -53,13 +55,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ProcedureInvestigationOrderController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String main(Model model, @RequestParam("patientId") Integer patientId,
-			@RequestParam("encounterId") Integer encounterId) {
+			@RequestParam("encounterId") Integer encounterId,
+			@RequestParam(value = "date", required = false) String dateStr) {
 		BillingService billingService = Context.getService(BillingService.class);
 		List<BillableService> serviceOrderList = billingService.listOfServiceOrder(patientId,encounterId);
 		model.addAttribute("serviceOrderList", serviceOrderList);
 		model.addAttribute("serviceOrderSize", serviceOrderList.size());
 		model.addAttribute("patientId", patientId);
 		model.addAttribute("encounterId", encounterId);
+		HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
+		PatientSearch patientSearch = hospitalCoreService.getPatientByPatientId(patientId);
+		model.addAttribute("patientSearch", patientSearch);
+		model.addAttribute("date", dateStr);
 		return "/module/billing/queue/procedureInvestigationOrder";
 	}
 

@@ -60,6 +60,7 @@ public class ListOfOrderController {
 		model.addAttribute("listOfOrders", listOfOrders);
 		//model.addAttribute("serviceOrderSize", serviceOrderList.size());
 		model.addAttribute("patientId", patientId);
+		model.addAttribute("date", dateStr);
 		return "/module/billing/queue/listOfOrder";
 	}
 }

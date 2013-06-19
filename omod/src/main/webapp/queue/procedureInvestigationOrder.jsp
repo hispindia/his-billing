@@ -77,6 +77,27 @@ else{
 </div>
 <br />
 
+<div id="patientDetails">
+<!--
+<div id="patientDetails" style="margin: 10px auto; width: 981px;">
+-->
+		<table>
+			<tr>
+				<td>Patient ID         :</td>
+				<td>${patientSearch.identifier}</td>
+			</tr>
+			<tr>
+				<td>Name of the patient:</td>
+				<td>${patientSearch.givenName}&nbsp;&nbsp;${patientSearch.middleName}&nbsp;&nbsp;
+					${patientSearch.familyName}</td>
+			</tr>
+			<tr>
+				<td>Date               :</td>
+				<td>${date}</td>
+			</tr>
+		</table>
+		</div>
+
 <form id="orderBillingForm"
 	action="procedureinvestigationorder.form?patientId=${patientId}&encounterId=${encounterId}&indCount=${serviceOrderSize}&billType=mixed"
 	method="POST">
@@ -85,8 +106,8 @@ else{
 			<tr>
 				<th style="text-align: center;">Sl No</th>
 				<th style="text-align: center;">Service</th>
-				<th style="text-align: center;">Quantity</th>
 				<th style="text-align: center;">Select</th>
+				<th style="text-align: center;">Quantity</th>
 				<!-- 
 				<th style="text-align: center;">Reschedule</th>
 				 -->
@@ -110,15 +131,15 @@ else{
 					<td align="center"><input type="text"
 						id="${index.count}service" name="${index.count}service"
 						value="${sol.name}" readOnly="true"></td>
-					<td align="center"><input type="text"
-						id="${index.count}servicequantity"
-						name="${index.count}servicequantity" size="7"
-						onkeyup="updatePrice(${index.count});" class="serquncalc" /></td>
 					<td align="center"><input type="checkbox"
 						id="${index.count}selectservice"
 						name="${index.count}selectservice" checked="checked"
 						value="billed" onclick="disable(${index.count});">
 					</td>
+					<td align="center"><input type="text"
+						id="${index.count}servicequantity"
+						name="${index.count}servicequantity" size="7"
+						onkeyup="updatePrice(${index.count});" class="serquncalc" /></td>
 					<!-- 
 					<td align="center"><input type="text"
 						id="${index.count}reschedule" name="${index.count}reschedule"

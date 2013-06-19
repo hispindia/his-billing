@@ -49,7 +49,7 @@
 			</c:choose>
 			<tr class="${klass}">
 				<td>${index.count}</td>
-				<td><a href="procedureinvestigationorder.form?patientId=${patientId}&encounterId=${listOfOrder.encounter.encounterId}">${listOfOrder.encounter.encounterId}</a>
+				<td><a href="procedureinvestigationorder.form?patientId=${patientId}&encounterId=${listOfOrder.encounter.encounterId}&date=${date}">${listOfOrder.encounter.encounterId}</a>
 				</td>
 				<td><openmrs:formatDate date="${listOfOrder.createdOn}" /></td>
 			</tr>
