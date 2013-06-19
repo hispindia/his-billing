@@ -32,7 +32,7 @@
 	<table id="myTable" class="tablesorter" class="thickbox">
 	<thead>
 		<tr align="center">
-			<th>Sl No</th>
+			<th>S.No</th>
 			<th>Order Id</th>
 			<th>Date</th>
 		</tr>

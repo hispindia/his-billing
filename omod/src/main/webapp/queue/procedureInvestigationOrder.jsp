@@ -104,7 +104,7 @@ else{
 	<table id="myTable" class="tablesorter" class="thickbox">
 		<thead>
 			<tr>
-				<th style="text-align: center;">Sl No</th>
+				<th style="text-align: center;">S.No</th>
 				<th style="text-align: center;">Service</th>
 				<th style="text-align: center;">Select</th>
 				<th style="text-align: center;">Quantity</th>
