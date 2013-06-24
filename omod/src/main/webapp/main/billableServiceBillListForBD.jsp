@@ -89,7 +89,6 @@ function validate(){
 	}
 }
 </script>
-<!-- 
 <p>
 	<b>
 		<td><input type="button" value="Add Paid Bill"
@@ -104,7 +103,6 @@ function validate(){
 				onclick="return validate();" /> </span></td> </b>
 
 </p>
- -->
 <c:forEach items="${errors}" var="error">
 	<span class="error"><spring:message
 			code="${error.defaultMessage}" text="${error.defaultMessage}" /> </span>

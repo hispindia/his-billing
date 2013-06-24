@@ -72,35 +72,54 @@ else{
 }
 </script>
 
+<script type="text/javascript">
+function validate(serviceOrderSize){
+for (var i=1; i<=serviceOrderSize; i++)
+  {
+  var con=i.toString();
+if(jQuery("#"+con+"selectservice").attr('checked')) {
+var serqunid=con.concat("servicequantity"); 
+serqun=jQuery("#"+serqunid).val();
+if (serqun==null || serqun=="")
+  {
+  alert("Please enter quantity");
+  return false;
+  }	
+ }
+}
+}
+</script>
+
 <div style="max-height: 50px; max-width: 1800px;">
 	<b class="boxHeader">List of procedure and investigation</b>
 </div>
 <br />
 
 <div id="patientDetails">
-<!--
+	<!--
 <div id="patientDetails" style="margin: 10px auto; width: 981px;">
 -->
-		<table>
-			<tr>
-				<td>Patient ID         :</td>
-				<td>${patientSearch.identifier}</td>
-			</tr>
-			<tr>
-				<td>Name of the patient:</td>
-				<td>${patientSearch.givenName}&nbsp;&nbsp;${patientSearch.middleName}&nbsp;&nbsp;
-					${patientSearch.familyName}</td>
-			</tr>
-			<tr>
-				<td>Date               :</td>
-				<td>${date}</td>
-			</tr>
-		</table>
-		</div>
+	<table>
+		<tr>
+			<td>Patient ID :</td>
+			<td>${patientSearch.identifier}</td>
+		</tr>
+		<tr>
+			<td>Name of the patient:</td>
+			<td>${patientSearch.givenName}&nbsp;&nbsp;${patientSearch.middleName}&nbsp;&nbsp;
+				${patientSearch.familyName}</td>
+		</tr>
+		<tr>
+			<td>Date :</td>
+			<td>${date}</td>
+		</tr>
+	</table>
+</div>
 
 <form id="orderBillingForm"
 	action="procedureinvestigationorder.form?patientId=${patientId}&encounterId=${encounterId}&indCount=${serviceOrderSize}&billType=mixed"
-	method="POST">
+	method="POST"
+	onsubmit="javascript:return validate(${serviceOrderSize});">
 	<table id="myTable" class="tablesorter" class="thickbox">
 		<thead>
 			<tr>
@@ -166,7 +185,8 @@ else{
 		</tr>
 	</table>
 	<tr>
-		<td><input type="submit" id="savebill" name="savebill" value="Save bill">
+		<td><input type="submit" id="savebill" name="savebill"
+			value="Save bill">
 		</td>
 		<td><input type="button"
 			onclick="javascript:window.location.href='billingqueue.form?'"
