@@ -32,7 +32,9 @@ import org.openmrs.Patient;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.BillingService;
+import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.model.OpdTestOrder;
+import org.openmrs.module.hospitalcore.model.PatientSearch;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,6 +59,10 @@ public class ListOfOrderController {
 				e.printStackTrace();
 			}
 		List<OpdTestOrder> listOfOrders = billingService.listOfOrder(patientId,date);
+		// Kesavulu loka 25-06-2013, Add Patient Details on the page where Order ID is clicked
+		HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
+		PatientSearch patientSearch = hospitalCoreService.getPatientByPatientId(patientId);
+		model.addAttribute("patientSearch", patientSearch);
 		model.addAttribute("listOfOrders", listOfOrders);
 		//model.addAttribute("serviceOrderSize", serviceOrderList.size());
 		model.addAttribute("patientId", patientId);

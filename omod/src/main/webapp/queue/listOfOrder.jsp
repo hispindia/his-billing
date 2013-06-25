@@ -27,6 +27,25 @@
 <div style="max-height: 50px; max-width: 1800px;">
 	<b class="boxHeader">List of Order</b>
 </div>
+		<!--  Kesavulu loka 25-06-2013, Add Patient Details on the page where Order ID is clicked -->
+<div>	
+	<table>
+		<tr>
+			<td>Patient ID :</td>
+			<td>${patientSearch.identifier}</td>
+		</tr>
+		<tr>
+			<td>Name of the patient:</td>
+			<td>${patientSearch.givenName}&nbsp;&nbsp;${patientSearch.middleName}&nbsp;&nbsp;
+				${patientSearch.familyName}</td>
+		</tr>
+		<tr>
+			<td>Date :</td>
+			<td>${date}</td>
+		</tr>
+	</table>
+</div>
+
 <br />
 
 	<table id="myTable" class="tablesorter" class="thickbox">
