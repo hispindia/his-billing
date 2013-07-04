@@ -20,6 +20,7 @@
  *  date: 3-june-2013
  *  issue no: #1632
 --%>
+<openmrs:require privilege="Test order queue" otherwise="/login.htm" redirect="/module/billing/main.form" />
 <div>
 	<ul id="menu">
 	<br />

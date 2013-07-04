@@ -22,6 +22,7 @@
 --%>
 <%@ include file="/WEB-INF/template/include.jsp" %>
 <%@ include file="/WEB-INF/template/header.jsp" %>
+<openmrs:require privilege="Test order queue" otherwise="/login.htm" redirect="/module/billing/main.form" />
 <%@ include file="../includes/js_css.jsp"%>
 <%@ include file="../queue/billingQueueHeader.jsp"%>
 <h2>Patient Queue for Test Order</h2>	

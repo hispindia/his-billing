@@ -124,6 +124,12 @@
 		<name>View Miscellaneous Service</name>
 		<description>Allows user to view Miscellaneous Service</description>
 	</privilege>
+	
+	<!-- ghanshyam 3-june-2013 New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue -->
+	<privilege>
+		<name>Test order queue</name>
+		<description>Allows user to process test order queue</description>
+	</privilege>
 
 	<!-- Required Global Properties -->
 	<globalProperty>

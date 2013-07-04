@@ -22,6 +22,7 @@
 --%>
 
 <%@ include file="/WEB-INF/template/include.jsp"%>
+<openmrs:require privilege="Test order queue" otherwise="/login.htm" redirect="/module/billing/main.form" />
 
 <script type="text/javascript">
 // get context path in order to build controller url
