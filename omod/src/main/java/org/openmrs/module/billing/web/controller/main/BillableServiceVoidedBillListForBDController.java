@@ -64,12 +64,15 @@ public class BillableServiceVoidedBillListForBDController {
 		BillCalculatorForBDService calculator = new BillCalculatorForBDService();
 		PatientServiceBill bill = billingService.getPatientServiceBillById(billId);
 		//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module
-		if (bill.getFreeBill().equals(true)) {
+		if (bill.getFreeBill().equals(1)) {
 			String billType = "free";
-			model.addAttribute("freeBill", calculator.isFreeBill(billType));
+			bill.setFreeBill(calculator.isFreeBill(billType));
+		} else if (bill.getFreeBill().equals(2)) {
+			String billType = "mixed";
+			bill.setFreeBill(2);
 		} else {
 			String billType = "paid";
-			model.addAttribute("freeBill", calculator.isFreeBill(billType));
+			bill.setFreeBill(calculator.isFreeBill(billType));
 		}
 		
 		if (patient != null) {
@@ -83,9 +86,12 @@ public class BillableServiceVoidedBillListForBDController {
 		}
 		if (billId != null) {
 			//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module
-			if (bill.getFreeBill().equals(true)) {
+			if (bill.getFreeBill().equals(1)) {
 				String billType = "free";
 				bill.setFreeBill(calculator.isFreeBill(billType));
+			} else if (bill.getFreeBill().equals(2)) {
+				String billType = "mixed";
+				bill.setFreeBill(2);
 			} else {
 				String billType = "paid";
 				bill.setFreeBill(calculator.isFreeBill(billType));

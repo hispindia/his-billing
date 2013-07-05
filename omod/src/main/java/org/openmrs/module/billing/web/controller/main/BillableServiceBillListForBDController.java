@@ -81,6 +81,9 @@ public class BillableServiceBillListForBDController {
 			if (bill.getFreeBill().equals(1)) {
 				String billType = "free";
 				bill.setFreeBill(calculator.isFreeBill(billType));
+			} else if (bill.getFreeBill().equals(2)) {
+				String billType = "mixed";
+				bill.setFreeBill(2);
 			} else {
 				String billType = "paid";
 				bill.setFreeBill(calculator.isFreeBill(billType));
@@ -108,6 +111,9 @@ public class BillableServiceBillListForBDController {
 			if (patientServiceBill.getFreeBill().equals(1)) {
 				String billType = "free";
 				patientServiceBill.setFreeBill(calculator.isFreeBill(billType));
+			} else if (patientServiceBill.getFreeBill().equals(2)) {
+				String billType = "mixed";
+				patientServiceBill.setFreeBill(2);
 			} else {
 				String billType = "paid";
 				patientServiceBill.setFreeBill(calculator.isFreeBill(billType));

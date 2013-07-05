@@ -181,7 +181,19 @@ public class BillableServiceBillEditForBDController {
 				if (bill.getFreeBill().equals(1)) {
 					String billType = "free";
 					rate = calculator.getRate(parameters, billType);
-				} else {
+				} else if (bill.getFreeBill().equals(2)) {
+					String billType = "mixed";
+					PatientServiceBillItem patientServiceBillItem = billingService
+							.getPatientServiceBillItem(billId, name);
+					String psbi= patientServiceBillItem.getActualAmount().toString();
+					if (psbi.equals("0.00")) {
+						rate = new BigDecimal(0);
+					} else {
+						rate = new BigDecimal(1);
+						System.out.println(patientServiceBillItem.getName()+"bbbbbbbbbbbb");
+					}
+					item.setActualAmount(item.getAmount().multiply(rate));
+				}else {
 					String billType = "paid";
 					rate = calculator.getRate(parameters, billType);
 				}
@@ -209,7 +221,18 @@ public class BillableServiceBillEditForBDController {
 				if (bill.getFreeBill().equals(1)) {
 					String billType = "free";
 					rate = calculator.getRate(parameters, billType);
-				} else {
+				} else if (bill.getFreeBill().equals(2)) {
+					String billType = "mixed";
+					PatientServiceBillItem patientServiceBillItem = billingService
+							.getPatientServiceBillItem(billId, name);
+					String psbi= patientServiceBillItem.getActualAmount().toString();
+					if (psbi.equals("0.00")) {
+						rate = new BigDecimal(0);
+					} else {
+						rate = new BigDecimal(1);
+					}
+					item.setActualAmount(item.getAmount().multiply(rate));
+				}else {
 					String billType = "paid";
 					rate = calculator.getRate(parameters, billType);
 				}
@@ -256,6 +279,9 @@ public class BillableServiceBillEditForBDController {
 		if (bill.getFreeBill().equals(1)) {
 			String billType = "free";
 			bill.setFreeBill(calculator.isFreeBill(billType));
+		} else if (bill.getFreeBill().equals(2)) {
+			String billType = "mixed";
+			bill.setFreeBill(2);
 		} else {
 			String billType = "paid";
 			bill.setFreeBill(calculator.isFreeBill(billType));

@@ -75,9 +75,12 @@ public class BillableServiceBillEditListForBDController {
 		}
 		if (billId != null) {
 			//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module
-			if (bill.getFreeBill().equals(true)) {
+			if (bill.getFreeBill().equals(1)) {
 				String billType = "free";
 				bill.setFreeBill(calculator.isFreeBill(billType));
+			} else if (bill.getFreeBill().equals(2)) {
+				String billType = "mixed";
+				bill.setFreeBill(2);
 			} else {
 				String billType = "paid";
 				bill.setFreeBill(calculator.isFreeBill(billType));
