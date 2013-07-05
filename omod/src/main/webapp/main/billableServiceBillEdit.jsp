@@ -213,7 +213,7 @@ jQuery(document).ready(function(){
 				type="button" id="voi" onclick="voidBill()"
 				value="<spring:message code='billing.bill.void'/>" /> <input
 				type="button" value="<spring:message code='general.cancel'/>"
-				onclick="javascript:window.location.href='patientServiceBill.list?patientId=${patientId}'" />
+				onclick="javascript:window.location.href='patientServiceBillForBD.list?patientId=${patientId}'" />
 			<!-- 
 		    <select name="enctype"  tabindex="20" >
                 <c:forEach items="${encounterTypes}" var="enct">

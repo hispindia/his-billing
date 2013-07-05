@@ -154,7 +154,7 @@ jQuery(document).ready(function(){
 			<input type="button" onclick="submitBillForm()" id="subm" name="subm"
 				value="<spring:message code='billing.bill.save'/>" /> <input
 				type="button" value="<spring:message code='general.cancel'/>"
-				onclick="javascript:window.location.href='patientServiceBill.list?patientId=${patientId}'" />
+				onclick="javascript:window.location.href='patientServiceBillForBD.list?patientId=${patientId}'" />
 			<!-- 
 		    <select name="enctype"  tabindex="20" >
                 <c:forEach items="${encounterTypes}" var="enct">

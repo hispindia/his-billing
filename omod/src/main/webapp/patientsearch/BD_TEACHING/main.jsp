@@ -31,7 +31,7 @@
 		
 		/** Click to view patient info */
 		visit: function(patientId){			
-			window.location.href = openmrsContextPath + "/module/billing/patientServiceBill.list?patientId=" + patientId;
+			window.location.href = openmrsContextPath + "/module/billing/patientServiceBillForBD.list?patientId=" + patientId;
 		}
 	};
 	
