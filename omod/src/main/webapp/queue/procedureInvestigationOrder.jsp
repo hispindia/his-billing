@@ -86,8 +86,15 @@ if (serqun==null || serqun=="")
   alert("Please enter quantity");
   return false;
   }	
+
+if (serqun!=null || quantity!=""){
+   if(isNaN(serqun)){
+   alert("Please enter quantity in correct format");
+   return false;
+	}
+   }  
+  }
  }
-}
 }
 </script>
 
