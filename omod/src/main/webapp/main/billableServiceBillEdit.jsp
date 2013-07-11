@@ -47,6 +47,8 @@ ${tabs }
 <script type="text/javascript">
 jQuery(document).ready(function(){ 
     $('#container-1 ul').tabs();
+    //ghanshyam,11-july-2013,Bug #2170 Error on editing a bill that has both paid and free set of investigations
+    jQuery('#container-1').hide();
     
     /**
     * June 5th 2012: Thai Chuong supported issue #246
