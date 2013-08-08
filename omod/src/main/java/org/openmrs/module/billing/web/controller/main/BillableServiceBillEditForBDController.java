@@ -190,7 +190,6 @@ public class BillableServiceBillEditForBDController {
 						rate = new BigDecimal(0);
 					} else {
 						rate = new BigDecimal(1);
-						System.out.println(patientServiceBillItem.getName()+"bbbbbbbbbbbb");
 					}
 					item.setActualAmount(item.getAmount().multiply(rate));
 				}else {
