@@ -1,3 +1,13 @@
+3.2.9
+- #2259              Error on selecting Bill ID to search for a bill 
+- #2170              Error on editing a bill that has both paid and free set of investigations
+- #1966              Patient does not disappear from queue even after billing is complete
+- #1935              Add Patient Details on the page where Order ID is clicked
+- #1928              The old functionality of 'Add new bill/ Add paid bill' is not there after the introduction of the new functionality
+- #1927              Error while making a test free in Billing
+- #1632              Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue
+- #1362              in view screen minor modification in Bangladesh module
+
 3.2.8
 - #966               Add Paid Bill/Add Free Bill for Bangladesh module
 - #962               change RS to TK for Bangladesh module
