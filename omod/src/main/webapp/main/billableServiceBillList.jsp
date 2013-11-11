@@ -59,6 +59,8 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery.PrintArea.js"></script>
 
+<!-- ghanshyam,11-nov-2013,New Requirement #2938 Dealing with Dead Patient -->
+<c:if test="${patient.dead eq '0'}">
 <p>
 	<b><a
 		href="addPatientServiceBill.form?patientId=${patient.patientId}">Add
@@ -67,6 +69,8 @@
 		</c:if> </b>
 
 </p>
+</c:if>
+
 <c:forEach items="${errors}" var="error">
 	<span class="error"><spring:message
 			code="${error.defaultMessage}" text="${error.defaultMessage}" /> </span>
