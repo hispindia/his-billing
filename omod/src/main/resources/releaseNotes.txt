@@ -1,3 +1,7 @@
+3.2.9
+released by ghanshyam on 11-Nov-2013
+- #2938 Dealing with Dead Patient
+
 3.2.8
 released by ghanshyam on 20-may-2013
 - #343	Queue is being generated from Saving and printing the old bill from a previous date which should not happen[Billing][3.2.7-SNAPSHOT]
