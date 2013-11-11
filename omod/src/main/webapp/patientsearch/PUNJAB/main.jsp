@@ -27,7 +27,12 @@
 		oldBackgroundColor: "",
 		
 		/** Click to view patient info */
-		visit: function(patientId){			
+		//ghanshyam,11-nov-2013,New Requirement #2938 Dealing with Dead Patient
+		visit: function(patientId,deadInfo){	
+		if(deadInfo=="true"){
+		alert("This Patient is Dead");
+		return false;
+		}						
 			window.location.href = openmrsContextPath + "/module/billing/patientServiceBill.list?patientId=" + patientId;
 		}
 	};
@@ -75,9 +80,10 @@
 				</td>
 			</tr>
 			<c:forEach items="${patients}" var="patient" varStatus="varStatus">
+			<!-- ghanshyam,11-nov-2013,New Requirement #2938 Dealing with Dead Patient -->
 				<tr
 					class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } patientSearchRow'
-					onclick="PATIENTSEARCHRESULT.visit(${patient.patientId});">
+					onclick="PATIENTSEARCHRESULT.visit(${patient.patientId},'${patient.dead}');">
 					<td>${patient.patientIdentifier.identifier}</td>
 					<td>${patient.givenName} ${patient.middleName}
 						${patient.familyName}</td>
