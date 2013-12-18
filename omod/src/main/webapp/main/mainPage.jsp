@@ -43,6 +43,11 @@
 				code="billing.billingqueue" />
 	</a>
 	</b>
+	<!-- Abhishek-Ankur 15-Dec-2013 New Requirement # Indoor Patient Billing Queue -->
+	&nbsp; | &nbsp; <b><a href="indoorbillingqueue.form"><spring:message
+				code="billing.indoorbillingqueue" />
+	</a>
+	</b>
 </p>
 <br />
 <openmrs:require privilege="View Patients" otherwise="/login.htm"

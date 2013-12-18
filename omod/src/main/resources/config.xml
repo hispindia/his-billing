@@ -130,7 +130,13 @@
 		<name>Test order queue</name>
 		<description>Allows user to process test order queue</description>
 	</privilege>
-
+	
+	<!-- Abhishek-Ankur 15-Dec-2013 New Requirement # Indoor Patient Billing Queue -->
+	<privilege>
+		<name>Indoor billing queue</name>
+		<description>Allows user to view and add bills in indoor patient billing queue</description>
+	</privilege>
+				
 	<!-- Required Global Properties -->
 	<globalProperty>
 		<property>@MODULE_ID@.updatedReceiptIds</property>

@@ -32,6 +32,8 @@
 	href="${pageContext.request.contextPath}/moduleResources/hospitalcore/scripts/jquery/css/jquery.autocomplete.css" />
 <link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/moduleResources/hospitalcore/styles/tablesorter/blue/style.css" />
+<link type="text/css" rel="stylesheet" 
+	href="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/css/jquery.multiselect.css" />
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/moduleResources/hospitalcore/scripts/jquery/jquery.metadata.min.js"></script>
 <script type="text/javascript"
@@ -56,5 +58,10 @@
 	src="${pageContext.request.contextPath}/moduleResources/hospitalcore/scripts/paging.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/common.js"></script>
-
+<script type="text/javascript" 
+	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery.form.js"></script>
+<script type="text/javascript"  
+	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/lists.js" ></script>
+<script type="text/javascript" 
+	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery.multiselect.js"></script>
 

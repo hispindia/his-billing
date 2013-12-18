@@ -16,11 +16,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Billing module.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  author: ghanshyam
- *  date: 3-june-2013
- *  issue no: #1632
+ *  author: Abhishek-Ankur
+ *  date: 15-Dec-2013
+ *  Requirement: Indoor Patient Billing
 --%>
-<openmrs:require privilege="Test order queue" otherwise="/login.htm" redirect="/module/billing/main.form" />
+<openmrs:require privilege="Indoor billing queue" otherwise="/login.htm" redirect="/module/billing/main.form" />
 <div>
 	<ul id="menu">
 	<br />
