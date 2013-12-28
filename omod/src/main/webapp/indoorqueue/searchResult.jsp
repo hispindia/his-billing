@@ -17,7 +17,7 @@
  *  along with Billing module.  If not, see <http://www.gnu.org/licenses/>.
  *
  *  author: Abhishek-Ankur
- *  date: 17-Dec-201
+ *  date: 17-Dec-2013
  *  Requirement: Indoor Patient Billing
 --%>
 <%@ include file="/WEB-INF/template/include.jsp" %>
@@ -52,11 +52,12 @@
 			<td width="50">${queue.admittedWard.name}</td>
 			<td>${queue.bed}</td>
 			<c:set var="person" value="${queue.ipdAdmittedUser.person }"/>
-			<td width="50">${person.givenName} ${person.middleName } ${person.familyName }</td>
+			<td width="50">${person.givenName}&nbsp;&nbsp;${person.middleName }&nbsp;&nbsp;${person.familyName }</td>
 			<td>
 				<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="Add Bill" 
 					onclick="window.location.href='addPatientServiceBillForBD.form?patientId=${queue.patient.patientId}&billType=paid'"/>
-		    	<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="View Bill" onclick="ADMITTED.transfer('${queue.id}');"/>
+		    	<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all" value="View Bill" 
+		    		onclick="javascript:window.location.href='patientServiceConsolidatedBill.form?patientId=${queue.patient.patientId}&admissionDate=${queue.admissionDate}&admittedWard=${queue.admittedWard.name}&treatingDoctor=${queue.ipdAdmittedUser}'"/>
 		    	<!-- <div id="printArea${queue.id}" style="display:none; margin: 10px auto; width: 981px; font-size: 1.5em;font-family:'Dot Matrix Normal',Arial,Helvetica,sans-serif;">
 		    	
 			    	<table width="100%" >

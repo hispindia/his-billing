@@ -68,6 +68,28 @@
 			
 		});
 	}
+	$(function() {
+		var ipdWardString = jQuery("#ipdWardString").val();
+		var searchPatient = jQuery("#searchPatient").val();
+		var doctorString = jQuery("#doctorString").val();
+		var fromDate = jQuery("#fromDate").val();
+		var toDate = jQuery("#toDate").val();
+		jQuery.ajax({
+			type : "GET",
+			url : getContextPath() + "/module/billing/patientsearchindoorbillingqueue.form",
+			data : ({
+				ipdWardString			: ipdWardString,
+				searchPatient			: searchPatient,
+				doctorString			: doctorString,
+				fromDate				: fromDate,
+				toDate					: toDate
+			}),
+			success : function(data) {
+				jQuery("#billingqueue").html(data);	
+			},
+			
+		});
+	});
 </script>
 
 <div class="boxHeader">
