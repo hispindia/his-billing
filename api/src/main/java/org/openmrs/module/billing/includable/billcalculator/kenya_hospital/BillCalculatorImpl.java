@@ -20,7 +20,7 @@
  *  date:   20-02-2013
  **/
 
-package org.openmrs.module.billing.includable.billcalculator.bd_hospital;
+package org.openmrs.module.billing.includable.billcalculator.kenya_hospital;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
