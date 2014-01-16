@@ -497,4 +497,16 @@
 			free_bill INT(1);
 		</sql>
 	</diff>
+	<diff>
+		<VERSION>3.2.0</VERSION>
+		<author>Sagar</author>
+		<DATE>Jan 2014</DATE>
+		<description>
+			ADD COLUMN waver amount COLUMN IN billing_patient_service_bill TABLE 
+		</description>
+		<SQL>
+			ALTER TABLE
+			billing_patient_service_bill ADD(waiver_amount INTEGER);
+		</SQL>
+	</diff>	
 </sqldiff>
