@@ -498,15 +498,14 @@
 		</sql>
 	</diff>
 	<diff>
-		<VERSION>3.2.0</VERSION>
+		<version>3.2.0</version>
 		<author>Sagar</author>
-		<DATE>Jan 2014</DATE>
+		<date>Jan 2014</date>
 		<description>
 			ADD COLUMN waver amount COLUMN IN billing_patient_service_bill TABLE 
 		</description>
-		<SQL>
-			ALTER TABLE
-			billing_patient_service_bill ADD(waiver_amount INTEGER);
-		</SQL>
+		<sql>
+			ALTER TABLE billing_patient_service_bill ADD(waiver_amount interger);
+		</sql>
 	</diff>	
 </sqldiff>
