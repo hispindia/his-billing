@@ -136,7 +136,7 @@ function validate(){
 			<tr> <!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --Adjust allignment in table-->
 			<%--Kesavulu 26-2-2013 support #962 [Billing]change RS to TK for Bangladesh module --%>
 				<th align="center">Service Name</th>
-				<th align="center">Price (Tk)</th>
+				<th align="center">Price (KSh)</th>
 				<th align="center">Quantity</th>
 				<th align="center">Amount</th>
 			</tr>
@@ -274,7 +274,7 @@ function validate(){
 			<thead>
 				<th class="printfont" style="">Service Name</th>
 				<%--Kesavulu 26-2-2013 support #962 [Billing]change RS to TK for Bangladesh module --%>
-				<th class="printfont" style="">Price (Tk)</th>
+				<th class="printfont" style="">Price (Ksh)</th>
 				<th class="printfont" style="">Quantity</th>
 				<th class="printfont" style="">Amount</th>
 			</thead>

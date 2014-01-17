@@ -73,7 +73,7 @@
 				<th align="center">Service</th>
 				<th align="center">Quantity</th>
 				<%--Kesavulu 26-2-2013 support #962 [Billing]change RS to TK for Bangladesh module --%>
-				<th align="center">Price (Tk)</th>
+				<th align="center">Price (KSh)</th>
 			</tr>
 			<tr> <!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --Adjust allignment in table-->
 				<td align="left">${bill.service.name}</td>
@@ -130,7 +130,7 @@
 				<th align="center">Service</th>
 				<th align="center">Quantity</th>
 				<%--Kesavulu 26-2-2013 support #962 [Billing]change RS to TK for Bangladesh module --%>
-				<th align="center">Price (Tk)</th>
+				<th align="center">Price (KSh)</th>
 			</tr>
 			<tr>
 				<td align="center">${bill.service.name}</td>

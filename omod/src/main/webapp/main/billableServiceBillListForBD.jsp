@@ -140,7 +140,7 @@ function validate(){
 				<!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --Adjust allignment in table-->
 				<th align="center">Service Name</th>
 				<%--Kesavulu 26-2-2013 support #962 [Billing]change RS to TK for Bangladesh module --%>
-				<th align="center">Price (Tk)</th>
+				<th align="center">Price (KSh)</th>
 				<th align="center">Quantity</th>
 				<th align="center">Amount</th>
 			</tr>
@@ -171,6 +171,7 @@ function validate(){
 					</tr>
 				</c:if>
 			</c:forEach>
+			
 			<tr>
 				<!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --Adjust allignment in table-->
 				<td colspan="3" align='right'><b>Total 
@@ -208,6 +209,18 @@ function validate(){
 						</c:otherwise>
 					</c:choose></td>
 			</tr>
+			
+			<tr>
+				<td colspan="3" align='right'><b>Waiver Amount(if any)</td>
+				<td><input readonly align='right' id="waiverAmount" name="waiverAmount" style="border: none;"/></td>
+			</tr>
+			
+			<tr>
+				<td colspan="3" align='right'><b>Net Amount</td>
+				<td><input readonly align='right' id="netAmount" name="netAmount" style="border: none;"/></td>
+			</tr>
+			
+			
 		</table>
 		<br>
 		<form method="POST" id="billForm">
@@ -278,7 +291,7 @@ function validate(){
 			<thead>
 				<th class="printfont" style="">Service Name</th>
 				<%--Kesavulu 26-2-2013 support #962 [Billing]change RS to TK for Bangladesh module --%>
-				<th class="printfont" style="">Price (Tk)</th>
+				<th class="printfont" style="">Price (KSh)</th>
 				<th class="printfont" style="">Quantity</th>
 				<th class="printfont" style="">Amount</th>
 			</thead>
@@ -295,7 +308,7 @@ function validate(){
 				</c:if>
 			</c:forEach>
 			<tr>
-				<td colspan="3">Total</td>
+				<td colspan="3"><b>Total</b></td>
 				<c:choose>
 					<c:when test="${bill.voided}">
 						<td align="right"><span
@@ -308,10 +321,21 @@ function validate(){
 					</c:otherwise>
 				</c:choose>
 			</tr>
+			
+			<tr>
+				<td colspan="3" align='left'><b>Waiver Amount(if any)</td>
+				<td><input readonly align='right' id="waiverAmount" name="waiverAmount" style="border: none;"/></td>
+			</tr>
+			
+			<tr>
+				<td colspan="3" align='left'><b>Net Amount</td>
+				<td><input readonly align='right' id="netAmount" name="netAmount" style="border: none;"/></td>
+			</tr>
+			
 		</table>
 		<%--Kesavulu 26-2-2013 support #962 [Billing]change RS to TK for Bangladesh module --%>
 		<br> <span class="printfont" style="margin-left: 60px;">Total
-			Amount:</span> Taka <span id="totalValue2" class="printfont"> </span> only
+			Amount:</span> Shilling <span id="totalValue2" class="printfont"> </span> only
 		<br /> <br /> <br /> <br /> <br /> <br /> <span
 			class="printfont" style="margin-left: 200px;">Signature of
 			billing clerk/ Stamp</span>
