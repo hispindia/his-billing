@@ -83,6 +83,7 @@ public class BillableServiceBillAddForBDController {
 	public String onSubmit(Model model, Object command, BindingResult bindingResult, HttpServletRequest request,
 	                       @RequestParam("cons") Integer[] cons, @RequestParam("patientId") Integer patientId,
 	                       @RequestParam(value = "comment", required = false) String comment,
+	                       @RequestParam(value = "waiverAmount", required = false) BigDecimal waiverAmount,
 	                       @RequestParam(value = "billType", required = false) String billType) {
 		validate(cons, bindingResult, request);
 		if (bindingResult.hasErrors()) {
@@ -147,6 +148,14 @@ public class BillableServiceBillAddForBDController {
 		}
 		bill.setAmount(totalAmount.getAmount());
 		bill.setActualAmount(totalActualAmount);
+		/*added waiver amount */
+		if(waiverAmount != null){
+			bill.setWaiverAmount(waiverAmount);
+		}
+		else {
+			BigDecimal wavAmt = new BigDecimal(0);
+			bill.setWaiverAmount(wavAmt);
+		}
 		bill.setComment(comment);
 		bill.setFreeBill(calculator.isFreeBill(billType));
 		logger.info("Is free bill: " + bill.getFreeBill());

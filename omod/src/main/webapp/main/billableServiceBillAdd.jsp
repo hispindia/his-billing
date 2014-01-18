@@ -45,13 +45,32 @@ span {
 </style>
 ${tabs }
 <script type="text/javascript">
-jQuery(document).ready(function(){ 
-    $('#container-1 ul').tabs();
+jQuery(document).ready(function(){ 	
+	
+		var billType = getUrlVars()["billType"];
+		if(billType == "free"){
+				$("#WaiverAmountField").hide();
+			}
+
+
+		function getUrlVars() {
+			var vars = {};
+			var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+				vars[key] = value;
+			});
+			return vars;
+		}
+
+    
+	$('#container-1 ul').tabs();
 });
+
+
 </script>
 
 
 <script type="text/javascript">
+
 	function addToBill( conceptId, serviceName, servicePrice, qty) {
 		servicePrice = parseFloat(servicePrice);
 		var colorSelected = "rgb(170, 255, 170)";
@@ -140,10 +159,18 @@ jQuery(document).ready(function(){
 			}else if(! jQuery("input[type='checkbox']","div#extra").length ) {
 				alert("Please select item for billing");
 			}else {
-				jQuery("#subm").attr("disabled", "disabled");
-				jQuery("#billForm").submit();
+				if( document.getElementById('totalprice').value < jQuery("#waiverAmount").val()){
+					alert("Please enter correct Waiver Amount");
+					return false;
+				}
+				else{
+					jQuery("#subm").attr("disabled", "disabled");
+					jQuery("#billForm").submit();
+				}
+					
 			}
 		}
+	
 
 </script>
 
@@ -173,10 +200,10 @@ jQuery(document).ready(function(){
 				readonly="readonly" />&nbsp; <b>
 		</div>
 
-		<div id="WaiverAmount" class="cancelDraggable"
+		<div id="WaiverAmountField" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
 			<input type='text' size='25' value='Waiver Amount' readonly='readonly' />&nbsp;
-			<input id="waiverAmount" type='text' size='5' />&nbsp;</b>
+			<input id="waiverAmount" name="waiverAmount" type='text' size='5' />&nbsp;</b>
 			<hr />
 		</div>
 		

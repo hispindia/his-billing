@@ -190,9 +190,16 @@ jQuery(document).ready(function(){
 			}else if(! jQuery("input[type='checkbox']","div#extra").length ) {
 				alert("Please select item for billing");
 			}else {
+				if(document.getElementById('totalprice').value < jQuery("#waiverAmountEdit").val()) {
+					alert("Please enter correct Waiver Amount");
+					return false;
+				}
+				else{
 				jQuery("#subm").attr("disabled", "disabled");
 				jQuery("#billForm").submit();
+				}
 			}
+			
 		}
 		function voidBill(){
 			jQuery("#action").val("void");
@@ -234,10 +241,10 @@ jQuery(document).ready(function(){
 				readonly="readonly" />&nbsp; <b>
 		</div>
 
-		<div id="WaiverAmount" class="cancelDraggable"
+		<div id="WaiverAmountEditField" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
 			<input type='text' size='25' value='Waiver Amount' readonly='readonly' />&nbsp;
-			<input id="waiverAmount" type='text' size='5' />&nbsp;</b>
+			<input id="waiverAmountEdit" name="waiverAmountEdit" type='text' size='5' />&nbsp;</b>
 			<hr />
 		</div>
 

@@ -85,7 +85,8 @@ public class BillableServiceBillEditForBDController {
 	public String onSubmit(Model model, Object command, BindingResult bindingResult, HttpServletRequest request,
 	                       @RequestParam("cons") Integer[] cons, @RequestParam("patientId") Integer patientId,
 	                       @RequestParam("billId") Integer billId, @RequestParam("action") String action,
-	                       @RequestParam(value = "description", required = false) String description) {
+	                       @RequestParam(value = "description", required = false) String description,
+	                       @RequestParam(value = "waiverAmountEdit", required = false) BigDecimal waiverAmount) {
 		
 		validate(cons, bindingResult, request);
 		if (bindingResult.hasErrors()) {
@@ -270,7 +271,14 @@ public class BillableServiceBillEditForBDController {
 		}
 		bill.setAmount(totalAmount.getAmount());
 		bill.setActualAmount(totalActualAmount);
-		
+		/*added waiver amount */
+		if(waiverAmount != null){
+			bill.setWaiverAmount(waiverAmount);
+		}
+		else {
+			BigDecimal wavAmt = new BigDecimal(0);
+			bill.setWaiverAmount(wavAmt);
+		}
 		// Determine whether the bill is free or not
 		
 		//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module

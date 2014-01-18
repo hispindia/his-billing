@@ -212,12 +212,12 @@ function validate(){
 			
 			<tr>
 				<td colspan="3" align='right'><b>Waiver Amount(if any)</td>
-				<td><input readonly align='right' id="waiverAmount" name="waiverAmount" style="border: none;"/></td>
+				<td align="right"><b>${bill.waiverAmount}</b></td>
 			</tr>
 			
 			<tr>
 				<td colspan="3" align='right'><b>Net Amount</td>
-				<td><input readonly align='right' id="netAmount" name="netAmount" style="border: none;"/></td>
+				<td align="right"><b>${bill.actualAmount - bill.waiverAmount}</b></td>
 			</tr>
 			
 			
@@ -324,17 +324,17 @@ function validate(){
 			
 			<tr>
 				<td colspan="3" align='left'><b>Waiver Amount(if any)</td>
-				<td><input readonly align='right' id="waiverAmount" name="waiverAmount" style="border: none;"/></td>
+				<td align="right"><b>${bill.waiverAmount}</b></td>
 			</tr>
 			
 			<tr>
 				<td colspan="3" align='left'><b>Net Amount</td>
-				<td><input readonly align='right' id="netAmount" name="netAmount" style="border: none;"/></td>
+				<td align="right"><b>${bill.actualAmount - bill.waiverAmount}</b></td>
 			</tr>
 			
 		</table>
 		<%--Kesavulu 26-2-2013 support #962 [Billing]change RS to TK for Bangladesh module --%>
-		<br> <span class="printfont" style="margin-left: 60px;">Total
+		<br> <span class="printfont" style="margin-left: 60px;">Net
 			Amount:</span> Shilling <span id="totalValue2" class="printfont"> </span> only
 		<br /> <br /> <br /> <br /> <br /> <br /> <span
 			class="printfont" style="margin-left: 200px;">Signature of
@@ -423,7 +423,7 @@ function validate(){
 </c:if>
 
 <%--ghanshyam 12-dec-2012 Bug #458 [BILLING 3.2.8-SNAPSHOT] Edit in patient category, the amount in figures and words in the print out of the previous bill is not same--%>
-<input type="hidden" id="total" value="${bill.actualAmount}">
+<input type="hidden" id="total" value="${bill.actualAmount - bill.waiverAmount}">
 
 <script>
 	function printDiv() {
