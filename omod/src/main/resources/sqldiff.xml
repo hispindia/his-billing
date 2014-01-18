@@ -505,7 +505,7 @@
 			ADD COLUMN waver amount COLUMN IN billing_patient_service_bill TABLE 
 		</description>
 		<sql>
-			ALTER TABLE billing_patient_service_bill ADD(waiver_amount interger);
+			ALTER TABLE billing_patient_service_bill ADD waiver_amount DECIMAL(19,2) DEFAULT NULL;
 		</sql>
 	</diff>	
 </sqldiff>
