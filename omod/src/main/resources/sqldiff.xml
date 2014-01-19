@@ -497,4 +497,18 @@
 			free_bill INT(1);
 		</sql>
 	</diff>
+	<!-- Abhishek-Ankur 2-Jan-2014 New Requirement Creating consolidated billing -->
+	<diff>
+		<version>3.2</version>
+		<author>Abhishek-Ankur</author>
+		<date>Jan 2nd 2014</date>
+		<description>
+			Add column 'pay' for 'billing_patient_service_bill_item' table
+		</description>
+		<sql>
+			ALTER TABLE
+			billing_patient_service_bill_item ADD(`pay`
+			INT(1) NOT NULL default 1);
+		</sql>
+	</diff>
 </sqldiff>

@@ -17,7 +17,7 @@
  *  along with Billing module.  If not, see <http://www.gnu.org/licenses/>.
  *
  *  author: Abhishek-Ankur
- *  date: 18-Dec-2013
+ *  date: 1-Jan-2013
  *  Requirement: Indoor Patient Billing
 --%>
 
@@ -50,6 +50,10 @@
 	}
 }
 </style>
+
+<script type="text/javascript">
+	
+</script>
 
 <link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/moduleResources/billing/styles/paging.css" />
@@ -95,4 +99,26 @@
 			</tr>
 		</table>
 	</div>
+	
+	<table id="myTable" class="tablesorter" align="center">
+	<thead>
+		<tr> 
+			<th>S.No</th>
+			<th>Service</th>
+			<th align="center">Pay</th>
+			<th align="right">Unit Price</th>	
+		</tr>
+	</thead>
+	<tbody>
+		<c:forEach var="listBillItems" items="${listBill}">
+			<c:forEach var="billItems" items="${listBillItems}" varStatus="index"> 
+				<tr>
+					<td>${index.count}</td>
+					<td>${billItems.name}</td>
+					<td align="center"><input type="checkbox" id="paid" checked></td>
+					<td align="right">${billItems.unitPrice}</td>
+				</tr>
+			</c:forEach>
+		</c:forEach>
+	</tbody>
 </c:if>

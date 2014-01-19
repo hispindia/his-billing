@@ -25,6 +25,7 @@ package org.openmrs.module.billing.web.contoller.indoorbillingqueue;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -35,6 +36,7 @@ import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
+import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,8 +64,18 @@ public class patientServiceConsolidatedBillController {
 		}
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		List<PatientServiceBill> listPatientServiceBill = billingService.getPatientServiceByPatientId(patient, date);
+		List<List<PatientServiceBillItem>> listPatientServiceBillItems = new ArrayList<List<PatientServiceBillItem>>();
+		for (PatientServiceBill listBill : listPatientServiceBill) {
+			List<PatientServiceBillItem> BillItems = billingService.getPatientServiceBillItems(listBill.getPatientServiceBillId());
+			listPatientServiceBillItems.add(BillItems);
+		}
+//		for (List<PatientServiceBillItem> ll : listPatientServiceBillItems) {
+//			for (PatientServiceBillItem lls : ll) {
+//				
+//			}
+//		}
 		if (!listPatientServiceBill.isEmpty()) {
-			model.addAttribute("listBill", listPatientServiceBill);
+			model.addAttribute("listBill", listPatientServiceBillItems);
 			model.addAttribute("patient", patient);
 			model.addAttribute("admissionDate", date);
 			model.addAttribute("admittedWard", admittedWard);
