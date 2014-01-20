@@ -159,10 +159,16 @@ jQuery(document).ready(function(){
 			}else if(! jQuery("input[type='checkbox']","div#extra").length ) {
 				alert("Please select item for billing");
 			}else {
-				if( document.getElementById('totalprice').value < jQuery("#waiverAmount").val()){
+				
+				if( Number(document.getElementById('totalprice').value) < Number(jQuery("#waiverAmount").val())){
 					alert("Please enter correct Waiver Amount");
 					return false;
 				}
+				else if( document.getElementById('totalprice').value < jQuery("#waiverAmount").val()){
+					alert("Please enter correct Waiver Amount");
+					return false;
+				}
+
 				else{
 					jQuery("#subm").attr("disabled", "disabled");
 					jQuery("#billForm").submit();

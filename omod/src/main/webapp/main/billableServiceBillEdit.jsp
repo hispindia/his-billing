@@ -190,7 +190,11 @@ jQuery(document).ready(function(){
 			}else if(! jQuery("input[type='checkbox']","div#extra").length ) {
 				alert("Please select item for billing");
 			}else {
-				if(document.getElementById('totalprice').value < jQuery("#waiverAmountEdit").val()) {
+				if(Number(document.getElementById('totalprice').value) < Number(jQuery("#waiverAmountEdit").val())) {
+					alert("Please enter correct Waiver Amount");
+					return false;
+				}
+				else if( document.getElementById('totalprice').value < jQuery("#waiverAmount").val()){
 					alert("Please enter correct Waiver Amount");
 					return false;
 				}
