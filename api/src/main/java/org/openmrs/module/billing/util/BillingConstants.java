@@ -29,5 +29,6 @@ public class BillingConstants {
 	public static final String PROPERTY_MAINTAINCODE_ALL_PATIENT_CATEGORIES = MODULE_ID + ".allPatientCategories";
 	public static final String PROPERTY_IPDWARD = "patientdashboard.IPDRootConcept";
 	public static final String PROPERTY_NAME_DOCTOR_ROLE = "ipd.doctorRole";
-	
+	public static final Integer PAID_ITEM = 1;
+	public static final Integer FREE_ITEM = 0;
 }

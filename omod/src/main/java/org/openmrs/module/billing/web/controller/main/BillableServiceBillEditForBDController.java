@@ -38,6 +38,7 @@ import org.openmrs.Order;
 import org.openmrs.Patient;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculatorForBDService;
+import org.openmrs.module.billing.util.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
@@ -206,6 +207,7 @@ public class BillableServiceBillEditForBDController {
 				item.setQuantity(quantity);
 				item.setService(service);
 				item.setUnitPrice(unitPrice);
+				item.setPay(BillingConstants.PAID_ITEM);
 				bill.addBillItem(item);
 			} else {
 				

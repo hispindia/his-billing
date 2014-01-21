@@ -33,6 +33,7 @@ import org.openmrs.Patient;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculatorForBDService;
+import org.openmrs.module.billing.util.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.PatientDashboardService;
@@ -136,6 +137,7 @@ public class ProcedureInvestigationOrderController {
 			item.setUnitPrice(unitPrice);
 
 			item.setAmount(itemAmount.getAmount());
+			item.setPay(BillingConstants.PAID_ITEM);
 
 			// Get the ratio for each bill item
 			Map<String, Object> parameters = HospitalCoreUtils.buildParameters(
