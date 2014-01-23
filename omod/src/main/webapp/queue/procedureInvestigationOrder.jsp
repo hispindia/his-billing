@@ -85,7 +85,16 @@ if (serqun==null || serqun=="")
   {
   alert("Please enter quantity");
   return false;
-  }	
+  }
+
+if( Number(jQuery("#total").val()) < Number(jQuery("#waiverAmount").val())){
+	alert("Please enter correct Waiver Amount");
+	return false;
+}
+if(isNaN(jQuery("#waiverAmount").val())){
+	alert("Please enter correct Waiver Amount");
+	return false;
+}
 
 if (serqun!=null || quantity!=""){
    if(isNaN(serqun)){
@@ -96,6 +105,7 @@ if (serqun!=null || quantity!=""){
   }
  }
 }
+
 </script>
 
 <div style="max-height: 50px; max-width: 1800px;">
@@ -191,6 +201,12 @@ if (serqun!=null || quantity!=""){
 			<td align="right"><input type="text" id="total" name="total"
 				size="7" value="0" readOnly="true" /></td>
 		</tr>
+		<tr>
+			<td colspan="6" align="right">Waiver Amount</td>
+			<td align="right"><input type="text" id="waiverAmount" name="waiverAmount"
+				size="7" /></td>
+		</tr>
+
 	</table>
 	<tr>
 		<td><input type="submit" id="savebill" name="savebill"

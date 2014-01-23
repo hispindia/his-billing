@@ -76,6 +76,7 @@ public class ProcedureInvestigationOrderController {
 			@RequestParam("patientId") Integer patientId,
 			@RequestParam("encounterId") Integer encounterId,
 			@RequestParam("indCount") Integer indCount,
+			@RequestParam(value= "waiverAmount", required = false) BigDecimal waiverAmount,
 			@RequestParam(value = "billType", required = false) String billType) {
 
 		BillingService billingService = Context.getService(BillingService.class);
@@ -171,6 +172,15 @@ public class ProcedureInvestigationOrderController {
 
 		bill.setAmount(totalAmount.getAmount());
 		bill.setActualAmount(totalActualAmount);
+		/*added waiver amount */
+		if(waiverAmount != null){
+			bill.setWaiverAmount(waiverAmount);
+		}
+		else {
+			BigDecimal wavAmt = new BigDecimal(0);
+			bill.setWaiverAmount(wavAmt);
+		}
+		
 		bill.setFreeBill(2);
 		bill.setReceipt(billingService.createReceipt());
 		bill = billingService.savePatientServiceBill(bill);
