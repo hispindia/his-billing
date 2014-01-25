@@ -105,20 +105,39 @@
 		<tr> 
 			<th>S.No</th>
 			<th>Service</th>
-			<th align="center">Pay</th>
-			<th align="right">Unit Price</th>	
-		</tr>
+			<th>Item Bill Date</th>
+			<th>Pay</th>
+			<th>Unit Price</th>	
+		</tr><tr></tr>
 	</thead>
 	<tbody>
-		<c:forEach var="listBillItems" items="${listBill}">
-			<c:forEach var="billItems" items="${listBillItems}" varStatus="index"> 
-				<tr>
-					<td>${index.count}</td>
-					<td>${billItems.name}</td>
-					<td align="center"><input type="checkbox" id="paid" checked></td>
-					<td align="right">${billItems.unitPrice}</td>
-				</tr>
+		<c:forEach var="listBillItems" items="${listBill}" varStatus="outerIndex">
+			<c:set var="paid" value="${serviceBill[outerIndex.index].printed}"/>
+			<c:forEach var="billItems" items="${listBillItems}" varStatus="index">
+				<c:choose >
+				<c:when test="${paid}"> 
+					<tr>
+						<td style ="background-color:#00FF00;">${index.count}</td>
+						<td style ="background-color:#00FF00;">${billItems.name}</td>
+						<td style ="background-color:#00FF00;"><openmrs:formatDate date="${billItems.createdDate}"
+							type="textbox" /></td>
+						<td style ="background-color:#00FF00;"><input type="checkbox" id="paid" checked></td>
+						<td style ="background-color:#00FF00;">${billItems.unitPrice}</td>
+					</tr>
+				</c:when>	
+				<c:otherwise>
+					<tr>
+						<td>${index.count}</td>
+						<td>${billItems.name}</td>
+						<td><openmrs:formatDate date="${billItems.createdDate}"
+							type="textbox" /></td>
+						<td><input type="checkbox" id="paid" checked></td>
+						<td>${billItems.unitPrice}</td>
+					</tr>
+				</c:otherwise>
+				</c:choose>
 			</c:forEach>
 		</c:forEach>
 	</tbody>
+	</table>
 </c:if>

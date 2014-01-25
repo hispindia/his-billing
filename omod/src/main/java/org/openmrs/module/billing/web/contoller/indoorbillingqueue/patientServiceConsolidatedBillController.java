@@ -76,6 +76,7 @@ public class patientServiceConsolidatedBillController {
 //		}
 		if (!listPatientServiceBill.isEmpty()) {
 			model.addAttribute("listBill", listPatientServiceBillItems);
+			model.addAttribute("serviceBill", listPatientServiceBill);
 			model.addAttribute("patient", patient);
 			model.addAttribute("admissionDate", date);
 			model.addAttribute("admittedWard", admittedWard);
