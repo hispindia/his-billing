@@ -248,7 +248,7 @@ jQuery(document).ready(function(){
 		<div id="WaiverAmountEditField" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
 			<input type='text' size='25' value='Waiver Amount' readonly='readonly' />&nbsp;
-			<input id="waiverAmountEdit" name="waiverAmountEdit" type='text' size='5' />&nbsp;</b>
+			<input id="waiverAmountEdit" name="waiverAmountEdit" type='text' value="${waiverAm}" size='5' />&nbsp;</b>
 			<hr />
 		</div>
 

@@ -75,8 +75,9 @@ public class BillableServiceBillEditForBDController {
 		Concept concept = Context.getConceptService().getConcept(conceptId);
 		model.addAttribute("tabs", billingService.traversTab(concept, mapServices, 1));
 		model.addAttribute("patientId", patientId);
-		PatientServiceBill bill = billingService.getPatientServiceBillById(billId);
 		
+		PatientServiceBill bill = billingService.getPatientServiceBillById(billId);
+		model.addAttribute("waiverAm", bill.getWaiverAmount());
 		model.addAttribute("bill", bill);
 		return "/module/billing/main/billableServiceBillEdit";
 	}
@@ -96,7 +97,6 @@ public class BillableServiceBillEditForBDController {
 		BillingService billingService = Context.getService(BillingService.class);
 		
 		PatientServiceBill bill = billingService.getPatientServiceBillById(billId);
-		
 		// Get the BillCalculator to calculate the rate of bill item the patient
 		// has to pay
 		Patient patient = Context.getPatientService().getPatient(patientId);
