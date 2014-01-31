@@ -46,6 +46,11 @@ span {
 ${tabs }
 <script type="text/javascript">
 jQuery(document).ready(function(){ 
+	
+	if(jQuery('#freePat').val()==1){
+		jQuery('#WaiverAmountEditField').hide();
+	}
+
     $('#container-1 ul').tabs();
     //ghanshyam,11-july-2013,Bug #2170 Error on editing a bill that has both paid and free set of investigations
     jQuery('#container-1').hide();
@@ -248,6 +253,7 @@ jQuery(document).ready(function(){
 		<div id="WaiverAmountEditField" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
 			<input type='text' size='25' value='Waiver Amount' readonly='readonly' />&nbsp;
+			<input id="freePat" name="freePat" type='hidden' value="${freeBill}" size='5' />&nbsp;</b>
 			<input id="waiverAmountEdit" name="waiverAmountEdit" type='text' value="${waiverAm}" size='5' />&nbsp;</b>
 			<hr />
 		</div>

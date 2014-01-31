@@ -77,6 +77,7 @@ public class BillableServiceBillEditForBDController {
 		model.addAttribute("patientId", patientId);
 		
 		PatientServiceBill bill = billingService.getPatientServiceBillById(billId);
+		model.addAttribute("freeBill",bill.getFreeBill());
 		model.addAttribute("waiverAm", bill.getWaiverAmount());
 		model.addAttribute("bill", bill);
 		return "/module/billing/main/billableServiceBillEdit";
