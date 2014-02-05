@@ -30,7 +30,11 @@
 		oldBackgroundColor: "",
 		
 		/** Click to view patient info */
-		visit: function(patientId){	
+		visit: function(patientId,deadInfo){
+		if(deadInfo=="true"){
+		alert("This Patient is Dead");
+		return false;
+		}
 		//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module		
 			window.location.href = openmrsContextPath + "/module/billing/patientServiceBillForBD.list?patientId=" + patientId;
 		}
@@ -81,7 +85,7 @@
 			<c:forEach items="${patients}" var="patient" varStatus="varStatus">
 				<tr
 					class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } patientSearchRow'
-					onclick="PATIENTSEARCHRESULT.visit(${patient.patientId});">
+					onclick="PATIENTSEARCHRESULT.visit(${patient.patientId},'${patient.dead}');">
 					<td>${patient.patientIdentifier.identifier}</td>
 					<td>${patient.givenName} ${patient.middleName}
 						${patient.familyName}</td>

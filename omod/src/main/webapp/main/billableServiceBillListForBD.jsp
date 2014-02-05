@@ -89,6 +89,7 @@ function validate(){
 	}
 }
 </script>
+<c:if test="${patient.dead eq '0'}">
 <p>
 	<b>
 		<td><input type="button" value="Add Paid Bill"
@@ -101,8 +102,9 @@ function validate(){
 	</td>
 		<td><span id="okButton"><input type="button" value="Ok"
 				onclick="return validate();" /> </span></td> </b>
-
 </p>
+</c:if>
+
 <c:forEach items="${errors}" var="error">
 	<span class="error"><spring:message
 			code="${error.defaultMessage}" text="${error.defaultMessage}" /> </span>
