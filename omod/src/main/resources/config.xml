@@ -130,6 +130,16 @@
 		<name>Test order queue</name>
 		<description>Allows user to process test order queue</description>
 	</privilege>
+	
+	<privilege>
+		<name>Billing queue Header</name>
+		<description>Allows user to view Billing Header</description>
+	</privilege>
+	
+	<privilege>
+		<name>Indoor billing queue</name>
+		<description>Allows user to add Indoor billing</description>
+	</privilege>
 
 	<!-- Required Global Properties -->
 	<globalProperty>

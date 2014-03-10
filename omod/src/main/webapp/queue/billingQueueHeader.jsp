@@ -20,7 +20,7 @@
  *  date: 3-june-2013
  *  issue no: #1632
 --%>
-<openmrs:require privilege="Test order queue" otherwise="/login.htm" redirect="/module/billing/main.form" />
+<openmrs:require privilege="Billing queue Header" otherwise="/login.htm" redirect="/module/billing/main.form" />
 <div>
 	<ul id="menu">
 	<br />
@@ -38,6 +38,9 @@
 	 <!-- ghanshyam -->
 	&nbsp; | &nbsp; <b><a href="billingqueue.form"><spring:message
 				code="billing.billingqueue" />
+	</a>
+	</b>&nbsp; | &nbsp; <b><a href="indoorbillingqueue.form"><spring:message
+				code="billing.indoorbillingqueue" />
 	</a>
 	</b>
 </p>

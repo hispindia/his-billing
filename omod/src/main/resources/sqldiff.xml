@@ -469,7 +469,8 @@
 			integer NOT NULL;
 		</sql>
 	</diff>
-	<!-- ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module-->
+	<!-- ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add 
+		Free Bill for Bangladesh module -->
 	<diff>
 		<version>3.1.8</version>
 		<author>ghanshyam</author>
@@ -483,7 +484,9 @@
 			varchar(50));
 		</sql>
 	</diff>
-	<!-- ghanshyam 3-june-2013 New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue -->
+	<!-- ghanshyam 3-june-2013 New Requirement #1632 Orders from dashboard must 
+		be appear in billing queue.User must be able to generate bills from this 
+		queue -->
 	<diff>
 		<version>3.1.9</version>
 		<author>ghanshyan</author>
@@ -502,10 +505,103 @@
 		<author>Sagar</author>
 		<date>Jan 2014</date>
 		<description>
-			ADD COLUMN waver amount COLUMN IN billing_patient_service_bill TABLE 
+			ADD COLUMN waver amount COLUMN IN
+			billing_patient_service_bill TABLE 
 		</description>
 		<sql>
-			ALTER TABLE billing_patient_service_bill ADD waiver_amount DECIMAL(19,2) DEFAULT NULL;
+			ALTER TABLE billing_patient_service_bill ADD waiver_amount
+			DECIMAL(19,2) DEFAULT NULL;
 		</sql>
-	</diff>	
+	</diff>
+	<diff>
+		<version>3.2.1</version>
+		<author>ghanshyan</author>
+		<date>March 10 2014</date>
+		<description>
+			create 'indoor_patient_service_bill' table and 'indoor_patient_service_bill_item' table
+		</description>
+		<sql>
+			CREATE
+			TABLE IF NOT EXISTS `indoor_patient_service_bill` (
+			`indoor_patient_service_bill_id` INT(11) NOT NULL AUTO_INCREMENT,
+			`creator`
+			INT(11) DEFAULT
+			NULL,
+			`amount` DECIMAL(19,2) DEFAULT NULL,
+			`created_date` DATETIME DEFAULT NULL,
+			`patient_id`
+			INT(11) DEFAULT
+			NULL,
+			`actual_amount` DECIMAL(19,2) DEFAULT NULL,
+			`encounter_id` INT(11) DEFAULT NULL,
+			PRIMARY KEY (`indoor_patient_service_bill_id`),
+			KEY
+			`fk_indoorpatientservicebill_patient` (`patient_id`),
+			KEY
+			`fk_indoorpatientservicebill_user` (`creator`),
+			CONSTRAINT
+			`fk_indoorpatientservicebill_user` FOREIGN KEY (`creator`) REFERENCES
+			`users` (`user_id`),
+			CONSTRAINT `fk_indoorpatientservicebill_patient`
+			FOREIGN KEY (`patient_id`)
+			REFERENCES `patient` (`patient_id`),
+			CONSTRAINT `fk_indoorpatientservicebill_encounter`
+			FOREIGN KEY (`encounter_id`)
+			REFERENCES `encounter` (`encounter_id`)
+			)
+			ENGINE=INNODB DEFAULT CHARSET=utf8;
+			
+			CREATE TABLE IF NOT EXISTS
+			`indoor_patient_service_bill_item` (
+			`indoor_patient_service_bill_item_id`
+			INT(11) NOT NULL AUTO_INCREMENT,
+			`service_id` INT(11) DEFAULT NULL,
+			`indoor_patient_service_bill_id` INT(11) DEFAULT NULL,
+			`unitPrice`
+			DECIMAL(19,2) DEFAULT NULL,
+			`amount` DECIMAL(19,2) DEFAULT NULL,
+			`quantity` INT(11) DEFAULT NULL,
+			`name` VARCHAR(255) DEFAULT NULL,
+			`created_date` DATETIME DEFAULT NULL,
+			`order_id` INT(11) DEFAULT NULL,
+			`actual_amount` DECIMAL(19,2) DEFAULT NULL,
+			PRIMARY KEY
+			(`indoor_patient_service_bill_item_id`),
+			KEY
+			`fk_indoorpatientservicebillitem_billableservice`
+			(`service_id`),
+			KEY
+			`fk_indoorpatientservicebillitem_patientservicebill`
+			(`indoor_patient_service_bill_id`),
+			KEY
+			`fk_indoorpatientservicebillitem_order`
+			(`order_id`),
+			CONSTRAINT
+			`fk_indoorpatientservicebillitem_billableservice` FOREIGN KEY
+			(`service_id`)
+			REFERENCES `billing_billable_service` (`service_id`),
+			CONSTRAINT
+			`fk_indoorpatientservicebillitem_patientservicebill` FOREIGN KEY
+			(`indoor_patient_service_bill_id`) REFERENCES `indoor_patient_service_bill`
+			(`indoor_patient_service_bill_id`),
+			CONSTRAINT
+			`fk_indoorpatientservicebillitem_order` FOREIGN KEY(`order_id`)
+			REFERENCES `orders` (`order_id`)
+			) ENGINE=INNODB DEFAULT
+			CHARSET=utf8;
+		</sql>
+	</diff>
+	<diff>
+		<version>3.2.2</version>
+		<author>ghanshyan</author>
+		<date>March 10 2014</date>
+		<description>
+			ADD COLUMN encounter and discharge_status IN
+			billing_patient_service_bill TABLE 
+		</description>
+		<sql>
+			ALTER TABLE billing_patient_service_bill ADD COLUMN encounter
+			INT(11) DEFAULT NULL,ADD COLUMN discharge_status INT(1) DEFAULT 0;
+		</sql>
+	</diff>
 </sqldiff>

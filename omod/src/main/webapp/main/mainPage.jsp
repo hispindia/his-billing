@@ -42,6 +42,9 @@
 	&nbsp; | &nbsp; <b><a href="billingqueue.form"><spring:message
 				code="billing.billingqueue" />
 	</a>
+	</b>&nbsp; | &nbsp; <b><a href="indoorbillingqueue.form"><spring:message
+				code="billing.indoorbillingqueue" />
+	</a>
 	</b>
 </p>
 <br />

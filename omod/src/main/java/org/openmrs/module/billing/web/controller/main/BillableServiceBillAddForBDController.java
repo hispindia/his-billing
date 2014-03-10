@@ -40,6 +40,8 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculatorForBDService;
 import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.model.BillableService;
+import org.openmrs.module.hospitalcore.model.IndoorPatientServiceBill;
+import org.openmrs.module.hospitalcore.model.IndoorPatientServiceBillItem;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
 import org.openmrs.module.hospitalcore.util.HospitalCoreUtils;
@@ -64,7 +66,8 @@ public class BillableServiceBillAddForBDController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String viewForm(Model model, @RequestParam("patientId") Integer patientId,
 	                       @RequestParam(value = "comment", required = false) String comment,
-	                       @RequestParam(value = "billType", required = false) String billType) {
+	                       @RequestParam(value = "billType", required = false) String billType,
+	                       @RequestParam(value = "encounterId", required = false) Integer encounterId) {
 		BillingService billingService = Context.getService(BillingService.class);
 		List<BillableService> services = billingService.getAllServices();
 		Map<Integer, BillableService> mapServices = new HashMap<Integer, BillableService>();
@@ -84,29 +87,24 @@ public class BillableServiceBillAddForBDController {
 	                       @RequestParam("cons") Integer[] cons, @RequestParam("patientId") Integer patientId,
 	                       @RequestParam(value = "comment", required = false) String comment,
 	                       @RequestParam(value = "waiverAmount", required = false) BigDecimal waiverAmount,
-	                       @RequestParam(value = "billType", required = false) String billType) {
+	                       @RequestParam(value = "billType", required = false) String billType,
+	                       @RequestParam(value = "encounterId", required = false) Integer encounterId) {
 		validate(cons, bindingResult, request);
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("errors", bindingResult.getAllErrors());
 			return "module/billing/main/billableServiceBillEdit";
 		}
 		
+		if(encounterId!=null){
 		BillingService billingService = Context.getService(BillingService.class);
-		
 		PatientService patientService = Context.getPatientService();
-		
-		// Get the BillCalculator to calculate the rate of bill item the patient has to pay
 		Patient patient = patientService.getPatient(patientId);
-		Map<String, String> attributes = PatientUtils.getAttributes(patient);
-		
-		BillCalculatorForBDService calculator = new BillCalculatorForBDService();
-		
-		PatientServiceBill bill = new PatientServiceBill();
+		IndoorPatientServiceBill bill = new IndoorPatientServiceBill();
 		bill.setCreatedDate(new Date());
 		bill.setPatient(patient);
 		bill.setCreator(Context.getAuthenticatedUser());
 		
-		PatientServiceBillItem item;
+		IndoorPatientServiceBillItem item;
 		int quantity = 0;
 		Money itemAmount;
 		Money mUnitPrice;
@@ -127,43 +125,104 @@ public class BillableServiceBillAddForBDController {
 			itemAmount = mUnitPrice.times(quantity);
 			totalAmount = totalAmount.plus(itemAmount);
 			
-			item = new PatientServiceBillItem();
+			item = new IndoorPatientServiceBillItem();
 			item.setCreatedDate(new Date());
 			item.setName(name);
-			item.setPatientServiceBill(bill);
+			item.setIndoorPatientServiceBill(bill);
 			item.setQuantity(quantity);
 			item.setService(service);
 			item.setUnitPrice(unitPrice);
-			
 			item.setAmount(itemAmount.getAmount());
-			
-			// Get the ratio for each bill item
-			Map<String, Object> parameters = HospitalCoreUtils.buildParameters("patient", patient, "attributes", attributes,
-			    "billItem", item, "request", request);
-			BigDecimal rate = calculator.getRate(parameters, billType);
-			item.setActualAmount(item.getAmount().multiply(rate));
+			item.setActualAmount(service.getPrice());
 			totalActualAmount = totalActualAmount.add(item.getActualAmount());
 			
 			bill.addBillItem(item);
 		}
 		bill.setAmount(totalAmount.getAmount());
 		bill.setActualAmount(totalActualAmount);
-		/*added waiver amount */
-		if(waiverAmount != null){
-			bill.setWaiverAmount(waiverAmount);
+		bill.setEncounter(Context.getEncounterService().getEncounter(encounterId));	
+		bill = billingService.saveIndoorPatientServiceBill(bill);
+		if (bill != null) {
+			billingService.saveBillEncounterAndOrderForIndoorPatient(bill);
 		}
-		else {
-			BigDecimal wavAmt = new BigDecimal(0);
-			bill.setWaiverAmount(wavAmt);
-		}
-		bill.setComment(comment);
-		bill.setFreeBill(calculator.isFreeBill(billType));
-		logger.info("Is free bill: " + bill.getFreeBill());
+			return "redirect:/module/billing/indoorbillingqueue.form";
 		
-		bill.setReceipt(billingService.createReceipt());
-		bill = billingService.savePatientServiceBill(bill);
-		return "redirect:/module/billing/patientServiceBillForBD.list?patientId=" + patientId + "&billId="
-		        + bill.getPatientServiceBillId() + "&billType=" + billType;
+	  }
+		else{
+			BillingService billingService = Context.getService(BillingService.class);
+			
+			PatientService patientService = Context.getPatientService();
+			
+			// Get the BillCalculator to calculate the rate of bill item the patient has to pay
+			Patient patient = patientService.getPatient(patientId);
+			Map<String, String> attributes = PatientUtils.getAttributes(patient);
+			
+			BillCalculatorForBDService calculator = new BillCalculatorForBDService();
+			
+			PatientServiceBill bill = new PatientServiceBill();
+			bill.setCreatedDate(new Date());
+			bill.setPatient(patient);
+			bill.setCreator(Context.getAuthenticatedUser());
+			
+			PatientServiceBillItem item;
+			int quantity = 0;
+			Money itemAmount;
+			Money mUnitPrice;
+			Money totalAmount = new Money(BigDecimal.ZERO);
+			BigDecimal totalActualAmount = new BigDecimal(0);
+			BigDecimal unitPrice;
+			String name;
+			BillableService service;
+			
+			for (int conceptId : cons) {
+				
+				unitPrice = NumberUtils.createBigDecimal(request.getParameter(conceptId + "_unitPrice"));
+				quantity = NumberUtils.createInteger(request.getParameter(conceptId + "_qty"));
+				name = request.getParameter(conceptId + "_name");
+				service = billingService.getServiceByConceptId(conceptId);
+				
+				mUnitPrice = new Money(unitPrice);
+				itemAmount = mUnitPrice.times(quantity);
+				totalAmount = totalAmount.plus(itemAmount);
+				
+				item = new PatientServiceBillItem();
+				item.setCreatedDate(new Date());
+				item.setName(name);
+				item.setPatientServiceBill(bill);
+				item.setQuantity(quantity);
+				item.setService(service);
+				item.setUnitPrice(unitPrice);
+				
+				item.setAmount(itemAmount.getAmount());
+				
+				// Get the ratio for each bill item
+				Map<String, Object> parameters = HospitalCoreUtils.buildParameters("patient", patient, "attributes", attributes,
+				    "billItem", item, "request", request);
+				BigDecimal rate = calculator.getRate(parameters, billType);
+				item.setActualAmount(item.getAmount().multiply(rate));
+				totalActualAmount = totalActualAmount.add(item.getActualAmount());
+				
+				bill.addBillItem(item);
+			}
+			bill.setAmount(totalAmount.getAmount());
+			bill.setActualAmount(totalActualAmount);
+			/*added waiver amount */
+			if(waiverAmount != null){
+				bill.setWaiverAmount(waiverAmount);
+			}
+			else {
+				BigDecimal wavAmt = new BigDecimal(0);
+				bill.setWaiverAmount(wavAmt);
+			}
+			bill.setComment(comment);
+			bill.setFreeBill(calculator.isFreeBill(billType));
+			logger.info("Is free bill: " + bill.getFreeBill());
+			
+			bill.setReceipt(billingService.createReceipt());
+			bill = billingService.savePatientServiceBill(bill);
+			return "redirect:/module/billing/patientServiceBillForBD.list?patientId=" + patientId + "&billId="
+	        + bill.getPatientServiceBillId() + "&billType=" + billType;
+		}
 		
 	}
 	
