@@ -39,9 +39,11 @@ import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculatorForBDService;
 import org.openmrs.module.hospitalcore.BillingService;
+import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.IndoorPatientServiceBill;
 import org.openmrs.module.hospitalcore.model.IndoorPatientServiceBillItem;
+import org.openmrs.module.hospitalcore.model.IpdPatientAdmission;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
 import org.openmrs.module.hospitalcore.util.HospitalCoreUtils;
@@ -79,7 +81,12 @@ public class BillableServiceBillAddForBDController {
 		Concept concept = Context.getConceptService().getConcept(conceptId);
 		model.addAttribute("tabs", billingService.traversTab(concept, mapServices, 1));
 		model.addAttribute("patientId", patientId);
-		return "/module/billing/main/billableServiceBillAdd";
+		if(encounterId!=null){
+			return "/module/billing/indoorQueue/billableServiceBillAddForIndoorPatient";	
+		}
+		else{
+			return "/module/billing/main/billableServiceBillAdd";
+		}
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
@@ -97,6 +104,7 @@ public class BillableServiceBillAddForBDController {
 		
 		if(encounterId!=null){
 		BillingService billingService = Context.getService(BillingService.class);
+		IpdService ipdService = Context.getService(IpdService.class);
 		PatientService patientService = Context.getPatientService();
 		Patient patient = patientService.getPatient(patientId);
 		IndoorPatientServiceBill bill = new IndoorPatientServiceBill();
@@ -142,6 +150,12 @@ public class BillableServiceBillAddForBDController {
 		bill.setActualAmount(totalActualAmount);
 		bill.setEncounter(Context.getEncounterService().getEncounter(encounterId));	
 		bill = billingService.saveIndoorPatientServiceBill(bill);
+		IndoorPatientServiceBillItem indoorPatientServiceBillItem = billingService.getIndoorPatientServiceBillItem("IPD INITIAL DEPOSIT");
+		IpdPatientAdmission ipdPatientAdmission = ipdService.getIpdPatientAdmissionByEncounter(Context.getEncounterService().getEncounter(encounterId));
+		if (indoorPatientServiceBillItem !=null && ipdPatientAdmission != null) {
+		ipdPatientAdmission.setInitialDepositStatus(1);
+		ipdService.saveIpdPatientAdmission(ipdPatientAdmission);
+		}
 		if (bill != null) {
 			billingService.saveBillEncounterAndOrderForIndoorPatient(bill);
 		}
