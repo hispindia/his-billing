@@ -141,7 +141,7 @@ public class BillableServiceBillAddForBDController {
 			item.setService(service);
 			item.setUnitPrice(unitPrice);
 			item.setAmount(itemAmount.getAmount());
-			item.setActualAmount(service.getPrice());
+			item.setActualAmount(itemAmount.getAmount());
 			totalActualAmount = totalActualAmount.add(item.getActualAmount());
 			
 			bill.addBillItem(item);

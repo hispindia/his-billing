@@ -168,6 +168,7 @@ public class BillableServiceBillListForBDController {
 			bill.setAmount(totalAmount.getAmount());
 			bill.setReceipt(billingService.createReceipt());
 			bill.setFreeBill(0);
+			//bill.setActualAmount(totalActualAmount.subtract(waiverAmount));
 			bill.setActualAmount(totalActualAmount);
 			if(waiverAmount != null){
 				bill.setWaiverAmount(waiverAmount);

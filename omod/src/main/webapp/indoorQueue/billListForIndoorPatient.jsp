@@ -79,6 +79,7 @@
 			<th>S.No</th>
 			<th>Service</th>
 			<th>Unit Price</th>
+			<th>Amount</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -97,6 +98,7 @@
 				<td>${index}</td>
 				<td>${item.name}</td>
 				<td>${item.unitPrice}</td>
+				<td>${item.amount}</td>
 				<c:set var="index" value="${index+1}"/>  
 			</tr>
 		</c:forEach>
