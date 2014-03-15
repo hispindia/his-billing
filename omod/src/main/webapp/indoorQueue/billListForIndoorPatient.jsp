@@ -108,7 +108,7 @@
 <table>
 <form method="post" id="billListForIndoorPatient">
 <div id="waiverAmt">
-Waver Amount:<input type="text" id="waiverAmount" name="waiverAmount">
+Waiver Amount:<input type="text" id="waiverAmount" name="waiverAmount">
 </div>
 <div style="text-align:center"> 
 <c:choose>

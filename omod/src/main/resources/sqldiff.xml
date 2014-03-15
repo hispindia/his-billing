@@ -505,7 +505,7 @@
 		<author>Sagar</author>
 		<date>Jan 2014</date>
 		<description>
-			ADD COLUMN waver amount COLUMN IN
+			ADD COLUMN waiver amount COLUMN IN
 			billing_patient_service_bill TABLE 
 		</description>
 		<sql>
