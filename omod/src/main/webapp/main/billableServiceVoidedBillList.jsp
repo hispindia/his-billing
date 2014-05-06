@@ -172,8 +172,8 @@
 		<form method="POST" id="billForm">
 			<center>
 				<input type="button" value='<spring:message code="billing.print" />'
-					onClick="printDiv2();" />&nbsp;&nbsp; <a href="#"
-					onclick="javascript:jQuery('#billContainer').hide();">Hide</a>
+					onClick="printDiv2();" />&nbsp;&nbsp; <button href="#"
+					onclick="javascript:jQuery('#billContainer').hide();">Back</a>
 			</center>
 		</form>
 	</div>
@@ -304,7 +304,7 @@
 	<table class="box">
 		<thead>
 			<th>#</th>
-			<th>Bill Name</th>
+			<th>Bill ID</th>
 			<th>Description</th>
 			<th>Action</th>
 		</thead>

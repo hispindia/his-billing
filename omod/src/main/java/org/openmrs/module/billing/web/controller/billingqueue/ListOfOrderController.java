@@ -62,6 +62,10 @@ public class ListOfOrderController {
 		// Kesavulu loka 25-06-2013, Add Patient Details on the page where Order ID is clicked
 		HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
 		PatientSearch patientSearch = hospitalCoreService.getPatientByPatientId(patientId);
+
+		model.addAttribute("age",patient.getAge());
+		model.addAttribute("gender",patient.getGender());
+		model.addAttribute("category",patient.getAttribute(14));
 		model.addAttribute("patientSearch", patientSearch);
 		model.addAttribute("listOfOrders", listOfOrders);
 		//model.addAttribute("serviceOrderSize", serviceOrderList.size());

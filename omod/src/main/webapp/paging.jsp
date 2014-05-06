@@ -33,7 +33,9 @@
 <c:if test="${numberOfPages > 0 }">
 	<ul class="pageSizeSelection">
 		<li><span><spring:message
-					code="${moduleId}.paging.totalpage" />:</span> ${numberOfPages}</li>
+					code="${moduleId}.paging.totalpage" />:</span><input type="text"
+			id="sizeOfPage" value="${numberOfPages}" style="width: 50px"
+			></li>
 		<li><span><spring:message
 					code="${moduleId}.paging.pagesize" />:</span> <input type="text"
 			id="sizeOfPage" value="${pageSize}" style="width: 50px"

@@ -95,7 +95,7 @@
 		<table cellspacing="10">
 			<tbody>
 				<tr>
-					<td>Bill Id </td>
+					<td>Bill ID  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</td>
 					<td>
 						<input id="billId" name="billId" style="width:300px;">
 					</td>
@@ -109,7 +109,7 @@
 <!-- End #247 -->
 
 <div id="patientSearchResultSection" style="display: none;">
-	<div class="boxHeader">Found Patients</div>
+	<div class="boxHeader">Patients found </div>
 	<div class="box" id="patientSearchResult"></div>
 </div>
 <%

@@ -192,9 +192,8 @@
 		</div>
 		<div id="total"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
-			<input type='text' size='25' value='Total:' />&nbsp; <input
-				type='text' size='3' value='' readonly="readonly" />&nbsp; <input
-				type='text' id='totalprice' name='totalprice' size='5' value='0'
+			<td><b>Total:</b></td>
+			<input type='text' id='totalprice' name='totalprice' size='5' value='0'
 				readonly="readonly" />&nbsp; <b>
 		</div>
 
@@ -203,9 +202,9 @@
 
 		<div id="extra" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
-			<input type='text' size='25' value='Service Name' readonly='readonly' />&nbsp;
-			<input type='text' size="3" value='Qty' readonly="readonly" />&nbsp;
-			<input type='text' size='5' value='Price' readonly="readonly" />&nbsp;</b>
+			<td><b>Service Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b></td>
+			<td><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Qty&nbsp;&nbsp;&nbsp;&nbsp;</b></td>
+			<td><b>Price</b></td>
 			<hr />
 		</div>
 

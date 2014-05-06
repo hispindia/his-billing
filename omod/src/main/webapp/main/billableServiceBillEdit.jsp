@@ -244,26 +244,24 @@ jQuery(document).ready(function(){
 		</div>
 		<div id="total"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
-			<input type='text' size='25' value='Total:' />&nbsp; <input
-				type='text' size='3' value='' readonly="readonly" />&nbsp; <input
-				type='text' id='totalprice' name='totalprice' size='5' value='0'
-				readonly="readonly" />&nbsp; <b>
+			<td><b>Total:</b></td>
+			<input type='text' id='totalprice' name='totalprice' size='5' value='0' readonly="readonly" />&nbsp; <b>
 		</div>
 
 		<div id="WaiverAmountEditField" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
-			<input type='text' size='25' value='Waiver Amount' readonly='readonly' />&nbsp;
+			<td type='text' size='20'>Waiver Amount:</td>
 			<input id="freePat" name="freePat" type='hidden' value="${freeBill}" size='5' />&nbsp;</b>
 			<input id="waiverAmountEdit" name="waiverAmountEdit" type='text' value="${waiverAm}" size='5' />&nbsp;</b>
 			<hr />
 		</div>
 
 
-		<div id="extra" class="cancelDraggable"
+		<div id="extra" 
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
-			<input type='text' size='25' value='Service Name' readonly='readonly' />&nbsp;
-			<input type='text' size="3" value='Qty' readonly="readonly" />&nbsp;
-			<input type='text' size='5' value='Price' readonly="readonly" />&nbsp;</b>
+			<input type='text' size='21' value='Service Name' readonly='readonly' style="border:none; outline:none; font-weight:bold; font-size:15px"/>
+			<input type='text' size='3' value='Qty' readonly='readonly' style="border:none; outline:none; font-weight:bold; font-size:15px"/>
+			<input type='text' size='5' value='Price' readonly='readonly' style="border:none; outline:none; font-weight:bold; font-size:15px"/>
 			<hr />
 		</div>
 

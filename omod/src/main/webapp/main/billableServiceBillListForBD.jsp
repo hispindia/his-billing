@@ -113,22 +113,34 @@ function validate(){
 	<div id="billContainer" style="margin: 10px auto; width: 981px;">
 		<table>
 			<tr>
-				<td>Patient ID no:</td>
+				<td>Patient Identifier:</td>
 				<td>${patient.patientIdentifier.identifier}</td>
 			</tr>
 			<tr>
-				<td>Name of the patient:</td>
+				<td>Patient Name:</td>
 				<td>${patient.givenName}&nbsp;&nbsp;${patient.middleName}&nbsp;&nbsp;
 					${patient.familyName}</td>
 			</tr>
 			<tr>
-				<td>Date:</td>
+				<td>Date of Billing:</td>
 				<td><openmrs:formatDate date="${bill.createdDate}"
 						type="textbox" /></td>
 			</tr>
 			<tr>
 				<td>Bill ID:</td>
 				<td>${bill.receipt.id}</td>
+			</tr>
+			<tr>
+				<td>Patient Category:</td>
+				<td>${category}</td>
+			</tr>
+			<tr>
+				<td>Gender:</td>
+				<td>${gender}</td>
+			</tr>
+			<tr>
+				<td>Age:</td>
+				<td>${age}</td>
 			</tr>
 			<c:if test="${bill.voided==true }">
 				<tr>
@@ -228,8 +240,8 @@ function validate(){
 		<form method="POST" id="billForm">
 			<center>
 				<input type="button" value='<spring:message code="billing.print" />'
-					onClick="printDiv2();" />&nbsp;&nbsp; <a href="#"
-					onclick="javascript:jQuery('#billContainer').hide();">Hide</a>
+					onClick="printDiv2();" />&nbsp;&nbsp; <button href="#" 
+					onclick="javascript:jQuery('#billContainer').hide();">Back</a>
 			</center>
 		</form>
 	</div>
@@ -374,17 +386,17 @@ function validate(){
 
 <c:if test="${not empty listBill}">
 	<!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --update title-->
-	<span class="boxHeader">List of Bills</span>
+	<span class="boxHeader">List of Previous Bills</span>
 	<table class="box">
 		<thead>
-			<th>#</th>
-			<th>Bill Name</th>
+			<th><center>#</center></th>
+			<th>Bill ID</th>
 			<th>Description</th>
 			<th>Action</th>
 		</thead>
 		<c:forEach items="${listBill}" var="bill" varStatus="varStatus">
 			<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } '>
-				<td class='<c:if test="${bill.voided}">retired </c:if>'><c:out
+				<td align="center" class='<c:if test="${bill.voided}">retired </c:if>'><c:out
 						value="${(( pagingUtil.currentPage - 1  ) * pagingUtil.pageSize ) + varStatus.count }" />
 				</td>
 				<td class='<c:if test="${bill.voided}">retired </c:if>'><c:choose>
@@ -392,13 +404,13 @@ function validate(){
 							test="${bill.voided == false && ( bill.printed == false || ( bill.printed == true && canEdit == true ) )}">
 							<%-- ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module --%>
 							<a
-								href="${pageContext.request.contextPath}/module/billing/editPatientServiceBillForBD.form?billId=${bill.patientServiceBillId}&patientId=${patient.patientId}">Bill
-								ID <b>${bill.receipt.id}</b>,<openmrs:formatDate
+								href="${pageContext.request.contextPath}/module/billing/editPatientServiceBillForBD.form?billId=${bill.patientServiceBillId}&patientId=${patient.patientId}">
+								 <b>${bill.receipt.id}</b>,<openmrs:formatDate
 									date="${bill.createdDate }" type="textbox" /> </a>
 				</td>
 				</c:when>
 				<c:otherwise>
-						Bill ID <b>${bill.receipt.id}</b>,
+						<b>${bill.receipt.id}</b>,
 						<openmrs:formatDate date="${bill.createdDate }" />
 				</c:otherwise>
 				</c:choose>

@@ -45,7 +45,7 @@
 </c:forEach>
 <div>
 	<b><a href="addAmbulanceBill.form?driverId=${driverId}">Add
-			Ambulance bill</a>
+			Ambulance Bill</a>
 	</b>
 </div>
 
@@ -100,7 +100,7 @@
 					<input type="button"
 						value='<spring:message code="billing.print" />'
 						onClick="printDiv();" />&nbsp;&nbsp;</c:if>
-				<a href="#" onclick="javascript:jQuery('#billContainer').hide();">Hide</a>
+				<button href="#" onclick="javascript:jQuery('#billContainer').hide();">Back</a>
 			</center>
 		</form>
 	</div>
@@ -174,23 +174,23 @@
 		<span class="boxHeader">List of Ambulance bills</span>
 		<table class="box">
 			<thead>
-				<th>#</th>
-				<th>Bill Name</th>
+				<th><center>#</center></th>
+				<th>Bill ID</th>
 				<th>Action</th>
 			</thead>
 			<c:forEach items="${ambulanceBills}" var="ambulanceBill"
 				varStatus="varStatus">
 				<tr
 					class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } <c:if test="${ambulanceBill.voided}">retired </c:if> '>
-					<td><c:out
+					<td align="center"><c:out
 							value="${(( pagingUtil.currentPage - 1  ) * pagingUtil.pageSize ) + varStatus.count }" />
 					</td>
 					<td><c:choose>
 							<c:when
 								test="${ ambulanceBill.voided == false && (  ambulanceBill.printed == false || ( ambulanceBill.printed == true && canEdit == true ))}">
 								<a
-									href="${pageContext.request.contextPath}/module/billing/editAmbulanceBill.form?ambulanceBillId=${ambulanceBill.ambulanceBillId}&driverId=${driver.driverId}">Bill
-									ID <b>${ambulanceBill.receipt.id}</b>, <openmrs:formatDate
+									href="${pageContext.request.contextPath}/module/billing/editAmbulanceBill.form?ambulanceBillId=${ambulanceBill.ambulanceBillId}&driverId=${driver.driverId}">
+									 <b>${ambulanceBill.receipt.id}</b>, <openmrs:formatDate
 										date="${ambulanceBill.createdDate }" type="textbox" />
 								</a>
 							</c:when>

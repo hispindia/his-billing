@@ -42,6 +42,17 @@ var sos=${serviceOrderSize};
 if(sos==0){
 jQuery("#savebill").hide(); 
   }
+  
+    var result = 0;
+    $('#total').attr('value', function() {
+        $('.serpricalc').each(function() {
+            if ($(this).val() !== '') {
+                result += parseInt($(this).val());
+            }
+        });
+        return result;
+    });
+ 
 
 });
 </script>
@@ -64,11 +75,13 @@ function disable(incon){
 var icon=incon.toString();
 if(jQuery("#"+icon+"selectservice").attr('checked')) {
   jQuery("#"+icon+"servicequantity").removeAttr("disabled");
+  jQuery("#"+icon+"serviceprice").removeAttr("disabled");
   jQuery("#"+icon+"paybill").removeAttr("disabled");
 } 
 else{
  jQuery("#"+icon+"servicequantity").attr("disabled", "disabled"); 
  jQuery("#"+icon+"paybill").attr("disabled", "disabled"); 
+ jQuery("#"+icon+"serviceprice").attr("disabled", "disabled"); 
 }
 }
 </script>
@@ -109,7 +122,7 @@ if (serqun!=null || quantity!=""){
 </script>
 
 <div style="max-height: 50px; max-width: 1800px;">
-	<b class="boxHeader">List of procedure and investigation</b>
+	<b class="boxHeader">List of Procedures and Investigations</b>
 </div>
 <br />
 
@@ -119,19 +132,32 @@ if (serqun!=null || quantity!=""){
 -->
 	<table>
 		<tr>
-			<td>Patient ID :</td>
+			<td>Patient Identifier :</td>
 			<td>${patientSearch.identifier}</td>
 		</tr>
 		<tr>
-			<td>Name of the patient:</td>
+			<td>Patient Name:</td>
 			<td>${patientSearch.givenName}&nbsp;&nbsp;${patientSearch.middleName}&nbsp;&nbsp;
 				${patientSearch.familyName}</td>
 		</tr>
 		<tr>
-			<td>Date :</td>
+			<td>Date of Billing:</td>
 			<td>${date}</td>
 		</tr>
-	</table>
+		<tr>
+			<td>Patient Category:</td>
+			<td>${category}</td>
+		</tr>
+		<tr>
+			<td>Gender:</td>
+			<td>${gender}</td>
+		</tr>
+		<tr>
+			<td>Age:</td>
+			<td>${age}</td>
+		</tr>
+
+		</table>
 </div>
 
 <form id="orderBillingForm"
@@ -175,7 +201,7 @@ if (serqun!=null || quantity!=""){
 					</td>
 					<td align="center"><input type="text"
 						id="${index.count}servicequantity"
-						name="${index.count}servicequantity" size="7"
+						name="${index.count}servicequantity" size="7" value=1
 						onkeyup="updatePrice(${index.count});" class="serquncalc" /></td>
 					<!-- 
 					<td align="center"><input type="text"
@@ -192,7 +218,7 @@ if (serqun!=null || quantity!=""){
 						size="7" value="${sol.price}" readOnly="true"></td>
 					<td align="right"><input type="text"
 						id="${index.count}serviceprice" name="${index.count}serviceprice"
-						size="7" value="0" readOnly="true" class="serpricalc"></td>
+						size="7" value="${sol.price}" readOnly="true" class="serpricalc"></td>
 				</tr>
 			</c:forEach>
 		</tbody>

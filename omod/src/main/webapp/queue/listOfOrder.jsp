@@ -32,18 +32,31 @@
 <div>	
 	<table>
 		<tr>
-			<td>Patient ID :</td>
+			<td>Patient Identifier:</td>
 			<td>${patientSearch.identifier}</td>
 		</tr>
 		<tr>
-			<td>Name of the patient:</td>
+			<td>Patient Name:</td>
 			<td>${patientSearch.givenName}&nbsp;&nbsp;${patientSearch.middleName}&nbsp;&nbsp;
 				${patientSearch.familyName}</td>
 		</tr>
 		<tr>
-			<td>Date :</td>
+			<td>Date of Billing :</td>
 			<td>${date}</td>
 		</tr>
+		<tr>
+			<td>patient Category:</td>
+			<td>${category}</td>
+		</tr>
+		<tr>
+			<td>Gender:</td>
+			<td>${gender}</td>
+		</tr>
+		<tr>
+			<td>Age:</td>
+			<td>${age}</td>
+		</tr>
+
 	</table>
 </div>
 

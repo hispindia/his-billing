@@ -34,13 +34,13 @@ div.paging span.seperator {
 ul.pageSizeSelection {
 	list-style: none;
 	float: left;
-	width: 160px;
+	width: 260px;
 	margin: 0;
 	padding: 0;
 }
 
 ul.pageSizeSelection span {
-	width: 100px;
+	width: 160px;
 	display: block;
 	float: left;
 }

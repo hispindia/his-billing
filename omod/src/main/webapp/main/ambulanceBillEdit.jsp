@@ -295,7 +295,7 @@
 </script>
 
 <!-- Right side div for bill collection -->
-<div id="billDiv" style="width: 55%;">
+<div id="billDiv" style="width: 70%;">
 	<form method="POST" id="billForm" action="editAmbulanceBill.form"
 		onsubmit="return false">
 		<input type="hidden" value="" name="action" id="action" />
@@ -311,9 +311,8 @@
 		</div>
 		<div id="total"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
-			<input type='text' size='25' value='Total:' />&nbsp; <input
-				type='text' size='3' value='' readonly="readonly" />&nbsp; <input
-				type='text' id='totalprice' name='totalprice' size='5' value='0'
+			<td><b>Total:</b></td>&nbsp; 
+			<input type='text' id='totalprice' name='totalprice' size='5' value='0'
 				readonly="readonly" />&nbsp; <b>
 		</div>
 
@@ -324,14 +323,13 @@
 
 		<div id="extra" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
-			<input type='text' size='25' value='Ambulance Name' readonly="readonly" />&nbsp; 
-			<input type='text' size="30" value='Patient Name' readonly="readonly" />&nbsp;
-			<input type='text' size="9" value='Receipt No.' readonly="readonly" />&nbsp;
-			<input type='text' size="9" value='No. of Trips' readonly="readonly" />&nbsp; 
-			<input type='text' size="20" value='Origin' readonly="readonly" />&nbsp;
-			<input type='text' size="20" value='Destination' readonly="readonly" />&nbsp;
-			<input type='text' size='5' value='Amount' readonly="readonly" />&nbsp;</b>
-			<hr />
+<td>Ambulance Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td>Patient Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Receipt No.</td>
+			<td>&nbsp;No. of Trips</td>
+			<td>&nbsp;Origin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Destination&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Amount</td>			<hr />
 		</div>
 
 

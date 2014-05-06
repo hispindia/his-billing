@@ -45,7 +45,7 @@
 </c:forEach>
 <div>
 	<b><a href="addMiscellaneousServiceBill.form">Add Miscellaneous
-			Service bill</a>
+			Service Bill</a>
 	</b>
 </div>
 <br />
@@ -93,7 +93,7 @@
 					<input type="button"
 						value='<spring:message code="billing.print" />'
 						onClick="printDiv();" />&nbsp;&nbsp;</c:if>
-				<a href="#" onclick="javascript:jQuery('#billContainer').hide();">Hide</a>
+				<button href="#" onclick="javascript:jQuery('#billContainer').hide();">Back</a>
 			</center>
 		</form>
 	</div>
@@ -174,8 +174,8 @@
 		<span class="boxHeader">List of Miscellaneous Services Bills</span>
 		<table class="box">
 			<thead>
-				<th>#</th>
-				<th>Bill Name</th>
+				<th><center>#</center></th>
+				<th>Bill ID</th>
 				<th>Name</th>
 				<th>Service</th>
 				<th>Action</th>
@@ -183,15 +183,15 @@
 			<c:forEach items="${listBills}" var="bill" varStatus="varStatus">
 				<tr
 					class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } <c:if test="${bill.voided}">retired </c:if> '>
-					<td><c:out
+					<td align="center"><c:out
 							value="${(( pagingUtil.currentPage - 1  ) * pagingUtil.pageSize ) + varStatus.count }" />
 					</td>
 					<td><c:choose>
 							<c:when
 								test="${ bill.voided == false && (  bill.printed == false || ( bill.printed == true && canEdit == true ))}">
 								<a
-									href="${pageContext.request.contextPath}/module/billing/editMiscellaneousServiceBill.form?billId=${bill.id}">Bill
-									ID <b>${bill.receipt.id}</b>, <openmrs:formatDate
+									href="${pageContext.request.contextPath}/module/billing/editMiscellaneousServiceBill.form?billId=${bill.id}">
+									<b>${bill.receipt.id}</b>, <openmrs:formatDate
 										date="${bill.createdDate }" type="textbox" />
 								</a>
 							</c:when>

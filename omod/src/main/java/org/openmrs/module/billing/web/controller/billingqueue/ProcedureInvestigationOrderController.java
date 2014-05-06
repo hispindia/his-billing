@@ -65,6 +65,10 @@ public class ProcedureInvestigationOrderController {
 		model.addAttribute("encounterId", encounterId);
 		HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
 		PatientSearch patientSearch = hospitalCoreService.getPatientByPatientId(patientId);
+		Patient patient = Context.getPatientService().getPatient(patientId);
+		model.addAttribute("age",patient.getAge());
+		model.addAttribute("category",patient.getAttribute(14));
+		model.addAttribute("gender",patient.getGender());
 		model.addAttribute("patientSearch", patientSearch);
 		model.addAttribute("date", dateStr);
 		return "/module/billing/queue/procedureInvestigationOrder";

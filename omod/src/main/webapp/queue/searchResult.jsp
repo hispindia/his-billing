@@ -123,7 +123,7 @@
 		</table>
 	</c:when>
 	<c:otherwise>
-	No Result Found.
+	No Patients Found.
 	</c:otherwise>
 </c:choose>
 
