@@ -87,7 +87,7 @@
 					class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } patientSearchRow'
 					onclick="PATIENTSEARCHRESULT.visit(${patient.patientId},'${patient.dead}');">
 					<td>${patient.patientIdentifier.identifier}</td>
-					<td>${patient.givenName} ${patient.middleName}
+					<td>${patient.givenName} ${fn:replace(patient.middleName,',',' ')}
 						${patient.familyName}</td>
 					<td><c:choose>
 							<c:when test="${patient.age == 0}">&lt 1</c:when>

@@ -137,7 +137,7 @@ if (serqun!=null || quantity!=""){
 		</tr>
 		<tr>
 			<td>Patient Name:</td>
-			<td>${patientSearch.givenName}&nbsp;&nbsp;${patientSearch.middleName}&nbsp;&nbsp;
+			<td>${patientSearch.givenName}&nbsp;&nbsp;${fn:replace(patientSearch.middleName,',',' ')}&nbsp;&nbsp;
 				${patientSearch.familyName}</td>
 		</tr>
 		<tr>
