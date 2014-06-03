@@ -84,7 +84,7 @@ window.location.href = openmrsContextPath + "/module/billing/patientServiceBillF
 		<td><c:out value="${index}"/></td>
 		<td><openmrs:formatDate date="${pAdmission.admissionDate }" type="textbox"/></td>	
 		<td>${pAdmission.patientIdentifier}</td>
-		<td>${fn:replace(pAdmissionLog.patientName ,',',' ')}</td>
+		<td>${fn:replace(pAdmission.patientName ,',',' ')}</td>
 		<td>
 			${pAdmission.age }
 		</td>
