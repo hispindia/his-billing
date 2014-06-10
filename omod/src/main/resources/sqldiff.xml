@@ -604,4 +604,17 @@
 			INT(11) DEFAULT NULL,ADD COLUMN discharge_status INT(1) DEFAULT 0;
 		</sql>
 	</diff>
+		<diff>
+		<version>3.2.3</version>
+		<author>Sagar Bele</author>
+		<date>June 8 2014</date>
+		<description>
+			Add column 'mode of payment' for 'billing_patient_service_bill'
+			table
+		</description>
+		<sql>
+			ALTER TABLE billing_patient_service_bill ADD(`payment_mode`
+			varchar(50));
+		</sql>
+	</diff>
 </sqldiff>

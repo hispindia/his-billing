@@ -233,6 +233,15 @@ if (serqun!=null || quantity!=""){
 				size="7" /></td>
 		</tr>
 
+		<tr>
+			<td colspan="6" align="right">Payment Mode:</td>
+			<td align="right"><select id="paymentMode" name="paymentMode">
+					<option value="Cash">Cash</option>
+					<option value="Card">Card</option>
+				</select>
+			</td>
+		</tr>
+		
 	</table>
 	<tr>
 		<td><input type="submit" id="savebill" name="savebill"

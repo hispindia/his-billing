@@ -129,6 +129,7 @@ public class BillableServiceBillListForBDController {
 			@RequestParam(value = "encounterId", required = false) Integer encounterId,
 			@RequestParam(value = "admissionLogId", required = false) Integer admissionLogId,
 			@RequestParam(value = "waiverAmount", required = false) BigDecimal waiverAmount,
+			@RequestParam(value = "paymentMode", required = false) String paymentMode,
 			HttpServletRequest request) {
 		if(encounterId!=null){
 			BillingService billingService = Context.getService(BillingService.class);
@@ -182,6 +183,7 @@ public class BillableServiceBillListForBDController {
 				bill.setWaiverAmount(wavAmt);
 			}
 			bill.setEncounter(Context.getEncounterService().getEncounter(encounterId));	
+			bill.setPaymentMode(paymentMode);
 			bill = billingService.savePatientServiceBill(bill);
 			
 			if(bill!=null){

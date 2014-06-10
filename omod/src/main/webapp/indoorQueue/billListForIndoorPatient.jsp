@@ -108,7 +108,14 @@
 <table>
 <form method="post" id="billListForIndoorPatient">
 <div id="waiverAmt">
-Waiver Amount:<input type="text" id="waiverAmount" name="waiverAmount">
+<b>Waiver Amount:</b><input type="text" id="waiverAmount" name="waiverAmount">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Payment Mode:</b>
+			<select id="paymentMode" name="paymentMode">
+					<option value="Cash">Cash</option>
+					<option value="Card">Card</option>
+				</select>
+			
+
 </div>
 <div style="text-align:center"> 
 <c:choose>

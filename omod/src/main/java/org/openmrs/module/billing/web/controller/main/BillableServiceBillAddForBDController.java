@@ -94,6 +94,7 @@ public class BillableServiceBillAddForBDController {
 	                       @RequestParam("cons") Integer[] cons, @RequestParam("patientId") Integer patientId,
 	                       @RequestParam(value = "comment", required = false) String comment,
 	                       @RequestParam(value = "waiverAmount", required = false) BigDecimal waiverAmount,
+	                       @RequestParam(value = "paymentMode", required = false) String paymentMode,
 	                       @RequestParam(value = "billType", required = false) String billType,
 	                       @RequestParam(value = "encounterId", required = false) Integer encounterId) {
 		validate(cons, bindingResult, request);
@@ -178,7 +179,7 @@ public class BillableServiceBillAddForBDController {
 			bill.setCreatedDate(new Date());
 			bill.setPatient(patient);
 			bill.setCreator(Context.getAuthenticatedUser());
-			
+		
 			PatientServiceBillItem item;
 			int quantity = 0;
 			Money itemAmount;
@@ -230,6 +231,9 @@ public class BillableServiceBillAddForBDController {
 				bill.setWaiverAmount(wavAmt);
 			}
 			bill.setComment(comment);
+			
+			bill.setPaymentMode(paymentMode);
+
 			bill.setFreeBill(calculator.isFreeBill(billType));
 			logger.info("Is free bill: " + bill.getFreeBill());
 			

@@ -154,6 +154,7 @@ jQuery(document).ready(function(){
 					ok = false;
 				}
 			});
+			
 			if( !ok ) {
 				alert("Please enter valid quantity!!!");
 			}else if(! jQuery("input[type='checkbox']","div#extra").length ) {
@@ -168,14 +169,14 @@ jQuery(document).ready(function(){
 					alert("Please enter correct Waiver Amount");
 					return false;
 				}
+			
 
 				else{
 					jQuery("#subm").attr("disabled", "disabled");
 					jQuery("#billForm").submit();
 				}
 					
-			}
-		}
+			};		}
 	
 
 </script>
@@ -207,7 +208,15 @@ jQuery(document).ready(function(){
 		<div id="WaiverAmountField" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
 			<td type='text' size='20'>Waiver Amount:</td>
-			<input id="waiverAmount" name="waiverAmount" type='text' size='5' />&nbsp;</b>
+			<td>
+			<input id="waiverAmount" name="waiverAmount" type='text' size='5' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+			</td>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Payment Mode:</b>
+			<td><select id="paymentMode" name="paymentMode">
+					<option value="Cash">Cash</option>
+					<option value="Card">Card</option>
+				</select></td>	
+			</td>
 			<hr />
 		</div>
 		
