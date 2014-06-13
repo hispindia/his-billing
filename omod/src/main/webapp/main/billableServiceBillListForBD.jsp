@@ -23,6 +23,7 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="../includes/js_css.jsp"%>
 <openmrs:require privilege="View Bills" otherwise="/login.htm" />
+<openmrs:globalProperty var="userLocation" key="hospital.location_user" defaultValue="false"/>
 <style type="text/css">
 .hidden {
 	display: none;
@@ -256,7 +257,7 @@ function validate(){
 		display: none;
 	}
 	.spacer {
-		margin-top: 100px;
+		margin-top: 50px;
 		font-family: "Dot Matrix Normal", Arial, Helvetica, sans-serif;
 		font-style: normal;
 		font-size: 14px;
@@ -273,10 +274,20 @@ function validate(){
 			class="donotprint"
 			src="${pageContext.request.contextPath}/moduleResources/billing/HEADEROPDSLIP.jpg"
 			width="981" height="212"></img>
+		<center><img width="100" height="100" align="center" title="OpenMRS" alt="OpenMRS" src="/kenya_openmrs/images/kenya_logo.bmp"><center>
 		<table class="spacer" style="margin-left: 60px;">
+			<tr><h3><center><u><b>${userLocation} </b></u></center></h3>
+			</tr>
+			<tr><h5><center>CASH RECEIPT</center></h5>
+			</tr>
+
 			<tr>
-				<td>Patient ID:</td>
-				<td colspan="3">${patient.patientIdentifier}</td>
+				<td>RECEIPT No:</td>
+				<td>${bill.receipt.id}</td>
+			</tr>
+			<tr>
+				<td>Date:</td>
+				<td align="left">${dateTime}</td>
 			</tr>
 			<tr>
 				<td>Name:</td>
@@ -284,14 +295,17 @@ function validate(){
 					${patient.familyName}</td>
 			</tr>
 			<tr>
-				<td>Date:</td>
-				<td align="left"><openmrs:formatDate date="${bill.createdDate}"
-						type="textbox" /></td>
+				<td>Patient Identifier:</td>
+				<td colspan="3">${patient.patientIdentifier}</td>
 			</tr>
 			<tr>
-				<td>Bill ID:</td>
-				<td>${bill.receipt.id}</td>
-			</tr>
+				<td>Patient Category:</td>
+				<td>${category}</td>
+			</tr>			
+			<tr>
+				<td>Waiver/Exemption No.:</td>
+				<td>${exemption}</td>
+			</tr>			
 			<c:if test="${bill.voided==true }">
 				<tr>
 					<td>Bill Description:</td>
@@ -303,21 +317,21 @@ function validate(){
 			style="margin-left: 60px; margin-top: 10px; font-family: 'Dot Matrix Normal', Arial, Helvetica, sans-serif; font-style: normal;"
 			width="80%">
 			<thead>
-				<th class="printfont" style="">Service Name</th>
+				<th class="printfont" style=""><center>Service Name</center></th>
 				<%--Kesavulu 26-2-2013 support #962 [Billing]change RS to TK for Bangladesh module --%>
-				<th class="printfont" style="">Price (KSh)</th>
-				<th class="printfont" style="">Quantity</th>
-				<th class="printfont" style="">Amount</th>
+				<th class="printfont" style=""><center>Price (KSh)</center></th>
+				<th class="printfont" style=""><center>Quantity</center></th>
+				<th class="printfont" style=""><center>Amount</center></th>
 			</thead>
 			<c:forEach items="${bill.billItems}" var="item" varStatus="status">
 				<%-- ghanshyam Support #339 [Billing]print of void bill [3.2.7 snapshot][DDU,Mohali,Solan,Tanda,] --%>
 				<c:if test="${item.voidedDate==null}">
 					<tr>
 						<td class="printfont" height="20" style="">${item.name}</td>
-						<td class="printfont" height="20" align="right" style="">${item.unitPrice}</td>
-						<td class="printfont" height="20" align="right" style="">${item.quantity}</td>
-						<td class="printfont" height="20" align="right" style="">
-							${item.actualAmount}</td>
+						<td class="printfont" height="20" align="right" style=""><center>${item.unitPrice}</center></td>
+						<td class="printfont" height="20" align="right" style=""><center>${item.quantity}</center></td>
+						<td class="printfont" height="20" align="right" style=""><center>
+							${item.actualAmount}</center></td>
 					</tr>
 				</c:if>
 			</c:forEach>
@@ -325,27 +339,37 @@ function validate(){
 				<td colspan="3"><b>Total</b></td>
 				<c:choose>
 					<c:when test="${bill.voided}">
-						<td align="right"><span
-							style="text-decoration: line-through;">${bill.actualAmount}</span>
+						<td align="right"><center><span
+							style="text-decoration: line-through;"><b>${bill.actualAmount}</b></span></center>
 						</td>
 
 					</c:when>
 					<c:otherwise>
-						<td align="right">${bill.actualAmount}</td>
+						<td align="right"><center>${bill.actualAmount}</center></td>
 					</c:otherwise>
 				</c:choose>
 			</tr>
 			
 			<tr>
 				<td colspan="3" align='left'><b>Waiver Amount(if any)</td>
-				<td align="right"><b>${bill.waiverAmount}</b></td>
+				<td align="right"><b><center>${bill.waiverAmount}</center></b></td>
 			</tr>
 			
 			<tr>
 				<td colspan="3" align='left'><b>Net Amount</td>
-				<td align="right"><b>${bill.actualAmount - bill.waiverAmount}</b></td>
+				<td align="right"><b><center>${bill.actualAmount - bill.waiverAmount}</center></b></td>
 			</tr>
 			
+		</table>
+		<table class="spacer" style="margin-left: 60px;">
+		<tr>
+			<td>PAYMENT MODE :</td>
+			<td><b>${paymentMode}</b></td>
+		</tr>
+		<tr>
+			<td>CASHIER :</td>
+			<td><b>${cashier}</b></td>
+		</tr>
 		</table>
 		<%--Kesavulu 26-2-2013 support #962 [Billing]change RS to TK for Bangladesh module --%>
 		<br> <span class="printfont" style="margin-left: 60px;">Net

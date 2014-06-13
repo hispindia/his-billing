@@ -86,6 +86,17 @@ public class BillableServiceBillListForBDController {
 			model.addAttribute("age",patient.getAge());
 			model.addAttribute("category",patient.getAttribute(14));
 			model.addAttribute("gender",patient.getGender());
+			
+			if(patient.getAttribute(14).getValue() == "Waiver"){
+				model.addAttribute("exemption", patient.getAttribute(32));
+			}
+			else if(patient.getAttribute(14).getValue()!="General" && patient.getAttribute(14).getValue()=="NHIF"){
+				model.addAttribute("exemption", patient.getAttribute(36));
+			}
+			else {
+				model.addAttribute("exemption", " ");
+			}
+
 			model.addAttribute("pagingUtil", pagingUtil);
 			model.addAttribute("patient", patient);
 			model.addAttribute("listBill",
@@ -96,6 +107,7 @@ public class BillableServiceBillListForBDController {
 		model.addAttribute("canEdit", user.hasPrivilege(BillingConstants.PRIV_EDIT_BILL_ONCE_PRINTED));
 		if (billId != null) {
 			PatientServiceBill bill = billingService.getPatientServiceBillById(billId);
+
 			//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module
 			//ghanshyam 3-june-2013 New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue
 			if (bill.getFreeBill().equals(1)) {
@@ -108,7 +120,9 @@ public class BillableServiceBillListForBDController {
 				String billType = "paid";
 				bill.setFreeBill(calculator.isFreeBill(billType));
 			}
-			
+			model.addAttribute("dateTime",bill.getCreatedDate());
+			model.addAttribute("paymentMode",bill.getPaymentMode());
+			model.addAttribute("cashier",bill.getCreator().getGivenName());
 			model.addAttribute("bill", bill);
 		}
 		
