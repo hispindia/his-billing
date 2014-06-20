@@ -60,7 +60,7 @@ public class BillableServiceBillEditListForBDController {
 		
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		Map<String, String> attributes = PatientUtils.getAttributes(patient);
-		//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module
+		
 		BillCalculatorForBDService calculator = new BillCalculatorForBDService();
 		PatientServiceBill bill = billingService.getPatientServiceBillById(billId);
 		
@@ -68,6 +68,23 @@ public class BillableServiceBillEditListForBDController {
 			
 			int total = billingService.countListPatientServiceBillByPatient(patient);
 			PagingUtil pagingUtil = new PagingUtil(RequestUtil.getCurrentLink(request), pageSize, currentPage, total);
+			
+			model.addAttribute("age",patient.getAge());
+			model.addAttribute("category",patient.getAttribute(14));
+			model.addAttribute("gender",patient.getGender());
+
+			
+			if(patient.getAttribute(14).getValue() == "Waiver"){
+				model.addAttribute("exemption", patient.getAttribute(32));
+			}
+			else if(patient.getAttribute(14).getValue()!="General" && patient.getAttribute(14).getValue()!="Waiver"){
+				model.addAttribute("exemption", patient.getAttribute(36));
+			}
+			else {
+				model.addAttribute("exemption", " ");
+			}
+
+			
 			model.addAttribute("pagingUtil", pagingUtil);
 			model.addAttribute("patient", patient);
 			model.addAttribute("listBill",
@@ -85,7 +102,9 @@ public class BillableServiceBillEditListForBDController {
 				String billType = "paid";
 				bill.setFreeBill(calculator.isFreeBill(billType));
 			}
-			
+			model.addAttribute("dateTime",bill.getCreatedDate());
+			model.addAttribute("paymentMode",bill.getPaymentMode());
+			model.addAttribute("cashier",bill.getCreator().getGivenName());
 			model.addAttribute("bill", bill);
 		}
 		User user = Context.getAuthenticatedUser();

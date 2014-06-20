@@ -79,7 +79,7 @@ public class BillableServiceBillListForBDController {
 		if (patient != null) {
 			
 			int total = billingService.countListPatientServiceBillByPatient(patient);
-			// ghanshyam 12-sept-2012 Bug #357 [billing][3.2.7-SNAPSHOT] Error screen appears on clicking next page or changing page size in list of bills
+			
 			PagingUtil pagingUtil = new PagingUtil(RequestUtil.getCurrentLink(request), pageSize, currentPage, total,
 			        patientId);
 			
@@ -90,7 +90,7 @@ public class BillableServiceBillListForBDController {
 			if(patient.getAttribute(14).getValue() == "Waiver"){
 				model.addAttribute("exemption", patient.getAttribute(32));
 			}
-			else if(patient.getAttribute(14).getValue()!="General" && patient.getAttribute(14).getValue()=="NHIF"){
+			else if(patient.getAttribute(14).getValue()!="General" && patient.getAttribute(14).getValue()!="Waiver"){
 				model.addAttribute("exemption", patient.getAttribute(36));
 			}
 			else {
@@ -219,7 +219,7 @@ public class BillableServiceBillListForBDController {
 			if (patientServiceBill != null && !patientServiceBill.getPrinted() && patientServiceBill.getEncounter()==null) {
 				patientServiceBill.setPrinted(true);
 				Map<String, String> attributes = PatientUtils.getAttributes(patientServiceBill.getPatient());
-				//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module
+				
 				BillCalculatorForBDService calculator = new BillCalculatorForBDService();
 				
 				//ghanshyam 3-june-2013 New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue

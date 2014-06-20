@@ -275,58 +275,60 @@ function validate(){
 			src="${pageContext.request.contextPath}/moduleResources/billing/HEADEROPDSLIP.jpg"
 			width="981" height="212"></img>
 		<center><img width="100" height="100" align="center" title="OpenMRS" alt="OpenMRS" src="/kenya_openmrs/images/kenya_logo.bmp"><center>
-		<table class="spacer" style="margin-left: 60px;">
+		<table class="spacer" style="margin-left: 30px;">
 			<tr><h3><center><u><b>${userLocation} </b></u></center></h3>
 			</tr>
 			<tr><h5><center>CASH RECEIPT</center></h5>
 			</tr>
 
 			<tr>
-				<td>RECEIPT No:</td>
-				<td>${bill.receipt.id}</td>
+				<td>Receipt No.</td>
+				<td>:${bill.receipt.id}</td>
 			</tr>
 			<tr>
-				<td>Date:</td>
-				<td align="left">${dateTime}</td>
+				<td>Date/Time</td>
+				<td align="left">:${dateTime}</td>
 			</tr>
 			<tr>
-				<td>Name:</td>
-				<td colspan="3">${patient.givenName}&nbsp;&nbsp;${fn:replace(patient.middleName,',',' ')}&nbsp;&nbsp;
+				<td>Name</td>
+				<td colspan="3">:${patient.givenName}&nbsp;&nbsp;${fn:replace(patient.middleName,',',' ')}&nbsp;&nbsp;
 					${patient.familyName}</td>
 			</tr>
 			<tr>
-				<td>Patient Identifier:</td>
-				<td colspan="3">${patient.patientIdentifier}</td>
+				<td>Identifier</td>
+				<td colspan="3">:${patient.patientIdentifier}</td>
 			</tr>
 			<tr>
-				<td>Patient Category:</td>
-				<td>${category}</td>
+				<td>Patient Category</td>
+				<td>:${category}</td>
 			</tr>			
 			<tr>
-				<td>Waiver/Exemption No.:</td>
-				<td>${exemption}</td>
+				<td>Waiver/Exempt. No.</td>
+				<td>:${exemption}</td>
 			</tr>			
 			<c:if test="${bill.voided==true }">
 				<tr>
-					<td>Bill Description:</td>
-					<td>${bill.description}</td>
+					<td>Bill Description</td>
+					<td>:${bill.description}</td>
 				</tr>
 			</c:if>
 		</table>
 		<table class="printfont"
-			style="margin-left: 60px; margin-top: 10px; font-family: 'Dot Matrix Normal', Arial, Helvetica, sans-serif; font-style: normal;"
+			style="margin-left: 30px; margin-top: 10px; font-family: 'Dot Matrix Normal', Arial, Helvetica, sans-serif; font-style: normal;"
 			width="80%">
 			<thead>
-				<th class="printfont" style=""><center>Service Name</center></th>
+				<th class="printfont" style=""><center>#</center></th>
+				<th class="printfont" style=""><center>Service</center></th>
 				<%--Kesavulu 26-2-2013 support #962 [Billing]change RS to TK for Bangladesh module --%>
 				<th class="printfont" style=""><center>Price (KSh)</center></th>
 				<th class="printfont" style=""><center>Quantity</center></th>
 				<th class="printfont" style=""><center>Amount</center></th>
 			</thead>
-			<c:forEach items="${bill.billItems}" var="item" varStatus="status">
+			<c:forEach items="${bill.billItems}" var="item" varStatus="varStatus">
 				<%-- ghanshyam Support #339 [Billing]print of void bill [3.2.7 snapshot][DDU,Mohali,Solan,Tanda,] --%>
 				<c:if test="${item.voidedDate==null}">
-					<tr>
+					<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" }' >
+						<td><c:out value="${varStatus.count }"/></td>
 						<td class="printfont" height="20" style="">${item.name}</td>
 						<td class="printfont" height="20" align="right" style=""><center>${item.unitPrice}</center></td>
 						<td class="printfont" height="20" align="right" style=""><center>${item.quantity}</center></td>
@@ -361,6 +363,9 @@ function validate(){
 			</tr>
 			
 		</table>
+		<span class="printfont" style="margin-left: 60px;"></span> Shilling <span id="totalValue2" class="printfont"> </span> only
+		
+		
 		<table class="spacer" style="margin-left: 60px;">
 		<tr>
 			<td>PAYMENT MODE :</td>
@@ -371,12 +376,9 @@ function validate(){
 			<td><b>${cashier}</b></td>
 		</tr>
 		</table>
-		<%--Kesavulu 26-2-2013 support #962 [Billing]change RS to TK for Bangladesh module --%>
-		<br> <span class="printfont" style="margin-left: 60px;">Net
-			Amount:</span> Shilling <span id="totalValue2" class="printfont"> </span> only
-		<br /> <br /> <br /> <br /> <br /> <br /> <span
-			class="printfont" style="margin-left: 200px;">Signature of
-			billing clerk/ Stamp</span>
+
+		<br /> <br /> <br /> <br /> <br /> <span
+			class="printfont" style="margin-left: 100px;">Signature of billing clerk/ Stamp</span>
 	</div>
 
 
