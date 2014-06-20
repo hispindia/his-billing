@@ -363,8 +363,7 @@ function validate(){
 			</tr>
 			
 		</table>
-		<span class="printfont" style="margin-left: 60px;"></span> Shilling <span id="totalValue2" class="printfont"> </span> only
-		
+	
 		
 		<table class="spacer" style="margin-left: 60px;">
 		<tr>
