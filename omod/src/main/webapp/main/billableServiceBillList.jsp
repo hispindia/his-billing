@@ -113,8 +113,8 @@ function validate(){
 			</tr>
 			<tr>
 				<td>Name of the patient:</td>
-				<td>${patient.givenName}&nbsp;&nbsp;${patient.middleName}&nbsp;&nbsp;
-					${patient.familyName}</td>
+				<td>${patient.givenName}&nbsp;${patient.familyName}&nbsp;${patient.middleName}&nbsp;&nbsp;
+					</td>
 			</tr>
 			<tr>
 				<td>Date:</td>
@@ -249,8 +249,8 @@ function validate(){
 			</tr>
 			<tr>
 				<td>Name:</td>
-				<td colspan="3">${patient.givenName}&nbsp;&nbsp;${patient.middleName}&nbsp;&nbsp;
-					${patient.familyName}</td>
+				<td colspan="3">${patient.givenName}&nbsp;${patient.familyName}&nbsp;${patient.middleName}&nbsp;&nbsp;
+					</td>
 			</tr>
 			<tr>
 				<td>Date:</td>

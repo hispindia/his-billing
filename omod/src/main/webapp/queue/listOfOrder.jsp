@@ -37,8 +37,8 @@
 		</tr>
 		<tr>
 			<td>Patient Name:</td>
-			<td>${patientSearch.givenName}&nbsp;&nbsp;${fn:replace(patientSearch.middleName,',',' ')}&nbsp;&nbsp;
-				${patientSearch.familyName}</td>
+			<td>${patientSearch.givenName} &nbsp;${patientSearch.familyName}&nbsp;${fn:replace(patientSearch.middleName,',',' ')}&nbsp;&nbsp;
+				</td>
 		</tr>
 		<tr>
 			<td>Date of Billing :</td>

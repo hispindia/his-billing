@@ -75,11 +75,11 @@
 				</td>
 				<td><b>Gender</b>
 				</td>
-				<td><b>Birthdate</b>
+				<td><b>Category</b>
 				</td>
 				<td><b>Relative Name</b>
 				</td>
-				<td><b>Phone number</b>
+				<td><b>Last day of visit</b>
 				</td>
 			</tr>
 			<c:forEach items="${patients}" var="patient" varStatus="varStatus">
@@ -87,8 +87,8 @@
 					class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } patientSearchRow'
 					onclick="PATIENTSEARCHRESULT.visit(${patient.patientId},'${patient.dead}');">
 					<td>${patient.patientIdentifier.identifier}</td>
-					<td>${patient.givenName} ${fn:replace(patient.middleName,',',' ')}
-						${patient.familyName}</td>
+					<td>${patient.givenName} ${patient.familyName} ${fn:replace(patient.middleName,',',' ')}
+						</td>
 					<td><c:choose>
 							<c:when test="${patient.age == 0}">&lt 1</c:when>
 							<c:otherwise>${patient.age}</c:otherwise>
@@ -101,23 +101,24 @@
 								<img src="${pageContext.request.contextPath}/images/female.gif" />
 							</c:otherwise>
 						</c:choose></td>
-					<td><openmrs:formatDate date="${patient.birthdate}" /></td>
-					<td>
-						<%
+					<td>	<%	
 						Patient patient = (Patient) pageContext.getAttribute("patient");
 						Map<Integer, Map<Integer, String>> attributes = (Map<Integer, Map<Integer, String>>) pageContext.findAttribute("attributeMap");						
 						Map<Integer, String> patientAttributes = (Map<Integer, String>) attributes.get(patient.getPatientId());						
+						String category = patientAttributes.get(14);
+						if(category!=null)
+							out.print(category);					
+					%></td>
+					<td>
+						<%
+										
 						String relativeName = patientAttributes.get(8); 
 						if(relativeName!=null)
 							out.print(relativeName);
 					%>
 					</td>
 					<td>
-						<%						
-						String phoneNumber = patientAttributes.get(16);
-						if(phoneNumber!=null)
-							out.print(phoneNumber);					
-					%>
+						 <openmrs:formatDate date="${lastVisitTime[patient.patientId]}"/>
 					</td>
 				</tr>
 			</c:forEach>

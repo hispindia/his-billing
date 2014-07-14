@@ -119,8 +119,8 @@ function validate(){
 			</tr>
 			<tr>
 				<td>Patient Name:</td>
-				<td>${patient.givenName}&nbsp;&nbsp;${fn:replace(patient.middleName,',',' ')}&nbsp;&nbsp;
-					${patient.familyName}</td>
+				<td>${patient.givenName}&nbsp;${patient.familyName}&nbsp;${fn:replace(patient.middleName,',',' ')}&nbsp;&nbsp;
+					</td>
 			</tr>
 			<tr>
 				<td>Date of Billing:</td>
@@ -291,8 +291,8 @@ function validate(){
 			</tr>
 			<tr>
 				<td>Name</td>
-				<td colspan="3">:${patient.givenName}&nbsp;&nbsp;${fn:replace(patient.middleName,',',' ')}&nbsp;&nbsp;
-					${patient.familyName}</td>
+				<td colspan="3">:${patient.givenName}&nbsp;${patient.familyName}&nbsp;${fn:replace(patient.middleName,',',' ')}&nbsp;&nbsp;
+					</td>
 			</tr>
 			<tr>
 				<td>Identifier</td>
