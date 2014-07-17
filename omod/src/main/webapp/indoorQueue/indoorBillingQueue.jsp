@@ -67,7 +67,7 @@ window.location.href = openmrsContextPath + "/module/billing/patientServiceBillF
 		<td>${pAdmissionLog.admissionWard.name}</td>
 		
 		<c:set var="person" value="${pAdmissionLog.opdAmittedUser.person }"/>
-		<td>${person.givenName} ${fn:replace(person.middleName ,',',' ')} ${person.familyName }</td>
+		<td>${person.givenName}${person.familyName }  ${fn:replace(person.middleName ,',',' ')} </td>
 		<td><input type="button" class="ui-button ui-widget ui-state-default ui-corner-all"  value="Add Bill" onclick="addBill('${pAdmissionLog.patient.id}','${pAdmissionLog.ipdEncounter.id}');"/>
 		<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all"  value="View Bill" onclick="viewBill('${pAdmissionLog.patient.id}','${pAdmissionLog.ipdEncounter.id}','${pAdmissionLog.id}','${pAdmissionLog.requestForDischargeStatus}');"/></td>
 		<c:set var="index" value="${index+1}"/>	
@@ -92,7 +92,7 @@ window.location.href = openmrsContextPath + "/module/billing/patientServiceBillF
 		<td>${pAdmission.admissionWard.name}</td>
 		
 		<c:set var="person" value="${pAdmission.opdAmittedUser.person }"/>
-		<td>${person.givenName} ${fn:replace(person.middleName ,',',' ')} ${person.familyName }</td>
+		<td>${person.givenName} ${person.familyName }  ${fn:replace(person.middleName ,',',' ')}</td>
 		<td><input type="button" class="ui-button ui-widget ui-state-default ui-corner-all"  value="Add Bill" onclick="addBill('${pAdmission.patient.id}','${pAdmission.ipdEncounter.id}');"/>
 		<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all"  value="View Bill" onclick="viewBill('${pAdmission.patient.id}','${pAdmission.ipdEncounter.id}','${pAdmission.id}',0);"/></td>
 		<c:set var="index" value="${index+1}"/> 

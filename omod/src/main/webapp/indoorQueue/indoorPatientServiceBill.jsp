@@ -223,7 +223,7 @@
 			</tr>
 			<tr>
 				<td>Name:</td>
-				<td colspan="3">${patient.givenName}&nbsp;${patient.familyName}&nbsp;${patient.middleName}&nbsp;&nbsp;
+				<td colspan="3">${patient.givenName}&nbsp;${patient.familyName}&nbsp;${fn:replace(patient.middleName ,',',' ')}&nbsp;&nbsp;
 					</td>
 			</tr>
 			<tr>
