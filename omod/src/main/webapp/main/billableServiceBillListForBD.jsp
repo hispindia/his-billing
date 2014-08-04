@@ -241,8 +241,7 @@ function validate(){
 		<form method="POST" id="billForm">
 			<center>
 				<input type="button" value='<spring:message code="billing.print" />'
-					onClick="printDiv2();" />&nbsp;&nbsp; <button href="#" 
-					onclick="javascript:jQuery('#billContainer').hide();">Back</a>
+					onClick="printDiv2();" />&nbsp;&nbsp; 
 			</center>
 		</form>
 	</div>
@@ -411,7 +410,11 @@ function validate(){
 
 <c:if test="${not empty listBill}">
 	<!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --update title-->
-	<span class="boxHeader">List of Previous Bills</span>
+	<table class="box" style="position:relative;border:0px;">
+	<tr><td>
+	<span class="boxHeader"><b>List of Previous Bills</b></span>
+	</td></tr>
+	<tr><td>
 	<table class="box">
 		<thead>
 			<th><center>#</center></th>
@@ -458,6 +461,8 @@ function validate(){
 		<tr class="paging-container">
 			<td colspan="3"><%@ include file="../paging.jsp"%></td>
 		</tr>
+	</table>
+	</td></tr>
 	</table>
 </c:if>
 

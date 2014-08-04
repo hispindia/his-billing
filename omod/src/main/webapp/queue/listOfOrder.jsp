@@ -26,7 +26,7 @@
 <%@ include file="../includes/js_css.jsp"%>
 
 <div style="max-height: 50px; max-width: 1800px;">
-	<b class="boxHeader">List of Order</b>
+	<b class="boxHeader">List of Orders</b>
 </div>
 		<!--  Kesavulu loka 25-06-2013, Add Patient Details on the page where Order ID is clicked -->
 <div>	
