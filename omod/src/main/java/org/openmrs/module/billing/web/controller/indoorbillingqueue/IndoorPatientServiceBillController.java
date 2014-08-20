@@ -68,6 +68,25 @@ public class IndoorPatientServiceBillController {
 					total, patientId);
 			model.addAttribute("pagingUtil", pagingUtil);
 			model.addAttribute("patient", patient);
+			model.addAttribute("age", patient.getAge());
+			if(patient.getGender().equals("M")){
+				model.addAttribute("gender", "Male");
+			}
+			if(patient.getGender().equals("F")){
+				model.addAttribute("gender", "Female");
+			}
+			model.addAttribute("category", patient.getAttribute(14).getValue());
+			
+			if(patient.getAttribute(14).getValue() == "Waiver"){
+				model.addAttribute("exemption", patient.getAttribute(32));
+			}
+			else if(patient.getAttribute(14).getValue()!="General" && patient.getAttribute(14).getValue()!="Waiver"){
+				model.addAttribute("exemption", patient.getAttribute(36));
+			}
+			else {
+				model.addAttribute("exemption", " ");
+			}
+			
 			model.addAttribute("listBill", billingService
 					.listPatientServiceBillByPatient(pagingUtil.getStartPos(),
 							pagingUtil.getPageSize(), patient));
@@ -90,7 +109,8 @@ public class IndoorPatientServiceBillController {
 				String billType = "paid";
 				bill.setFreeBill(calculator.isFreeBill(billType));
 			}
-
+			model.addAttribute("paymentMode",bill.getPaymentMode());
+			model.addAttribute("cashier",bill.getCreator().getGivenName());
 			model.addAttribute("bill", bill);
 			model.addAttribute("billItem", patientServiceBillItem);
 		}

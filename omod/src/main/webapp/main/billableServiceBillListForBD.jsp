@@ -114,26 +114,21 @@ function validate(){
 	<div id="billContainer" style="margin: 10px auto; width: 981px;">
 		<table>
 			<tr>
-				<td>Patient Identifier:</td>
-				<td>${patient.patientIdentifier.identifier}</td>
-			</tr>
-			<tr>
-				<td>Patient Name:</td>
-				<td>${patient.givenName}&nbsp;${patient.familyName}&nbsp;${fn:replace(patient.middleName,',',' ')}&nbsp;&nbsp;
-					</td>
-			</tr>
-			<tr>
-				<td>Date of Billing:</td>
-				<td><openmrs:formatDate date="${bill.createdDate}"
-						type="textbox" /></td>
+				<td>Date/Time:</td>
+				<td>${bill.createdDate}</td>
 			</tr>
 			<tr>
 				<td>Bill ID:</td>
 				<td>${bill.receipt.id}</td>
 			</tr>
 			<tr>
-				<td>Patient Category:</td>
-				<td>${category}</td>
+				<td>Patient ID:</td>
+				<td>${patient.patientIdentifier.identifier}</td>
+			</tr>
+			<tr>
+				<td>Name:</td>
+				<td>${patient.givenName}&nbsp;${patient.familyName}&nbsp;${fn:replace(patient.middleName,',',' ')}&nbsp;&nbsp;
+					</td>
 			</tr>
 			<tr>
 				<td>Gender:</td>
@@ -149,6 +144,14 @@ function validate(){
 					<td>${bill.description}</td>
 				</tr>
 			</c:if>
+			<tr>
+				<td>Patient Category:</td>
+				<td>${category}</td>
+			</tr>
+			<tr>
+				<td>Waiver/Exempt. No.:</td>
+				<td>${exemption}</td>
+			</tr>
 		</table>
 		<table width="100%" border="1">
 			<tr>
@@ -226,7 +229,7 @@ function validate(){
 			</tr>
 			
 			<tr>
-				<td colspan="3" align='right'><b>Waiver Amount(if any)</td>
+				<td colspan="3" align='right'><b>Waiver Amount(If any)</td>
 				<td align="right"><b>${bill.waiverAmount}</b></td>
 			</tr>
 			
@@ -273,7 +276,7 @@ function validate(){
 			class="donotprint"
 			src="${pageContext.request.contextPath}/moduleResources/billing/HEADEROPDSLIP.jpg"
 			width="981" height="212"></img>
-		<center><img width="100" height="100" align="center" title="OpenMRS" alt="OpenMRS" src="/kenya_openmrs/images/kenya_logo.bmp"><center>
+		<center><img width="100" height="100" align="center" title="OpenMRS" alt="OpenMRS" src="${pageContext.request.contextPath}/moduleResources/billing/kenya_logo.bmp"><center>
 		<table class="spacer" style="margin-left: 30px;">
 			<tr><h3><center><u><b>${userLocation} </b></u></center></h3>
 			</tr>
@@ -294,8 +297,16 @@ function validate(){
 					</td>
 			</tr>
 			<tr>
-				<td>Identifier</td>
+				<td>Patient ID</td>
 				<td colspan="3">:${patient.patientIdentifier}</td>
+			</tr>
+			<tr>
+				<td>Gender</td>
+				<td>:${gender}</td>
+			</tr>
+			<tr>
+				<td>Age</td>
+				<td>:${age}</td>
 			</tr>
 			<tr>
 				<td>Patient Category</td>
@@ -316,28 +327,27 @@ function validate(){
 			style="margin-left: 30px; margin-top: 10px; font-family: 'Dot Matrix Normal', Arial, Helvetica, sans-serif; font-style: normal;"
 			width="80%">
 			<thead>
-				<th class="printfont" style=""><center>#</center></th>
-				<th class="printfont" style=""><center>Service</center></th>
-				<%--Kesavulu 26-2-2013 support #962 [Billing]change RS to TK for Bangladesh module --%>
-				<th class="printfont" style=""><center>Price (KSh)</center></th>
-				<th class="printfont" style=""><center>Quantity</center></th>
-				<th class="printfont" style=""><center>Amount</center></th>
+				<th class="printfont"><center>#</center></th>
+				<th class="printfont"><center>Service</center></th>
+				<th class="printfont"><center>Price (KSh)</center></th>
+				<th class="printfont"><center>Quantity</center></th>
+				<th class="printfont"><center>Amount</center></th>
 			</thead>
 			<c:forEach items="${bill.billItems}" var="item" varStatus="varStatus">
 				<%-- ghanshyam Support #339 [Billing]print of void bill [3.2.7 snapshot][DDU,Mohali,Solan,Tanda,] --%>
 				<c:if test="${item.voidedDate==null}">
 					<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" }' >
 						<td><c:out value="${varStatus.count }"/></td>
-						<td class="printfont" height="20" style="">${item.name}</td>
-						<td class="printfont" height="20" align="right" style=""><center>${item.unitPrice}</center></td>
-						<td class="printfont" height="20" align="right" style=""><center>${item.quantity}</center></td>
-						<td class="printfont" height="20" align="right" style=""><center>
-							${item.actualAmount}</center></td>
+						<td class="printfont" height="20">${item.name}</td>
+						<td class="printfont" height="20"><center>${item.unitPrice}</center></td>
+						<td class="printfont" height="20"><center>${item.quantity}</center></td>
+						<td class="printfont" height="20"><center>${item.actualAmount}</center></td>
 					</tr>
 				</c:if>
 			</c:forEach>
 			<tr>
-				<td colspan="3"><b>Total</b></td>
+				<td>&nbsp;</td>
+				<td align="right" colspan="3"><b>Total</b></td>
 				<c:choose>
 					<c:when test="${bill.voided}">
 						<td align="right"><center><span
@@ -352,12 +362,14 @@ function validate(){
 			</tr>
 			
 			<tr>
-				<td colspan="3" align='left'><b>Waiver Amount(if any)</td>
+				<td>&nbsp;</td>
+				<td colspan="3" align='right'><b>Waiver Amount(If any)</td>
 				<td align="right"><b><center>${bill.waiverAmount}</center></b></td>
 			</tr>
 			
 			<tr>
-				<td colspan="3" align='left'><b>Net Amount</td>
+				<td>&nbsp;</td>
+				<td colspan="3" align='right'><b>Net Amount</td>
 				<td align="right"><b><center>${bill.actualAmount - bill.waiverAmount}</center></b></td>
 			</tr>
 			
@@ -376,7 +388,7 @@ function validate(){
 		</table>
 
 		<br /> <br /> <br /> <br /> <br /> <span
-			class="printfont" style="margin-left: 100px;">Signature of billing clerk/ Stamp</span>
+			class="printfont" style="margin-left: 100px;">Signature of Billing Clerk/ Stamp</span>
 	</div>
 
 

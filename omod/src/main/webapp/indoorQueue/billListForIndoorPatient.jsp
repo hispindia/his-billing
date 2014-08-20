@@ -47,7 +47,7 @@
 		display: none;
 	}
 	.spacer {
-		margin-top: 70px;
+		margin-top: 40px;
 		font-family: "Dot Matrix Normal", Arial, Helvetica, sans-serif;
 		font-style: normal;
 		font-size: 14px;
@@ -120,7 +120,7 @@
 <div style="text-align:center"> 
 <c:choose>
 <c:when test="${requestForDischargeStatus== 1}"> 
-<input type="submit" id="billSubmitForIndoorPatient" name="billSubmitForIndoorPatient" value="submit">
+<input type="submit" id="billSubmitForIndoorPatient" name="billSubmitForIndoorPatient" value="Submit">
 </c:when>
 </c:choose>
 </div>

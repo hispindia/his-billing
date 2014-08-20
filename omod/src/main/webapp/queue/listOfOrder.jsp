@@ -32,21 +32,17 @@
 <div>	
 	<table>
 		<tr>
-			<td>Patient Identifier:</td>
-			<td>${patientSearch.identifier}</td>
-		</tr>
-		<tr>
-			<td>Patient Name:</td>
-			<td>${patientSearch.givenName} &nbsp;${patientSearch.familyName}&nbsp;${fn:replace(patientSearch.middleName,',',' ')}&nbsp;&nbsp;
-				</td>
-		</tr>
-		<tr>
-			<td>Date of Billing :</td>
+			<td>Date/ Time:</td>
 			<td>${date}</td>
 		</tr>
 		<tr>
-			<td>patient Category:</td>
-			<td>${category}</td>
+			<td>Patient ID:</td>
+			<td>${patientSearch.identifier}</td>
+		</tr>
+		<tr>
+			<td>Name:</td>
+			<td>${patientSearch.givenName} &nbsp;${patientSearch.familyName}&nbsp;${fn:replace(patientSearch.middleName,',',' ')}&nbsp;&nbsp;
+				</td>
 		</tr>
 		<tr>
 			<td>Gender:</td>
@@ -57,6 +53,14 @@
 			<td>${age}</td>
 		</tr>
 
+		<tr>
+			<td>Patient Category:</td>
+			<td>${category}</td>
+		</tr>
+		<tr>
+			<td>Waiver/Exempt. No.:</td>
+			<td>${exemption}</td>
+		</tr>
 	</table>
 </div>
 
@@ -66,7 +70,7 @@
 	<thead>
 		<tr align="center">
 			<th>S.No</th>
-			<th>Order Id</th>
+			<th>Order ID</th>
 			<th>Date</th>
 		</tr>
 	</thead>

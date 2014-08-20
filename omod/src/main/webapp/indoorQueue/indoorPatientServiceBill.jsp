@@ -21,6 +21,7 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="../includes/js_css.jsp"%>
 <openmrs:require privilege="View Bills" otherwise="/login.htm" />
+<openmrs:globalProperty var="userLocation" key="hospital.location_user" defaultValue="false"/>
 <style type="text/css">
 .hidden {
 	display: none;
@@ -33,7 +34,7 @@
 		display: none;
 	}
 	.spacer {
-		margin-top: 70px;
+		margin-top: 40px;
 		font-family: "Dot Matrix Normal", Arial, Helvetica, sans-serif;
 		font-style: normal;
 		font-size: 14px;
@@ -65,24 +66,25 @@
 </c:forEach>
 <c:if test="${not empty bill}">
 	<div id="billContainer" style="margin: 10px auto; width: 981px;">
-		<table>
+		<table align="center">
 			<tr>
-				<td>Patient ID no:</td>
-				<td>${patient.patientIdentifier.identifier}</td>
+				<td>Bill ID:</td>
+				<td>${bill.receipt.id}</td>
 			</tr>
 			<tr>
-				<td>Name of the patient:</td>
+				<td>Date/ Time:</td>
+				<td><openmrs:formatDate date="${bill.createdDate}"
+						type="textbox" /></td>
+			</tr>
+			
+			<tr>
+				<td>Name:</td>
 				<td>${patient.givenName}&nbsp;${patient.familyName}&nbsp;${fn:replace(patient.middleName,',',' ')}&nbsp;&nbsp;
 					</td>
 			</tr>
 			<tr>
-				<td>Date:</td>
-				<td><openmrs:formatDate date="${bill.createdDate}"
-						type="textbox" /></td>
-			</tr>
-			<tr>
-				<td>Bill ID:</td>
-				<td>${bill.receipt.id}</td>
+				<td>Patient ID:</td>
+				<td>${patient.patientIdentifier.identifier}</td>
 			</tr>
 			<c:if test="${bill.voided==true }">
 				<tr>
@@ -90,6 +92,23 @@
 					<td>${bill.description}</td>
 				</tr>
 			</c:if>
+			<tr>
+				<td>Age:</td>
+				<td>${age}</td>
+			</tr>
+			<tr>
+				<td>Gender:</td>
+				<td>${gender}</td>
+			</tr>
+			<tr>
+				<td>Patient Category:</td>
+				<td>${category}</td>
+			</tr>
+			<tr>
+				<td>Waiver/Exempt. No.:</td>
+				<td>${exemption}</td>
+			</tr>
+			
 		</table>
 		<table width="100%" border="1">
 			<tr>
@@ -168,7 +187,7 @@
 			</tr>
 			
 			<tr>
-				<td colspan="3" align='right'><b>Waiver Amount(if any)</td>
+				<td colspan="3" align='right'><b>Waiver Amount(If any)</td>
 				<td align="right"><b>${bill.waiverAmount}</b></td>
 			</tr>
 			
@@ -183,8 +202,7 @@
 		<form method="POST" id="billForm">
 			<center>
 				<input type="button" value='<spring:message code="billing.print" />'
-					onClick="printDiv2();" />&nbsp;&nbsp; <a href="#"
-					onclick="javascript:jQuery('#billContainer').hide();">Hide</a>
+					onClick="printDiv2();" />
 			</center>
 		</form>
 	</div>
@@ -199,7 +217,7 @@
 		display: none;
 	}
 	.spacer {
-		margin-top: 100px;
+		margin-top: 40px;
 		font-family: "Dot Matrix Normal", Arial, Helvetica, sans-serif;
 		font-style: normal;
 		font-size: 14px;
@@ -216,10 +234,17 @@
 			class="donotprint"
 			src="${pageContext.request.contextPath}/moduleResources/billing/HEADEROPDSLIP.jpg"
 			width="981" height="212"></img>
+		<center><img width="100" height="100" align="center" title="OpenMRS" alt="OpenMRS" src="${pageContext.request.contextPath}/moduleResources/billing/kenya_logo.bmp"><center>	
 		<table class="spacer" style="margin-left: 60px;">
+			<tr><h3><center><u><b>${userLocation} </b></u></center></h3></tr>
+			<tr><h5><center>CASH RECEIPT</center></h5></tr>
 			<tr>
-				<td>Patient ID:</td>
-				<td colspan="3">${patient.patientIdentifier}</td>
+				<td>Bill ID:</td>
+				<td>${bill.receipt.id}</td>
+			</tr>
+			<tr>
+				<td>Date/ Time:</td>
+				<td align="left">${bill.createdDate}</td>
 			</tr>
 			<tr>
 				<td>Name:</td>
@@ -227,43 +252,57 @@
 					</td>
 			</tr>
 			<tr>
-				<td>Date:</td>
-				<td align="left"><openmrs:formatDate date="${bill.createdDate}"
-						type="textbox" /></td>
+				<td>Patient ID:</td>
+				<td colspan="3">${patient.patientIdentifier}</td>
 			</tr>
-			<tr>
-				<td>Bill ID:</td>
-				<td>${bill.receipt.id}</td>
-			</tr>
+
 			<c:if test="${bill.voided==true }">
 				<tr>
 					<td>Bill Description:</td>
 					<td>${bill.description}</td>
 				</tr>
 			</c:if>
+			<tr>
+				<td>Age:</td>
+				<td>${age}</td>
+			</tr>
+			<tr>
+				<td>Gender:</td>
+				<td>${gender}</td>
+			</tr>
+			<tr>
+				<td>Patient Category:</td>
+				<td>${category}</td>
+			</tr>
+			<tr>
+				<td>Waiver/Exempt. No.:</td>
+				<td>${exemption}</td>
+			</tr>
 		</table>
 		<table class="printfont"
 			style="margin-left: 60px; margin-top: 10px; font-family: 'Dot Matrix Normal', Arial, Helvetica, sans-serif; font-style: normal;"
 			width="80%">
 			<thead>
-				<th class="printfont" style="">Service Name</th>
-				<th class="printfont" style="">Price (KSh)</th>
-				<th class="printfont" style="">Quantity</th>
-				<th class="printfont" style="">Amount</th>
+				<th class="printfont"><center>#</center></th>
+				<th class="printfont"><center>Service Name</center></th>
+				<th class="printfont"><center>Price (KSh)</center></th>
+				<th class="printfont"><center>Quantity</center></th>
+				<th class="printfont"><center>Amount</center></th>
 			</thead>
-			<c:forEach items="${bill.billItems}" var="item" varStatus="status">
+			<c:forEach items="${bill.billItems}" var="item" varStatus="varStatus">
 				<c:if test="${item.voidedDate==null}">
-					<tr>
-						<td class="printfont" height="20" style="">${item.name}</td>
-						<td class="printfont" height="20" align="right" style="">${item.unitPrice}</td>
-						<td class="printfont" height="20" align="right" style="">${item.quantity}</td>
-						<td class="printfont" height="20" align="right" style="">
-							${item.actualAmount}</td>
+					<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" }' >
+						<td><center><c:out value="${varStatus.count }"/></center></td>
+						<td class="printfont" height="20">${item.name}</td>
+						<td class="printfont" height="20"><center>${item.unitPrice}</center></td>
+						<td class="printfont" height="20"><center>${item.quantity}</center></td>
+						<td class="printfont" height="20"><center>${item.actualAmount}</center></td>
 					</tr>
 				</c:if>
 			</c:forEach>
 			<tr>
-				<td colspan="3"><b>Total</b></td>
+				<td>&nbsp;</td>
+				<td align="right" colspan="3"><b>Total</b></td>
 				<c:choose>
 					<c:when test="${bill.voided}">
 						<td align="right"><span
@@ -278,26 +317,39 @@
 			</tr>
 			
 			<tr>
-				<td colspan="3" align='left'><b>Amount Paid as Advance</td>
+				<td>&nbsp;</td>
+				<td colspan="3" align='right'><b>Amount Paid as Advance</td>
 				<td align="right"><b>${billItem.actualAmount}</b></td>
 			</tr>
 			
 			<tr>
-				<td colspan="3" align='left'><b>Waiver Amount(if any)</td>
+				<td>&nbsp;</td>
+				<td colspan="3" align='right'><b>Waiver Amount(If any)</td>
 				<td align="right"><b>${bill.waiverAmount}</b></td>
 			</tr>
 			
 			<tr>
-				<td colspan="3" align='left'><b>Net Amount</td>
+				<td>&nbsp;</td>
+				<td colspan="3" align='right'><b>Net Amount</td>
 				<td align="right"><b>${bill.actualAmount - billItem.actualAmount - bill.waiverAmount}</b></td>
 			</tr>
 			
 		</table>
-		<br> <span class="printfont" style="margin-left: 60px;">Net
-			Amount:</span> Shilling <span id="totalValue2" class="printfont"> </span> only
-		<br /> <br /> <br /> <br /> <br /> <br /> <span
+		<br>
+		<table class="spacer" style="margin-left: 60px;">
+		<tr>
+			<td>PAYMENT MODE :</td>
+			<td><b>${paymentMode}</b></td>
+		</tr>
+		<tr>
+			<td>CASHIER :</td>
+			<td><b>${cashier}</b></td>
+		</tr>
+		</table>
+		
+		<br /> <br /> <br /> <br /> <br />  <span
 			class="printfont" style="margin-left: 200px;">Signature of
-			billing clerk/ Stamp</span>
+			Billing Clerk/ Stamp</span>
 	</div>
 
 

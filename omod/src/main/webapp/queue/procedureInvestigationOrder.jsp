@@ -132,18 +132,19 @@ if (serqun!=null || quantity!=""){
 -->
 	<table>
 		<tr>
-			<td>Patient Identifier :</td>
+			<td>Date/ Time:</td>
+			<td>${date}</td>
+		</tr>
+		<tr>
+			<td>Patient ID:</td>
 			<td>${patientSearch.identifier}</td>
 		</tr>
 		<tr>
-			<td>Patient Name:</td>
+			<td>Name:</td>
 			<td>${patientSearch.givenName}&nbsp;${patientSearch.familyName}&nbsp;${fn:replace(patientSearch.middleName,',',' ')}&nbsp;&nbsp;
 				</td>
 		</tr>
-		<tr>
-			<td>Date of Billing:</td>
-			<td>${date}</td>
-		</tr>
+		
 		<tr>
 			<td>Patient Category:</td>
 			<td>${category}</td>
@@ -156,7 +157,10 @@ if (serqun!=null || quantity!=""){
 			<td>Age:</td>
 			<td>${age}</td>
 		</tr>
-
+		<tr>
+			<td>Waiver/Exempt. No.:</td>
+			<td>${exemption}</td>
+		</tr>
 		</table>
 </div>
 
@@ -245,7 +249,7 @@ if (serqun!=null || quantity!=""){
 	</table>
 	<tr>
 		<td><input type="submit" id="savebill" name="savebill"
-			value="Save bill">
+			value="Save Bill">
 		</td>
 		<td><input type="button"
 			onclick="javascript:window.location.href='billingqueue.form?'"

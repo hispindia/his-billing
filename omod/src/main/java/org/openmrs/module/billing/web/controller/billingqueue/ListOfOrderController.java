@@ -64,8 +64,27 @@ public class ListOfOrderController {
 		PatientSearch patientSearch = hospitalCoreService.getPatientByPatientId(patientId);
 
 		model.addAttribute("age",patient.getAge());
-		model.addAttribute("gender",patient.getGender());
+		
+		if(patient.getGender().equals("M"))
+		{
+			model.addAttribute("gender","Male");
+		}
+		if(patient.getGender().equals("F"))
+		{
+			model.addAttribute("gender","Female");
+		}
 		model.addAttribute("category",patient.getAttribute(14));
+		
+		if(patient.getAttribute(14).getValue() == "Waiver"){
+			model.addAttribute("exemption", patient.getAttribute(32));
+		}
+		else if(patient.getAttribute(14).getValue()!="General" && patient.getAttribute(14).getValue()!="Waiver"){
+			model.addAttribute("exemption", patient.getAttribute(36));
+		}
+		else {
+			model.addAttribute("exemption", " ");
+		}
+		
 		model.addAttribute("patientSearch", patientSearch);
 		model.addAttribute("listOfOrders", listOfOrders);
 		//model.addAttribute("serviceOrderSize", serviceOrderList.size());

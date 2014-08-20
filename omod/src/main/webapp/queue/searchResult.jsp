@@ -76,11 +76,11 @@
 		<table style="width: 100%">
 			<tr>
 				<td><b>S.No</b></td>
-				<td><b>Identifier</b></td>
+				<td><b>Patient ID</b></td>
 				<td><b>Name</b></td>
 				<td><b>Age</b></td>
 				<td><b>Gender</b></td>
-				<td><b>Birthdate</b></td>
+				<td><b>Date of Birth</b></td>
 				<!--  
 				<td><b>Relative Name</b></td>
 				<td><b>Phone number</b></td>

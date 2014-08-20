@@ -44,7 +44,7 @@ window.location.href = openmrsContextPath + "/module/billing/patientServiceBillF
 	<th>#</th>
 	<th>Admission Advised On</th>
 	<th>Patient ID</th>
-	<th>Patient Name</th>
+	<th>Name</th>
 	<th>Age</th>
 	<th>Gender</th>
 	<th>Admission Ward</th>
