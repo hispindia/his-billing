@@ -13,9 +13,9 @@
 	<url>http://openmrs.org</url>
 
 	<scm>
-		<connection>scm:svn:http://svn.openmrs.org/openmrs-modules/mvntest/trunk/</connection>
-		<developerConnection>scm:svn:http://svn.openmrs.org/openmrs-modules/mvntest/trunk/</developerConnection>
-		<url>http://svn.openmrs.org/openmrs-modules/mvntest/trunk/</url>
+		<connection>scm:git:git://github.com/ghanshyamcusat2006/his-billing.git</connection>
+		<developerConnection>scm:git:git://github.com/ghanshyamcusat2006/his-billing.git/</developerConnection>
+		<url>scm:git:git://github.com/ghanshyamcusat2006/his-billing.git/</url>
 	</scm>
 
 	<distributionManagement>
