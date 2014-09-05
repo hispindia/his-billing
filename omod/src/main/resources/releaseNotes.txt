@@ -1,3 +1,9 @@
+3.2.10
+- #Outdoor patient billing
+- #Indoor patient billing - consolidated billing
+- #Payment Mode
+- #module upgradation
+
 3.2.9
 - #2259              Error on selecting Bill ID to search for a bill 
 - #2170              Error on editing a bill that has both paid and free set of investigations
