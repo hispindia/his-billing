@@ -98,7 +98,7 @@ public class IndoorPatientServiceBillController {
 		if (billId != null) {
 			PatientServiceBill bill = billingService
 					.getPatientServiceBillById(billId);
-			PatientServiceBillItem patientServiceBillItem = billingService.getPatientServiceBillItem(billId,"FILE CHARGES");
+			PatientServiceBillItem patientServiceBillItem = billingService.getPatientServiceBillItem(billId,"ADMISSION FILE CHARGES");
 			if (bill.getFreeBill().equals(1)) {
 				String billType = "free";
 				bill.setFreeBill(calculator.isFreeBill(billType));

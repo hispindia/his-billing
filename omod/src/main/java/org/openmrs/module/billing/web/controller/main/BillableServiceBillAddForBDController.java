@@ -152,7 +152,7 @@ public class BillableServiceBillAddForBDController {
 		bill.setEncounter(Context.getEncounterService().getEncounter(encounterId));	
 		bill = billingService.saveIndoorPatientServiceBill(bill);
 		List<IndoorPatientServiceBill> indoorPatientServiceBillList = billingService.getIndoorPatientServiceBillByEncounter(Context.getEncounterService().getEncounter(encounterId));
-		IndoorPatientServiceBillItem indoorPatientServiceBillItem = billingService.getIndoorPatientServiceBillItem("FILE CHARGES",indoorPatientServiceBillList);
+		IndoorPatientServiceBillItem indoorPatientServiceBillItem = billingService.getIndoorPatientServiceBillItem("ADMISSION FILE CHARGES",indoorPatientServiceBillList);
 		IpdPatientAdmission ipdPatientAdmission = ipdService.getIpdPatientAdmissionByEncounter(Context.getEncounterService().getEncounter(encounterId));
 		if (indoorPatientServiceBillItem !=null && ipdPatientAdmission != null) {
 		ipdPatientAdmission.setInitialDepositStatus(1);
