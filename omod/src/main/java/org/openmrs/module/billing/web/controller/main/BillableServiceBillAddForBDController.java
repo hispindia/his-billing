@@ -69,7 +69,8 @@ public class BillableServiceBillAddForBDController {
 	public String viewForm(Model model, @RequestParam("patientId") Integer patientId,
 	                       @RequestParam(value = "comment", required = false) String comment,
 	                       @RequestParam(value = "billType", required = false) String billType,
-	                       @RequestParam(value = "encounterId", required = false) Integer encounterId) {
+	                       @RequestParam(value = "encounterId", required = false) Integer encounterId,
+	                       @RequestParam(value = "typeOfPatient", required = false) String typeOfPatient) {
 		BillingService billingService = Context.getService(BillingService.class);
 		List<BillableService> services = billingService.getAllServices();
 		Map<Integer, BillableService> mapServices = new HashMap<Integer, BillableService>();
@@ -81,7 +82,7 @@ public class BillableServiceBillAddForBDController {
 		Concept concept = Context.getConceptService().getConcept(conceptId);
 		model.addAttribute("tabs", billingService.traversTab(concept, mapServices, 1));
 		model.addAttribute("patientId", patientId);
-		if(encounterId!=null){
+		if(typeOfPatient!=null){
 			return "/module/billing/indoorQueue/billableServiceBillAddForIndoorPatient";	
 		}
 		else{

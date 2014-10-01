@@ -65,6 +65,7 @@ public class BillableServiceBillListForBDController {
 	                       @RequestParam(value = "pageSize", required = false) Integer pageSize,
 	                       @RequestParam(value = "currentPage", required = false) Integer currentPage,
 	                       @RequestParam(value = "encounterId", required = false) Integer encounterId,
+	                       @RequestParam(value = "typeOfPatient", required = false) String typeOfPatient,
 	                       @RequestParam(value = "admissionLogId", required = false) Integer admissionLogId,
 	                       @RequestParam(value = "requestForDischargeStatus", required = false) Integer requestForDischargeStatus,
 	                       HttpServletRequest request) {
@@ -133,9 +134,11 @@ public class BillableServiceBillListForBDController {
 			model.addAttribute("bill", bill);
 		}
 		
-		if (encounterId != null) {
+		if (typeOfPatient != null) {
+			if (encounterId != null) {
 			List<IndoorPatientServiceBill> bills = billingService.getIndoorPatientServiceBillByEncounter(Context.getEncounterService().getEncounter(encounterId));
 			model.addAttribute("billList", bills);
+			}
 			model.addAttribute("requestForDischargeStatus", requestForDischargeStatus);
 			return "/module/billing/indoorQueue/billListForIndoorPatient";
 		}

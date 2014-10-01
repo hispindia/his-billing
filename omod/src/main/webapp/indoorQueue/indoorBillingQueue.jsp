@@ -26,11 +26,13 @@
 <script type="text/javascript">
 function addBill(patientId,encounterId){
 var paid="paid";
-window.location.href = openmrsContextPath + "/module/billing/addPatientServiceBillForBD.form?patientId="+patientId+"&encounterId="+encounterId+"&billType="+paid;
+var indoor="indoor";
+window.location.href = openmrsContextPath + "/module/billing/addPatientServiceBillForBD.form?patientId="+patientId+"&encounterId="+encounterId+"&typeOfPatient="+indoor+"&billType="+paid;
 }
 
 function viewBill(patientId,encounterId,admissionLogId,requestForDischargeStatus){
-window.location.href = openmrsContextPath + "/module/billing/patientServiceBillForBD.list?patientId="+patientId+"&encounterId="+encounterId+"&admissionLogId="+admissionLogId+"&requestForDischargeStatus="+requestForDischargeStatus;
+var indoor="indoor";
+window.location.href = openmrsContextPath + "/module/billing/patientServiceBillForBD.list?patientId="+patientId+"&encounterId="+encounterId+"&typeOfPatient="+indoor+"&admissionLogId="+admissionLogId+"&requestForDischargeStatus="+requestForDischargeStatus;
 }
 </script>
 <h2>Indoor Patient List</h2>	
