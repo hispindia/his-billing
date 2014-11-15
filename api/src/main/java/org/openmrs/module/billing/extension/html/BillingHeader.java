@@ -37,6 +37,6 @@ public class BillingHeader extends LinkExt {
 	}
 
 	public String getUrl() {
-		return "module/billing/main.form";
+		return "module/billing/billingqueue.form";
 	}
 }
