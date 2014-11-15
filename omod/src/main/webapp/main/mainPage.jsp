@@ -28,6 +28,14 @@
 	defaultValue="ddu" var="hospitalName" />
 <br />
 <p>
+	</b>
+	&nbsp;  &nbsp; <b><a href="billingqueue.form"><spring:message
+				code="billing.billingqueue" />
+	</a>
+	</b>&nbsp; | &nbsp; <b><a href="ipdbillingqueue.form"><spring:message
+				code="billing.indoorbillingqueue" />
+	</a>
+	&nbsp; | &nbsp; 
 	<b><a href="searchDriver.form"><spring:message
 				code="billing.ambulance" />
 	</a>
@@ -38,12 +46,8 @@
 				code="billing.miscellaneousService" />
 	</a>
 	</b>
-	 <!-- ghanshyam 3-june-2013 New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue -->
-	&nbsp; | &nbsp; <b><a href="billingqueue.form"><spring:message
-				code="billing.billingqueue" />
-	</a>
-	</b>&nbsp; | &nbsp; <b><a href="indoorbillingqueue.form"><spring:message
-				code="billing.indoorbillingqueue" />
+	&nbsp; | &nbsp; <b><a href="main.form"><spring:message
+				code="billing.searchPatient" />
 	</a>
 	</b>
 </p>

@@ -16,10 +16,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Billing module.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  author: Sagar
+ *  author: sagar
  *  date: 11-nov-2014
+ 
 --%>
-<openmrs:require privilege="Billing queue Header" otherwise="/login.htm" redirect="/module/billing/main.form" />
+<openmrs:require privilege="IPD Billing queue Header" otherwise="/login.htm" redirect="/module/billing/main.form" />
 <div>
 	<ul id="menu">
 	<br />

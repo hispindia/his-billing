@@ -16,16 +16,15 @@
  *  You should have received a copy of the GNU General Public License
  *  along with Billing module.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  author: ghanshyam
- *  date: 3-june-2013
- *  issue no: #1632
+ *  author: sagar
+ *  date: 11-nov-2014
 --%>
 <%@ include file="/WEB-INF/template/include.jsp" %>
 <%@ include file="/WEB-INF/template/header.jsp" %>
 <openmrs:require privilege="Test order queue" otherwise="/login.htm" redirect="/module/billing/main.form" />
 <%@ include file="../includes/js_css.jsp"%>
-<%@ include file="../queue/billingQueueHeader.jsp"%>
-<h2>Outdoor Patient Queue</h2>	
+<%@ include file="../indoorQueue/ipdBillingQueueHeader.jsp"%>
+<h2>Indoor Patient Queue</h2>	
 <br />
 
 <script type="text/javascript">
@@ -52,9 +51,10 @@
 		this.currentPage = currentPage;
 		var date = jQuery("#date").val();
 		var searchKey = jQuery("#searchKey").val();
+	
 		jQuery.ajax({
 			type : "GET",
-			url : getContextPath() + "/module/billing/patientsearchbillingqueue.form",
+			url : getContextPath() + "/module/billing/patientsearchipdbillingqueue.form",
 			data : ({
 				date			: date,
 				searchKey		: searchKey,

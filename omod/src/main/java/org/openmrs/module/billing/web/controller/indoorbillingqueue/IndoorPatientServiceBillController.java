@@ -28,6 +28,9 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculatorForBDService;
 import org.openmrs.module.hospitalcore.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
+import org.openmrs.module.hospitalcore.IpdService;
+import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
+import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
 import org.openmrs.module.hospitalcore.util.PagingUtil;
@@ -53,13 +56,21 @@ public class IndoorPatientServiceBillController {
 			@RequestParam(value = "pageSize", required = false) Integer pageSize,
 			@RequestParam(value = "currentPage", required = false) Integer currentPage,
 			@RequestParam(value = "encounterId", required = false) Integer encounterId,
+			@RequestParam(value = "admissionLogId", required = false) Integer admissionLogId,
 			HttpServletRequest request) {
 
 		BillingService billingService = Context
 				.getService(BillingService.class);
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		BillCalculatorForBDService calculator = new BillCalculatorForBDService();
-
+		
+		IpdService ipdService = Context.getService(IpdService.class);
+		IpdPatientAdmissionLog ipdPatientAdmissionLog = ipdService.getIpdPatientAdmissionLog(admissionLogId);
+		IpdPatientAdmitted ipdPatientAdmitted = ipdService.getAdmittedByAdmissionLogId(ipdPatientAdmissionLog);
+		if(ipdPatientAdmitted.getComments()!=null){
+			model.addAttribute("fileNumber", ipdPatientAdmitted.getComments());				
+		}
+		
 		if (patient != null) {
 			int total = billingService
 					.countListPatientServiceBillByPatient(patient);

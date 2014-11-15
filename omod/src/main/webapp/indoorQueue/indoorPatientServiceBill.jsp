@@ -105,8 +105,8 @@
 				<td>${category}</td>
 			</tr>
 			<tr>
-				<td>Waiver/Exempt. No.:</td>
-				<td>${exemption}</td>
+				<td>File Number:</td>
+				<td>${fileNumber}</td>
 			</tr>
 			
 		</table>
@@ -275,15 +275,15 @@
 				<td>${category}</td>
 			</tr>
 			<tr>
-				<td>Waiver/Exempt. No.:</td>
-				<td>${exemption}</td>
+				<td>File Number:</td>
+				<td>${fileNumber}</td>
 			</tr>
 		</table>
 		<table class="printfont"
 			style="margin-left: 60px; margin-top: 10px; font-family: 'Dot Matrix Normal', Arial, Helvetica, sans-serif; font-style: normal;"
 			width="80%">
 			<thead>
-				<th class="printfont"><center>#</center></th>
+				<th class="printfont"><center>S.No</center></th>
 				<th class="printfont"><center>Service Name</center></th>
 				<th class="printfont"><center>Price (KSh)</center></th>
 				<th class="printfont"><center>Quantity</center></th>

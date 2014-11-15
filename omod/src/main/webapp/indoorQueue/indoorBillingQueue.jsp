@@ -19,10 +19,21 @@
  *  
 --%>
 <%@ include file="/WEB-INF/template/include.jsp" %>
-<%@ include file="/WEB-INF/template/header.jsp" %>
+
 <openmrs:require privilege="Indoor billing queue" otherwise="/login.htm" redirect="/module/billing/main.form" />
 <%@ include file="../includes/js_css.jsp"%>
-<%@ include file="../queue/billingQueueHeader.jsp"%>
+
+<script type="text/javascript">
+// get context path in order to build controller url
+	function getContextPath(){		
+		pn = location.pathname;
+		len = pn.indexOf("/", 1);				
+		cp = pn.substring(0, len);
+		return cp;
+	}
+</script>
+
+
 <script type="text/javascript">
 function addBill(patientId,encounterId){
 var paid="paid";
@@ -35,16 +46,19 @@ var indoor="indoor";
 window.location.href = openmrsContextPath + "/module/billing/patientServiceBillForBD.list?patientId="+patientId+"&encounterId="+encounterId+"&typeOfPatient="+indoor+"&admissionLogId="+admissionLogId+"&requestForDischargeStatus="+requestForDischargeStatus;
 }
 </script>
-<h2>Indoor Patient List</h2>	
+
 <br />
 
 <div class="boxHeader">
 	<strong>Indoor Patient List</strong>
 </div>
+<c:choose>
+	<c:when test="${not empty listIndoorPatient2}">
+
 <table cellpadding="5" cellspacing="0" width="100%" id="queueList">
 <tr align="center" >
-	<th>#</th>
-	<th>Admission Advised On</th>
+	<th>S.No</th>
+	<th>Admission Date</th>
 	<th>Patient ID</th>
 	<th>Name</th>
 	<th>Age</th>
@@ -105,5 +119,9 @@ window.location.href = openmrsContextPath + "/module/billing/patientServiceBillF
 </c:otherwise>
 </c:choose>	
 </table>
+	</c:when>
+	<c:otherwise>
+	No Patients Found.
+	</c:otherwise>
+</c:choose>
 
-<%@ include file="/WEB-INF/template/footer.jsp" %>

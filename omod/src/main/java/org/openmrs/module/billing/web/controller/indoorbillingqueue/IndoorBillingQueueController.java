@@ -21,6 +21,8 @@
 
 package org.openmrs.module.billing.web.controller.indoorbillingqueue;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.IpdService;
@@ -32,17 +34,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller("IndoorBillingQueueController")
-@RequestMapping("/module/billing/indoorbillingqueue.form")
+@RequestMapping("/module/billing/ipdbillingqueue.form")
 public class IndoorBillingQueueController {
 	@RequestMapping(method=RequestMethod.GET)
 	public String main(Model model){
-		IpdService ipdService = (IpdService) Context.getService(IpdService.class);
-		List<IpdPatientAdmission> listIndoorPatient1 = ipdService.getAllIndoorPatient();
-		List<IpdPatientAdmissionLog> listIndoorPatient2 = ipdService.getAllIndoorPatientFromAdmissionLog();
-		
-		model.addAttribute("listIndoorPatient1", listIndoorPatient1);
-		model.addAttribute("listIndoorPatient2", listIndoorPatient2);
-		return "/module/billing/indoorQueue/indoorBillingQueue";
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		String dateStr = sdf.format(new Date());
+		model.addAttribute("currentDate", dateStr);
+		return "/module/billing/indoorQueue/ipdPatientQueue";
 	}
-
 }

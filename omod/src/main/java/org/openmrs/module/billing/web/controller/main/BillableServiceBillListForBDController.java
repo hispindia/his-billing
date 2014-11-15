@@ -23,6 +23,7 @@
 package org.openmrs.module.billing.web.controller.main;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +77,10 @@ public class BillableServiceBillListForBDController {
 		Map<String, String> attributes = PatientUtils.getAttributes(patient);
 		//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module
 		BillCalculatorForBDService calculator = new BillCalculatorForBDService();
-		
+		IpdService ipdService = Context.getService(IpdService.class);
+		IpdPatientAdmissionLog ipdPatientAdmissionLog = ipdService.getIpdPatientAdmissionLog(admissionLogId);
+		IpdPatientAdmitted ipdPatientAdmitted = ipdService.getAdmittedByAdmissionLogId(ipdPatientAdmissionLog);
+
 		if (patient != null) {
 			
 			int total = billingService.countListPatientServiceBillByPatient(patient);
@@ -104,20 +108,45 @@ public class BillableServiceBillListForBDController {
 			else {
 				model.addAttribute("exemption", " ");
 			}
+			
+			if(ipdPatientAdmitted.getAdmittedWard()!=null){	
+				model.addAttribute("ward", ipdPatientAdmitted.getAdmittedWard());
+				}
+				if(ipdPatientAdmitted.getBed()!=null){
+				model.addAttribute("bed", ipdPatientAdmitted.getBed());
+				}
+				if(ipdPatientAdmitted.getUser().getGivenName()!=null){
+					model.addAttribute("doctor", ipdPatientAdmitted.getUser().getGivenName());				
+				}
+				if(ipdPatientAdmitted.getAdmissionDate()!=null){
+					model.addAttribute("admissionDate", ipdPatientAdmitted.getAdmissionDate());
+					Date date=	ipdPatientAdmitted.getAdmissionDate();
+					Date curDate =new Date();
+					System.out.println("date"+curDate);
+					System.out.println("date "+date);
+				}
+				if(ipdPatientAdmitted.getComments()!=null){
+					model.addAttribute("fileNumber", ipdPatientAdmitted.getComments());				
+				}
 
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			model.addAttribute("curDate", formatter.format(new Date()));
+				
 			model.addAttribute("pagingUtil", pagingUtil);
 			model.addAttribute("patient", patient);
 			model.addAttribute("listBill",
 			    billingService.listPatientServiceBillByPatient(pagingUtil.getStartPos(), pagingUtil.getPageSize(), patient));
+			model.addAttribute("address",patient.getPersonAddress().getAddress1()+", "+patient.getPersonAddress().getCityVillage());
 		}
         User user = Context.getAuthenticatedUser();
 		
+        
+        
+        
 		model.addAttribute("canEdit", user.hasPrivilege(BillingConstants.PRIV_EDIT_BILL_ONCE_PRINTED));
 		if (billId != null) {
 			PatientServiceBill bill = billingService.getPatientServiceBillById(billId);
 
-			//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module
-			//ghanshyam 3-june-2013 New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue
 			if (bill.getFreeBill().equals(1)) {
 				String billType = "free";
 				bill.setFreeBill(calculator.isFreeBill(billType));
@@ -140,6 +169,7 @@ public class BillableServiceBillListForBDController {
 			model.addAttribute("billList", bills);
 			}
 			model.addAttribute("requestForDischargeStatus", requestForDischargeStatus);
+			
 			return "/module/billing/indoorQueue/billListForIndoorPatient";
 		}
 		else{
@@ -221,7 +251,7 @@ public class BillableServiceBillListForBDController {
 				ipdService.saveIpdPatientAdmissionLog(ipdPatientAdmissionLog);
 				ipdService.saveIpdPatientAdmitted(ipdPatientAdmitted);
 			}
-			return "redirect:/module/billing/indoorPatientServiceBill.list?patientId=" + patientId + "&billId=" + bill.getPatientServiceBillId() +"&encounterId=" + encounterId;
+			return "redirect:/module/billing/indoorPatientServiceBill.list?patientId=" + patientId + "&billId=" + bill.getPatientServiceBillId() +"&encounterId=" + encounterId+"&admissionLogId="+admissionLogId;
 		}
 		else{
 			BillingService billingService = (BillingService) Context.getService(BillingService.class);
