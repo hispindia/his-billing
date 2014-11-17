@@ -162,7 +162,7 @@ jQuery(document).ready(function(){
 			<input type="button" onclick="submitBillForm()" id="subm" name="subm"
 				value="<spring:message code='billing.bill.save'/>" /> <input
 				type="button" value="<spring:message code='general.cancel'/>"
-				onclick="javascript:window.location.href='indoorbillingqueue.form'" />
+				onclick="javascript:window.location.href='ipdbillingqueue.form'" />
 			<!-- 
 		    <select name="enctype"  tabindex="20" >
                 <c:forEach items="${encounterTypes}" var="enct">

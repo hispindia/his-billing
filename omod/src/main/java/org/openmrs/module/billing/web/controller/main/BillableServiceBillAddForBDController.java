@@ -162,7 +162,7 @@ public class BillableServiceBillAddForBDController {
 		if (bill != null) {
 			billingService.saveBillEncounterAndOrderForIndoorPatient(bill);
 		}
-			return "redirect:/module/billing/indoorbillingqueue.form";
+			return "redirect:/module/billing/ipdbillingqueue.form";
 		
 	  }
 		else{

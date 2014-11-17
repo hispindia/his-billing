@@ -158,6 +158,6 @@ public class IndoorPatientServiceBillController {
 			}
 		}
 
-		return "redirect:/module/billing/indoorbillingqueue.form";
+		return "redirect:/module/billing/ipdbillingqueue.form";
 	}
 }
