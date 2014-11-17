@@ -108,40 +108,42 @@ public class BillableServiceBillListForBDController {
 			else {
 				model.addAttribute("exemption", " ");
 			}
-			
-			if(ipdPatientAdmitted.getAdmittedWard()!=null){	
-				model.addAttribute("ward", ipdPatientAdmitted.getAdmittedWard());
-				}
-				if(ipdPatientAdmitted.getBed()!=null){
-				model.addAttribute("bed", ipdPatientAdmitted.getBed());
-				}
-				if(ipdPatientAdmitted.getUser().getGivenName()!=null){
-					model.addAttribute("doctor", ipdPatientAdmitted.getUser().getGivenName());				
-				}
-				if(ipdPatientAdmitted.getAdmissionDate()!=null){
-					model.addAttribute("admissionDate", ipdPatientAdmitted.getAdmissionDate());
-					Date date=	ipdPatientAdmitted.getAdmissionDate();
-					Date curDate =new Date();
-					System.out.println("date"+curDate);
-					System.out.println("date "+date);
-				}
-				if(ipdPatientAdmitted.getComments()!=null){
-					model.addAttribute("fileNumber", ipdPatientAdmitted.getComments());				
-				}
+			if (typeOfPatient != null) {
+				if (encounterId != null) {
+					if(ipdPatientAdmitted.getAdmittedWard()!=null){	
+						model.addAttribute("ward", ipdPatientAdmitted.getAdmittedWard());
+						}
+						if(ipdPatientAdmitted.getBed()!=null){
+						model.addAttribute("bed", ipdPatientAdmitted.getBed());
+						}
+						if(ipdPatientAdmitted.getUser().getGivenName()!=null){
+							model.addAttribute("doctor", ipdPatientAdmitted.getUser().getGivenName());				
+						}
+						if(ipdPatientAdmitted.getAdmissionDate()!=null){
+							model.addAttribute("admissionDate", ipdPatientAdmitted.getAdmissionDate());
+							Date date=	ipdPatientAdmitted.getAdmissionDate();
+							Date curDate =new Date();
+							System.out.println("date"+curDate);
+							System.out.println("date "+date);
+						}
+						if(ipdPatientAdmitted.getComments()!=null){
+							model.addAttribute("fileNumber", ipdPatientAdmitted.getComments());				
+						}
 
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			model.addAttribute("curDate", formatter.format(new Date()));
-				
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					model.addAttribute("curDate", formatter.format(new Date()));
+						
+					}
+				}
 			model.addAttribute("pagingUtil", pagingUtil);
 			model.addAttribute("patient", patient);
 			model.addAttribute("listBill",
 			    billingService.listPatientServiceBillByPatient(pagingUtil.getStartPos(), pagingUtil.getPageSize(), patient));
 			model.addAttribute("address",patient.getPersonAddress().getAddress1()+", "+patient.getPersonAddress().getCityVillage());
-		}
-        User user = Context.getAuthenticatedUser();
+			}
 		
-        
-        
+		
+        User user = Context.getAuthenticatedUser();
         
 		model.addAttribute("canEdit", user.hasPrivilege(BillingConstants.PRIV_EDIT_BILL_ONCE_PRINTED));
 		if (billId != null) {
@@ -276,7 +278,8 @@ public class BillableServiceBillListForBDController {
 				
 				billingService.saveBillEncounterAndOrder(patientServiceBill);
 			}
-			return "redirect:/module/billing/patientServiceBillForBD.list?patientId=" + patientId;
+//			return "redirect:/module/billing/patientServiceBillForBD.list?patientId=" + patientId;
+			return "redirect:/module/billing/billingqueue.form";
 		}
 	}
 }
