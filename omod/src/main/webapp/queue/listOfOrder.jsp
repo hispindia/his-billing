@@ -54,12 +54,12 @@
 		</tr>
 
 		<tr>
-			<td>payment Category:</td>
+			<td>Payment Category:</td>
 			<td>${category}</td>
 		</tr>
 		<tr>
-			<td>File No.:</td>
-			<td>  </td>
+			<td>File Number:</td>
+			<td></td>
 		</tr>
 	</table>
 </div>
@@ -69,10 +69,10 @@
 	<table id="myTable" class="tablesorter" class="thickbox">
 	<thead>
 		<tr align="center">
-			<th align="center">S.No</th>
-			<th align="center">Order ID</th>
-			<th align="center">Date</th>
-			<th align="center">Sent from (Name of the Department)</th>
+			<th style="text-align: center;">S.No</th>
+			<th style="text-align: center;">Order ID</th>
+			<th style="text-align: center;">Date</th>
+			<th style="text-align: center;">Sent from (Name of the Department)</th>
 		</tr>
 	</thead>
 	<tbody>

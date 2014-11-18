@@ -144,21 +144,24 @@ if (serqun!=null || quantity!=""){
 			<td>${patientSearch.givenName}&nbsp;${patientSearch.familyName}&nbsp;${fn:replace(patientSearch.middleName,',',' ')}&nbsp;&nbsp;
 				</td>
 		</tr>
+		<tr>
+			<td>Gender:</td>
+			<td>${gender}</td>
+		</tr>
+		
+		<tr>
+			<td>Age:</td>
+			<td>${age}</td>
+		</tr>
 		
 		<tr>
 			<td>Payment Category:</td>
 			<td>${category}</td>
 		</tr>
+		
+		
 		<tr>
-			<td>Gender:</td>
-			<td>${gender}</td>
-		</tr>
-		<tr>
-			<td>Age:</td>
-			<td>${age}</td>
-		</tr>
-		<tr>
-			<td>File No.:</td>
+			<td>File Number:</td>
 			<td>  </td>
 		</tr>
 		</table>
