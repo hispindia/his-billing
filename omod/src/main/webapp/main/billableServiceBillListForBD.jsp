@@ -145,12 +145,12 @@ function validate(){
 				</tr>
 			</c:if>
 			<tr>
-				<td>Patient Category:</td>
+				<td>Payment Category:</td>
 				<td>${category}</td>
 			</tr>
 			<tr>
-				<td>Waiver/Exempt. No.:</td>
-				<td>${exemption}</td>
+				<td>File Number:</td>
+				<td> </td>
 			</tr>
 		</table>
 		<table width="100%" border="1">
@@ -309,12 +309,12 @@ function validate(){
 				<td>:${age}</td>
 			</tr>
 			<tr>
-				<td>Patient Category</td>
+				<td>Payment Category</td>
 				<td>:${category}</td>
 			</tr>			
 			<tr>
-				<td>Waiver/Exempt. No.</td>
-				<td>:${exemption}</td>
+				<td>File Number</td>
+				<td>:</td>
 			</tr>			
 			<c:if test="${bill.voided==true }">
 				<tr>

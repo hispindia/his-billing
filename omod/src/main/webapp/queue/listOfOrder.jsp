@@ -72,7 +72,7 @@
 			<th style="text-align: center;">S.No</th>
 			<th style="text-align: center;">Order ID</th>
 			<th style="text-align: center;">Date</th>
-			<th style="text-align: center;">Sent from (Name of the Department)</th>
+			<th style="text-align: center;">Sent from</th>
 		</tr>
 	</thead>
 	<tbody>
