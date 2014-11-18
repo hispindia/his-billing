@@ -54,12 +54,12 @@
 		</tr>
 
 		<tr>
-			<td>Patient Category:</td>
+			<td>payment Category:</td>
 			<td>${category}</td>
 		</tr>
 		<tr>
-			<td>Waiver/Exempt. No.:</td>
-			<td>${exemption}</td>
+			<td>File No.:</td>
+			<td>  </td>
 		</tr>
 	</table>
 </div>
@@ -69,9 +69,10 @@
 	<table id="myTable" class="tablesorter" class="thickbox">
 	<thead>
 		<tr align="center">
-			<th>S.No</th>
-			<th>Order ID</th>
-			<th>Date</th>
+			<th align="center">S.No</th>
+			<th align="center">Order ID</th>
+			<th align="center">Date</th>
+			<th align="center">Sent from (Name of the Department)</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -85,10 +86,11 @@
 				</c:otherwise>
 			</c:choose>
 			<tr class="${klass}">
-				<td>${index.count}</td>
-				<td><a href="procedureinvestigationorder.form?patientId=${patientId}&encounterId=${listOfOrder.encounter.encounterId}&date=${date}">${listOfOrder.encounter.encounterId}</a>
+				<td align="center">${index.count}</td>
+				<td align="center"><a href="procedureinvestigationorder.form?patientId=${patientId}&encounterId=${listOfOrder.encounter.encounterId}&date=${date}">${listOfOrder.encounter.encounterId}</a>
 				</td>
-				<td><openmrs:formatDate date="${listOfOrder.createdOn}" /></td>
+				<td align="center"><openmrs:formatDate date="${listOfOrder.createdOn}" /></td>
+				<td align="center">${listOfOrder.fromDept}</td>
 			</tr>
 		</c:forEach>
 	</tbody>

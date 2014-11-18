@@ -75,22 +75,18 @@
 	<c:when test="${not empty patientList}">
 		<table style="width: 100%">
 			<tr>
-				<td><b>S.No</b></td>
-				<td><b>Patient ID</b></td>
-				<td><b>Name</b></td>
-				<td><b>Age</b></td>
-				<td><b>Gender</b></td>
-				<td><b>Date of Birth</b></td>
-				<!--  
-				<td><b>Relative Name</b></td>
-				<td><b>Phone number</b></td>
-				-->
+				<td align="center"><b>S.No</b></td>
+				<td align="center"><b>Patient ID</b></td>
+				<td align="center"><b>Name</b></td>
+				<td align="center"><b>Age</b></td>
+				<td align="center"><b>Gender</b></td>
+				
 			</tr>
 				<c:forEach items="${patientList}" var="patient" varStatus="varStatus">
 				<tr
 					class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } patientSearchRow'
 					onclick="PATIENTSEARCHRESULT.visit(${patient.patientId},'${date}');">
-					<td>
+					<td align="center">
 					<c:choose>
 					<c:when test="${pagingUtil.currentPage != 1}">
 						${varStatus.count +
@@ -101,23 +97,15 @@
 					</c:otherwise>
 					</c:choose>
 					</td>
-					<td>${patient.identifier}</td>
-					<td>${patient.givenName} ${patient.familyName} ${fn:replace(patient.middleName,',',' ')}
+					<td align="center">${patient.identifier}</td>
+					<td align="center">${patient.givenName} ${patient.familyName} ${fn:replace(patient.middleName,',',' ')}
 						</td>
-					<td><c:choose>
+					<td align="center"><c:choose>
 							<c:when test="${patient.age == 0}">&lt 1</c:when>
 							<c:otherwise>${patient.age}</c:otherwise>
-						</c:choose></td>
-					<td><c:choose>
-							<c:when test="${patient.gender eq 'M'}">
-								<img src="${pageContext.request.contextPath}/images/male.gif" />
-							</c:when>
-							<c:otherwise>
-								<img src="${pageContext.request.contextPath}/images/female.gif" />
-							</c:otherwise>
-						</c:choose></td>
-					<td><openmrs:formatDate date="${patient.birthdate}" /></td>
-					
+						</c:choose>
+					</td>
+					<td align="center">${patient.gender}</td>
 				</tr>
 			</c:forEach>
 		</table>

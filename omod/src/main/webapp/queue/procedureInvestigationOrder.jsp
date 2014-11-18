@@ -146,7 +146,7 @@ if (serqun!=null || quantity!=""){
 		</tr>
 		
 		<tr>
-			<td>Patient Category:</td>
+			<td>Payment Category:</td>
 			<td>${category}</td>
 		</tr>
 		<tr>
@@ -158,8 +158,8 @@ if (serqun!=null || quantity!=""){
 			<td>${age}</td>
 		</tr>
 		<tr>
-			<td>Waiver/Exempt. No.:</td>
-			<td>${exemption}</td>
+			<td>File No.:</td>
+			<td>  </td>
 		</tr>
 		</table>
 </div>
