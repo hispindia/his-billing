@@ -41,22 +41,22 @@
 
 	currentPage = 1;
     jQuery(document).ready(function() {
-		jQuery('#date').datepicker({yearRange:'c-30:c+30', dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true,showOn: "button",
+	/*	jQuery('#date').datepicker({yearRange:'c-30:c+30', dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true,showOn: "button",
                 buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif",
-                buttonImageOnly: true,});
+                buttonImageOnly: true,});*/
     });
 	
 	// get queue
 	function getBillingQueue(currentPage){
 		this.currentPage = currentPage;
-		var date = jQuery("#date").val();
+	//	var date = jQuery("#date").val();
 		var searchKey = jQuery("#searchKey").val();
 	
 		jQuery.ajax({
 			type : "GET",
 			url : getContextPath() + "/module/billing/patientsearchipdbillingqueue.form",
 			data : ({
-				date			: date,
+	//			date			: date,
 				searchKey		: searchKey,
 				currentPage		: currentPage
 			}),
@@ -74,7 +74,7 @@
 	 *    Empty the patient name/identifier textbox
 	 */
 	function reset(){
-		jQuery("#date").val("${currentDate}");
+//		jQuery("#date").val("${currentDate}");
 		jQuery("#searchKey").val("");
 	}
 </script> 
@@ -83,9 +83,9 @@
 	<strong>Get Queue</strong>
 </div>
 <div class="box">
-	Date:
+<!-- 	Date:
 	<input id="date" value="${currentDate}" style="text-align:right;"/>
-	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
 	Patient ID/Name:
 	<input id="searchKey"/>
 	<br/>

@@ -165,6 +165,8 @@ function validate(){
 			<c:forEach items="${bill.billItems}" var="item" varStatus="status">
 				<%-- ghanshyam Support #339 [Billing]print of void bill [3.2.7 snapshot][DDU,Mohali,Solan,Tanda,] --%>
 				<c:if test="${item.voidedDate==null}">
+				<c:choose>
+				<c:when test="${item.name != 'INPATIENT DEPOSIT'}">
 					<tr>
 						<td>${item.name}</td>
 						<td align="right">${item.unitPrice}</td>
@@ -187,10 +189,21 @@ function validate(){
 
 							</c:choose></td>
 					</tr>
+				</c:when>
+				</c:choose>				
 				</c:if>
 			</c:forEach>
+		<c:set var="initialtotal" value="0"/>  
+		<c:forEach items="${bill.billItems}" var="item" varStatus="status">
+			<c:choose>
+				<c:when test="${item.name == 'INPATIENT DEPOSIT'}">
+					<c:set var="initialtotal" value="${item.amount + initialtotal}"/>  
+				</c:when>
+			</c:choose>
+		</c:forEach>
 			
 			<tr>
+			
 				<!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --Adjust allignment in table-->
 				<td colspan="3" align='right'><b>Total 
 				</td>
@@ -200,30 +213,30 @@ function validate(){
 								<c:when test="${bill.actualAmount eq bill.amount}">
 									<c:choose>
 										<c:when test="${bill.voided==true }">
-											<span style="text-decoration: line-through;"> <b>${bill.amount}</b>
+											<span style="text-decoration: line-through;"> <b>${bill.amount-initialtotal}</b>
 											</span>
 										</c:when>
 										<c:otherwise>
-											<b>${bill.amount}</b>
+											<b>${bill.amount-initialtotal}</b>
 										</c:otherwise>
 									</c:choose>
 								</c:when>
 								<c:otherwise>
-									<span style="text-decoration: line-through;">${bill.amount}</span>
+									<span style="text-decoration: line-through;">${bill.amount-initialtotal}</span>
 									<c:choose>
 										<c:when test="${bill.voided==true }">
-											<span style="text-decoration: line-through;"> <b>${bill.actualAmount}</b>
+											<span style="text-decoration: line-through;"> <b>${bill.actualAmount-initialtotal}</b>
 											</span>
 										</c:when>
 										<c:otherwise>
-											<b>${bill.actualAmount}</b>
+											<b>${bill.actualAmount-initialtotal}</b>
 										</c:otherwise>
 									</c:choose>
 								</c:otherwise>
 							</c:choose>
 						</c:when>
 						<c:otherwise>
-							${bill.amount}
+							${bill.amount-initialtotal}
 						</c:otherwise>
 					</c:choose></td>
 			</tr>
@@ -235,7 +248,7 @@ function validate(){
 			
 			<tr>
 				<td colspan="3" align='right'><b>Net Amount</td>
-				<td align="right"><b>${bill.actualAmount - bill.waiverAmount}</b></td>
+				<td align="right"><b>${bill.actualAmount - bill.waiverAmount - initialtotal}</b></td>
 			</tr>
 			
 			
@@ -336,6 +349,9 @@ function validate(){
 			<c:forEach items="${bill.billItems}" var="item" varStatus="varStatus">
 				<%-- ghanshyam Support #339 [Billing]print of void bill [3.2.7 snapshot][DDU,Mohali,Solan,Tanda,] --%>
 				<c:if test="${item.voidedDate==null}">
+				<c:choose>
+				<c:when test="${item.name != 'INPATIENT DEPOSIT'}">
+				
 					<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" }' >
 						<td><c:out value="${varStatus.count }"/></td>
 						<td class="printfont" height="20">${item.name}</td>
@@ -343,20 +359,31 @@ function validate(){
 						<td class="printfont" height="20"><center>${item.quantity}</center></td>
 						<td class="printfont" height="20"><center>${item.actualAmount}</center></td>
 					</tr>
+				</c:when>
+				</c:choose>				
 				</c:if>
 			</c:forEach>
+		<c:set var="initialtotal" value="0"/>  
+		<c:forEach items="${bill.billItems}" var="item" varStatus="status">
+			<c:choose>
+				<c:when test="${item.name == 'INPATIENT DEPOSIT'}">
+					<c:set var="initialtotal" value="${item.amount + initialtotal}"/>  
+				</c:when>
+			</c:choose>
+		</c:forEach>
+
 			<tr>
 				<td>&nbsp;</td>
 				<td align="right" colspan="3"><b>Total</b></td>
 				<c:choose>
 					<c:when test="${bill.voided}">
 						<td align="right"><center><span
-							style="text-decoration: line-through;"><b>${bill.actualAmount}</b></span></center>
+							style="text-decoration: line-through;"><b>${bill.actualAmount -initialtotal}</b></span></center>
 						</td>
 
 					</c:when>
 					<c:otherwise>
-						<td align="right"><center>${bill.actualAmount}</center></td>
+						<td align="right"><center>${bill.actualAmount -initialtotal}</center></td>
 					</c:otherwise>
 				</c:choose>
 			</tr>
@@ -370,7 +397,7 @@ function validate(){
 			<tr>
 				<td>&nbsp;</td>
 				<td colspan="3" align='right'><b>Net Amount</td>
-				<td align="right"><b><center>${bill.actualAmount - bill.waiverAmount}</center></b></td>
+				<td align="right"><b><center>${bill.actualAmount - bill.waiverAmount -initialtotal}</center></b></td>
 			</tr>
 			
 		</table>

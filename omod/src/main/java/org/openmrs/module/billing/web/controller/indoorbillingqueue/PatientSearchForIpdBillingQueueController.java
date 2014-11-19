@@ -47,22 +47,22 @@ import org.openmrs.module.hospitalcore.util.PagingUtil;
 public class PatientSearchForIpdBillingQueueController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String main(
-			@RequestParam(value = "date", required = false) String dateStr,
+//			@RequestParam(value = "date", required = false) String dateStr,
 			@RequestParam(value = "searchKey", required = false) String searchKey,
 			@RequestParam(value = "currentPage", required = false) Integer currentPage,
 			Model model) {
 		
 		IpdService ipdService = (IpdService) Context.getService(IpdService.class);
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	/*	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Date date = null;
 		try {
 			date = sdf.parse(dateStr);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-
+*/
 //		List<IpdPatientAdmission> listIndoorPatient1 = ipdService.getAllIndoorPatient();
-		List<IpdPatientAdmissionLog> listIndoorPatient2 = ipdService.getAllIndoorPatientFromAdmissionLog(date, searchKey, currentPage);
+		List<IpdPatientAdmissionLog> listIndoorPatient2 = ipdService.getAllIndoorPatientFromAdmissionLog(searchKey, currentPage);
 
 		currentPage = 1;
 		int total = listIndoorPatient2.size();
@@ -71,7 +71,7 @@ public class PatientSearchForIpdBillingQueueController {
 //		model.addAttribute("listIndoorPatient1", listIndoorPatient1);
 		model.addAttribute("listIndoorPatient2", listIndoorPatient2);
 		model.addAttribute("pagingUtil", pagingUtil);
-		model.addAttribute("date", dateStr);
+	//	model.addAttribute("date", dateStr);
 		return "/module/billing/indoorQueue/indoorBillingQueue";
 	}
 }

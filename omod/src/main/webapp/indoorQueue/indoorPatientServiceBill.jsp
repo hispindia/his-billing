@@ -119,6 +119,8 @@
 			</tr>
 			<c:forEach items="${bill.billItems}" var="item" varStatus="status">
 				<c:if test="${item.voidedDate==null}">
+				<c:choose>
+				<c:when test="${item.name != 'INPATIENT DEPOSIT'}">
 					<tr>
 						<td>${item.name}</td>
 						<td align="right">${item.unitPrice}</td>
@@ -141,9 +143,21 @@
 
 							</c:choose></td>
 					</tr>
+				</c:when>
+				</c:choose>
 				</c:if>
 			</c:forEach>
-			
+
+		<c:set var="initialtotal" value="0"/>  
+		<c:forEach items="${bill.billItems}" var="item" varStatus="status">
+			<c:if test="${item.voidedDate==null}">
+			<c:choose>
+				<c:when test="${item.name == 'INPATIENT DEPOSIT'}">
+					<c:set var="initialtotal" value="${item.amount + initialtotal}"/>  
+				</c:when>
+			</c:choose>
+			</c:if>
+		</c:forEach>
 			<tr>
 				<td colspan="3" align='right'><b>Total 
 				</td>
@@ -157,33 +171,33 @@
 											</span>
 										</c:when>
 										<c:otherwise>
-											<b>${bill.amount}</b>
+											<b>${bill.amount-initialtotal}</b>
 										</c:otherwise>
 									</c:choose>
 								</c:when>
 								<c:otherwise>
-									<span style="text-decoration: line-through;">${bill.amount}</span>
+									<span style="text-decoration: line-through;">${bill.amount-initialtotal}</span>
 									<c:choose>
 										<c:when test="${bill.voided==true }">
-											<span style="text-decoration: line-through;"> <b>${bill.actualAmount}</b>
+											<span style="text-decoration: line-through;"> <b>${bill.actualAmount-initialtotal}</b>
 											</span>
 										</c:when>
 										<c:otherwise>
-											<b>${bill.actualAmount}</b>
+											<b>${bill.actualAmount-initialtotal}</b>
 										</c:otherwise>
 									</c:choose>
 								</c:otherwise>
 							</c:choose>
 						</c:when>
 						<c:otherwise>
-							${bill.amount}
+							${bill.amount-initialtotal}
 						</c:otherwise>
 					</c:choose></td>
 			</tr>
 			
 			<tr>
 				<td colspan="3" align='right'><b>Amount Paid as Advance</td>
-				<td align="right"><b>${billItem.actualAmount}</b></td>
+				<td align="right"><b>${initialtotal}</b></td>
 			</tr>
 			
 			<tr>
@@ -193,7 +207,7 @@
 			
 			<tr>
 				<td colspan="3" align='right'><b>Net Amount</td>
-				<td align="right"><b>${bill.actualAmount - billItem.actualAmount - bill.waiverAmount}</b></td>
+				<td align="right"><b>${bill.actualAmount - billItem.actualAmount - bill.waiverAmount -2*initialtotal}</b></td>
 			</tr>
 			
 			
@@ -291,6 +305,9 @@
 			</thead>
 			<c:forEach items="${bill.billItems}" var="item" varStatus="varStatus">
 				<c:if test="${item.voidedDate==null}">
+				<c:choose>
+					<c:when test="${item.name != 'INPATIENT DEPOSIT'}">
+
 					<tr class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" }' >
 						<td><center><c:out value="${varStatus.count }"/></center></td>
 						<td class="printfont" height="20">${item.name}</td>
@@ -298,20 +315,34 @@
 						<td class="printfont" height="20"><center>${item.quantity}</center></td>
 						<td class="printfont" height="20"><center>${item.actualAmount}</center></td>
 					</tr>
+					</c:when>
+				</c:choose>	
 				</c:if>
 			</c:forEach>
+			
+		<c:set var="initialtotal" value="0"/>  
+		<c:forEach items="${bill.billItems}" var="item" varStatus="status">
+			<c:if test="${item.voidedDate==null}">
+			<c:choose>
+				<c:when test="${item.name == 'INPATIENT DEPOSIT'}">
+					<c:set var="initialtotal" value="${item.amount + initialtotal}"/>  
+				</c:when>
+			</c:choose>
+			</c:if>
+		</c:forEach>
+			
 			<tr>
 				<td>&nbsp;</td>
 				<td align="right" colspan="3"><b>Total</b></td>
 				<c:choose>
 					<c:when test="${bill.voided}">
 						<td align="right"><span
-							style="text-decoration: line-through;">${bill.actualAmount}</span>
+							style="text-decoration: line-through;">${bill.actualAmount-initialtotal}</span>
 						</td>
 
 					</c:when>
 					<c:otherwise>
-						<td align="right">${bill.actualAmount}</td>
+						<td align="right">${bill.actualAmount-initialtotal}</td>
 					</c:otherwise>
 				</c:choose>
 			</tr>
@@ -319,7 +350,7 @@
 			<tr>
 				<td>&nbsp;</td>
 				<td colspan="3" align='right'><b>Amount Paid as Advance</td>
-				<td align="right"><b>${billItem.actualAmount}</b></td>
+				<td align="right"><b>${initialtotal}</b></td>
 			</tr>
 			
 			<tr>
@@ -331,7 +362,7 @@
 			<tr>
 				<td>&nbsp;</td>
 				<td colspan="3" align='right'><b>Net Amount</td>
-				<td align="right"><b>${bill.actualAmount - billItem.actualAmount - bill.waiverAmount}</b></td>
+				<td align="right"><b>${bill.actualAmount - billItem.actualAmount - bill.waiverAmount -2*initialtotal}</b></td>
 			</tr>
 			
 		</table>

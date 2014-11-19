@@ -75,7 +75,7 @@ public class BillableServiceBillListForBDController {
 		
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		Map<String, String> attributes = PatientUtils.getAttributes(patient);
-		//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module
+
 		BillCalculatorForBDService calculator = new BillCalculatorForBDService();
 		IpdService ipdService = Context.getService(IpdService.class);
 		IpdPatientAdmissionLog ipdPatientAdmissionLog = ipdService.getIpdPatientAdmissionLog(admissionLogId);
@@ -117,14 +117,17 @@ public class BillableServiceBillListForBDController {
 						model.addAttribute("bed", ipdPatientAdmitted.getBed());
 						}
 						if(ipdPatientAdmitted.getUser().getGivenName()!=null){
-							model.addAttribute("doctor", ipdPatientAdmitted.getUser().getGivenName());				
+							model.addAttribute("doctor", ipdPatientAdmitted.getIpdAdmittedUser().getGivenName());				
 						}
-						if(ipdPatientAdmitted.getAdmissionDate()!=null){
-							model.addAttribute("admissionDate", ipdPatientAdmitted.getAdmissionDate());
-							Date date=	ipdPatientAdmitted.getAdmissionDate();
-							Date curDate =new Date();
-							System.out.println("date"+curDate);
-							System.out.println("date "+date);
+						if(ipdPatientAdmitted.getPatientAdmittedLogTransferFrom()!=null){
+							IpdPatientAdmissionLog ipdPatientAdmissionLog1 = ipdService.getIpdPatientAdmissionLog(ipdPatientAdmitted.getPatientAdmissionLog().getId());
+								model.addAttribute("admissionDate", ipdPatientAdmissionLog1.getAdmissionDate());
+						}
+						else{
+							if(ipdPatientAdmitted.getAdmissionDate()!=null){
+								model.addAttribute("admissionDate", ipdPatientAdmitted.getAdmissionDate());
+							
+							}
 						}
 						if(ipdPatientAdmitted.getComments()!=null){
 							model.addAttribute("fileNumber", ipdPatientAdmitted.getComments());				

@@ -158,6 +158,8 @@
 					<c:set var="klass" value="even" />
 				</c:otherwise>
 			</c:choose>
+			<c:choose>
+				<c:when test="${item.name != 'INPATIENT DEPOSIT'}">
 			<tr class="${klass}">
 				<td>${index}</td>
 				<td><openmrs:formatDate date="${item.createdDate}" type="textbox"/></td>
@@ -166,19 +168,40 @@
 				<td>${item.amount}</td>
 				<c:set var="index" value="${index+1}"/>  
 			</tr>
+				</c:when>
+			</c:choose>
 		</c:forEach>
 		</c:forEach>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td align="right"><b>ADVANCE PAYMENT</b></td>
+		<c:set var="initialtotal" value="0"/>  
+		<td><c:forEach var="bill" items="${billList}" varStatus="statusOuter">
+		<c:forEach var="item" items="${bill.billItems}" varStatus="statusInner">
+		<c:choose>
+				<c:when test="${item.name == 'INPATIENT DEPOSIT'}">
+				<c:set var="initialtotal" value="${item.amount + initialtotal}"/>  
+						</c:when>
+			</c:choose>
+			</c:forEach>
+		</c:forEach>
+		<b>${initialtotal}</b>
+		<tr>
 		<td></td>
 		<td></td>
 		<td></td>
 		<td align="right"><b>Total</b></td>
 		<c:set var="total" value="0"/>  
 		<td><c:forEach var="bill" items="${billList}" varStatus="statusOuter">
-				
-				<c:set var="total" value="${bill.actualAmount + total}"/>  
+		<c:forEach var="item" items="${bill.billItems}" varStatus="statusInner">
+				<c:set var="total" value="${item.amount + total}"/>  
+			</c:forEach>
 		</c:forEach>
-		<b>${total}</b>
+		<b>${total -2*initialtotal}</b>
 		</td>
+		</tr>
+		
 	</tbody>
 </table>
 <table>
@@ -316,6 +339,8 @@
 					<c:set var="klass" value="even" />
 				</c:otherwise>
 			</c:choose>
+			<c:choose>
+				<c:when test="${item.name != 'INPATIENT DEPOSIT'}">
 			<tr class="${klass}">
 				<td>${index}</td>
 				<td><openmrs:formatDate date="${item.createdDate}" type="textbox"/></td>
@@ -324,6 +349,9 @@
 				<td>${item.amount}</td>
 				<c:set var="index" value="${index+1}"/>  
 			</tr>
+			</c:when>
+			</c:choose>
+			
 		</c:forEach>
 		</c:forEach>
 		</tr>
@@ -332,16 +360,33 @@
 		<td></td>
 		<td></td>
 		<td></td>
-		<td align="right"><b>Total:</b></td>
+		<td align="right"><b>ADVANCE PAYMENT</b></td>
+		<c:set var="initialtotal" value="0"/>  
+		<td><c:forEach var="bill" items="${billList}" varStatus="statusOuter">
+		<c:forEach var="item" items="${bill.billItems}" varStatus="statusInner">
+		<c:choose>
+				<c:when test="${item.name == 'INPATIENT DEPOSIT'}">
+				<c:set var="initialtotal" value="${item.amount + initialtotal}"/>  
+						</c:when>
+			</c:choose>
+			</c:forEach>
+		</c:forEach>
+		<b>${initialtotal}</b>
+		<tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td align="right"><b>Total</b></td>
 		<c:set var="total" value="0"/>  
 		<td><c:forEach var="bill" items="${billList}" varStatus="statusOuter">
-				
-				<c:set var="total" value="${bill.actualAmount + total}"/>  
+		<c:forEach var="item" items="${bill.billItems}" varStatus="statusInner">
+				<c:set var="total" value="${item.amount + total}"/>  
+			</c:forEach>
 		</c:forEach>
-		<b>${total}</b>
+		<b>${total -2*initialtotal}</b>
 		</td>
 		</tr>
-		</tbody>
+	</tbody>
 </table>
 <br>
 <br>
