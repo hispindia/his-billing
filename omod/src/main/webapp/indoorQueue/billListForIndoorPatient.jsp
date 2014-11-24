@@ -21,7 +21,9 @@
 <%@ include file="/WEB-INF/template/header.jsp"%>
 <%@ include file="../includes/js_css.jsp"%>
 <openmrs:require privilege="View Bills" otherwise="/login.htm" />
-
+<openmrs:globalProperty var="userLocation" key="hospital.location_user" defaultValue="false"/>
+<openmrs:globalProperty var="userLocationPoBox" key="hospital.location_PoBox" defaultValue="false"/>
+<openmrs:globalProperty var="userLocationTel" key="hospital.location_Telephone" defaultValue="false"/>
 <script type="text/javascript">
 	jQuery(document).ready(
 			function() {
@@ -249,8 +251,8 @@
 	}
 }
 </style>
-<h5><center>MACHAKOS LEVEL 5 HOSPITAL</center><h5><center> P.O BOX 19 - 90100 MACHAKOS</center></h5>
-<h5><center>TEL - 044-21685</center></h5>
+<h5><center>${userLocation}</center><h5><center> ${userLocationPoBox}</center></h5>
+<h5><center>TEL - ${userLocationTel}</center></h5>
 <br><br>
 <center><b>Interim Invoice</b></center>
 <br><br>
