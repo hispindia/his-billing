@@ -171,7 +171,7 @@
 
 	<globalProperty>
 		<property>@MODULE_ID@.category</property>
-		<defaultValue>Patient Category</defaultValue>
+		<defaultValue>Payment Category</defaultValue>
 		<description>
 			Name of attribute Patient Economic Category property.
 			Used to determine patient BPL status from Patient Object.
