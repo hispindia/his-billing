@@ -24,6 +24,7 @@
 <openmrs:require privilege="Test order queue" otherwise="/login.htm" redirect="/module/billing/main.form" />
 <%@ include file="../includes/js_css.jsp"%>
 <%@ include file="../indoorQueue/ipdBillingQueueHeader.jsp"%>
+<body onload="reset()">
 <h2>Indoor Patient Queue</h2>	
 <br />
 
@@ -43,24 +44,28 @@
     jQuery(document).ready(function() {
 	/*	jQuery('#date').datepicker({yearRange:'c-30:c+30', dateFormat: 'dd/mm/yy', changeMonth: true, changeYear: true,showOn: "button",
                 buttonImage: "http://jqueryui.com/resources/demos/datepicker/images/calendar.gif",
-                buttonImageOnly: true,});*/
+                buttonImageOnly: true}),*/
+				jQuery("#selection").hide(0);
     });
 	
 	// get queue
 	function getBillingQueue(currentPage){
+		jQuery("#selection").show(0);
 		this.currentPage = currentPage;
 	//	var date = jQuery("#date").val();
 		var searchKey = jQuery("#searchKey").val();
-	
+		var pgSize = jQuery("#sizeSelector").val();
 		jQuery.ajax({
 			type : "GET",
 			url : getContextPath() + "/module/billing/patientsearchipdbillingqueue.form",
 			data : ({
 	//			date			: date,
 				searchKey		: searchKey,
-				currentPage		: currentPage
+				currentPage		: currentPage,
+				pgSize			: pgSize
 			}),
 			success : function(data) {
+				jQuery("#billingqueue").show(0);
 				jQuery("#billingqueue").html(data);	
 			},
 			
@@ -76,6 +81,9 @@
 	function reset(){
 //		jQuery("#date").val("${currentDate}");
 		jQuery("#searchKey").val("");
+		jQuery("#sizeSelector").val(100);
+		jQuery("#selection").hide(0);
+		jQuery("#billingqueue").hide(0);	
 	}
 </script> 
 
@@ -90,10 +98,20 @@
 	<input id="searchKey"/>
 	<br/>
 	<input type="button" value="Get patients" onClick="getBillingQueue(1);"/>
-	<input type="button" value="Reset" onClick="reset();"/>
+	
 </div>
 
 <div id="billingqueue">
+</div>
+<div id="selection">
+Show 
+ <select name="sizeSelector" id="sizeSelector" onchange="getBillingQueue(1)">
+    	<option value="50" id="1">50</option>
+      	<option value="100" id="2" selected>100</option>
+      	<option value="150" id="3">150</option>
+      	<option value="200" id="4">200</option>
+	</select>
+    entries 
 </div>
 
 <%@ include file="/WEB-INF/template/footer.jsp" %>

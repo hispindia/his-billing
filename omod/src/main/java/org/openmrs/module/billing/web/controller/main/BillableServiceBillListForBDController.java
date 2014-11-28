@@ -24,7 +24,9 @@ package org.openmrs.module.billing.web.controller.main;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -70,7 +72,7 @@ public class BillableServiceBillListForBDController {
 	                       @RequestParam(value = "admissionLogId", required = false) Integer admissionLogId,
 	                       @RequestParam(value = "requestForDischargeStatus", required = false) Integer requestForDischargeStatus,
 	                       HttpServletRequest request) {
-		
+		long admitMili = 0;
 		BillingService billingService = Context.getService(BillingService.class);
 		
 		Patient patient = Context.getPatientService().getPatient(patientId);
@@ -108,6 +110,7 @@ public class BillableServiceBillListForBDController {
 			else {
 				model.addAttribute("exemption", " ");
 			}
+			
 			if (typeOfPatient != null) {
 				if (encounterId != null) {
 					if(ipdPatientAdmitted.getAdmittedWard()!=null){	
@@ -122,10 +125,12 @@ public class BillableServiceBillListForBDController {
 						if(ipdPatientAdmitted.getPatientAdmittedLogTransferFrom()!=null){
 							IpdPatientAdmissionLog ipdPatientAdmissionLog1 = ipdService.getIpdPatientAdmissionLog(ipdPatientAdmitted.getPatientAdmissionLog().getId());
 								model.addAttribute("admissionDate", ipdPatientAdmissionLog1.getAdmissionDate());
+								admitMili = ipdPatientAdmissionLog1.getAdmissionDate().getTime();
 						}
 						else{
 							if(ipdPatientAdmitted.getAdmissionDate()!=null){
 								model.addAttribute("admissionDate", ipdPatientAdmitted.getAdmissionDate());
+								admitMili = ipdPatientAdmitted.getAdmissionDate().getTime();
 							
 							}
 						}
@@ -135,7 +140,13 @@ public class BillableServiceBillListForBDController {
 
 					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					model.addAttribute("curDate", formatter.format(new Date()));
-						
+					
+					
+					long admittedDays =   (new Date().getTime()- admitMili)/(3600000*24);
+                                        
+                                        if(admittedDays<1) admittedDays=1;
+					
+					model.addAttribute("admittedDays", admittedDays);	
 					}
 				}
 			model.addAttribute("pagingUtil", pagingUtil);

@@ -32,7 +32,10 @@
 		cp = pn.substring(0, len);
 		return cp;
 	}
+	
+	
 </script>
+
 
 <script type="text/javascript">
 	
@@ -44,6 +47,7 @@
 		var dat = date.toString(); 
 		//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module	
 			window.location.href = openmrsContextPath + "/module/billing/listoforder.form?patientId=" + patientId + "&date=" + dat;
+                        
 		}
 	};
 
@@ -80,13 +84,15 @@
 				<td align="center"><b>Name</b></td>
 				<td align="center"><b>Age</b></td>
 				<td align="center"><b>Gender</b></td>
+                                <!--<td align="center"><b>Cashier Processing</b></td>-->
 				
 			</tr>
 				<c:forEach items="${patientList}" var="patient" varStatus="varStatus">
 				<tr
 					class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } patientSearchRow'
-					onclick="PATIENTSEARCHRESULT.visit(${patient.patientId},'${date}');">
+					onclick="PATIENTSEARCHRESULT.visit(${patient.patientId},'${date}');sentFrom(${patient.patientId},'${date}')">
 					<td align="center">
+					
 					<c:choose>
 					<c:when test="${pagingUtil.currentPage != 1}">
 						${varStatus.count +
@@ -105,8 +111,9 @@
 							<c:otherwise>${patient.age}</c:otherwise>
 						</c:choose>
 					</td>
-					<td align="center">${patient.gender}</td>
+					<td align="center">${patient.gender}</td>                                       <!-- <td align="center">${user.username}</td>-->
 				</tr>
+
 			</c:forEach>
 		</table>
 	</c:when>
@@ -124,4 +131,4 @@
 		href="javascript:getBillingQueue(${pagingUtil.next});">&raquo;</a> <a
 		style="text-decoration: none"
 		href='javascript:getBillingQueue(${pagingUtil.numberOfPages});'>&raquo;&raquo;</a>
-</div>
+		<br/></div>

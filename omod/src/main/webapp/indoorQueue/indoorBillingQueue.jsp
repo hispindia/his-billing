@@ -72,7 +72,15 @@ window.location.href = openmrsContextPath + "/module/billing/patientServiceBillF
 <c:when test="${not empty listIndoorPatient2}">
 <c:forEach items="${listIndoorPatient2}" var="pAdmissionLog" varStatus="varStatus">
 	<tr  align="center" class='${index % 2 == 0 ? "oddRow" : "evenRow" } ' >
-		<td><c:out value="${index}"/></td>
+		<td><c:choose>
+					<c:when test="${pagingUtil.currentPage != 1}">
+						${varStatus.count +
+							(pagingUtil.currentPage-1)*pagingUtil.pageSize}
+					</c:when>
+					<c:otherwise>
+						${varStatus.count}
+					</c:otherwise>
+					</c:choose></td>
 		<td><openmrs:formatDate date="${pAdmissionLog.admissionDate }" type="textbox"/></td>	
 		<td>${pAdmissionLog.patientIdentifier}</td>
 		<td>${fn:replace(pAdmissionLog.patientName ,',',' ')}</td> 
@@ -97,7 +105,15 @@ window.location.href = openmrsContextPath + "/module/billing/patientServiceBillF
 <c:when test="${not empty listIndoorPatient1}">
 <c:forEach items="${listIndoorPatient1}" var="pAdmission" varStatus="varStatus">
 	<tr  align="center" class='${index % 2 == 0 ? "oddRow" : "evenRow" } ' >
-		<td><c:out value="${index}"/></td>
+		<td><c:choose>
+					<c:when test="${pagingUtil.currentPage != 1}">
+						${varStatus.count +
+							(pagingUtil.currentPage-1)*pagingUtil.pageSize}
+					</c:when>
+					<c:otherwise>
+						${varStatus.count}
+					</c:otherwise>
+					</c:choose></td>
 		<td><openmrs:formatDate date="${pAdmission.admissionDate }" type="textbox"/></td>	
 		<td>${pAdmission.patientIdentifier}</td>
 		<td>${fn:replace(pAdmission.patientName ,',',' ')}</td>
@@ -124,4 +140,17 @@ window.location.href = openmrsContextPath + "/module/billing/patientServiceBillF
 	No Patients Found.
 	</c:otherwise>
 </c:choose>
+
+<div id='paging'>
+	<a style="text-decoration: none" href='javascript:getBillingQueue(1);'>&laquo;&laquo;</a>
+	<a style="text-decoration: none"
+		href="javascript:getBillingQueue(${pagingUtil.prev});">&laquo;</a>
+	${pagingUtil.currentPage} / <b>${pagingUtil.numberOfPages}</b> <a
+		style="text-decoration: none"
+		href="javascript:getBillingQueue(${pagingUtil.next});">&raquo;</a> <a
+		style="text-decoration: none"
+		href='javascript:getBillingQueue(${pagingUtil.numberOfPages});'>&raquo;&raquo;</a>
+		<br/>
+		
+</div>
 

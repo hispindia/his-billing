@@ -23,21 +23,30 @@
 package org.openmrs.module.billing.web.controller.main;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang.StringUtils;
 
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
+import org.openmrs.ConceptAnswer;
+import org.openmrs.ConceptClass;
+import org.openmrs.ConceptSet;
 import org.openmrs.Patient;
+import org.openmrs.api.APIException;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculatorForBDService;
+import org.openmrs.module.hospitalcore.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.model.BillableService;
@@ -46,6 +55,8 @@ import org.openmrs.module.hospitalcore.model.IndoorPatientServiceBillItem;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmission;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
+import org.openmrs.module.hospitalcore.util.ConceptAnswerComparator;
+import org.openmrs.module.hospitalcore.util.ConceptSetComparator;
 import org.openmrs.module.hospitalcore.util.HospitalCoreUtils;
 import org.openmrs.module.hospitalcore.util.Money;
 import org.openmrs.module.hospitalcore.util.PatientUtils;
@@ -62,7 +73,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/module/billing/addPatientServiceBillForBD.form")
 public class BillableServiceBillAddForBDController {
-	
+	   ArrayList<String> arrayReturn=new ArrayList<String>();
 	private Log logger = LogFactory.getLog(getClass());
 	
 	@RequestMapping(method = RequestMethod.GET)
@@ -81,7 +92,8 @@ public class BillableServiceBillAddForBDController {
 		    "billing.rootServiceConceptId"));
 		Concept concept = Context.getConceptService().getConcept(conceptId);
 		model.addAttribute("tabs", billingService.traversTab(concept, mapServices, 1));
-		model.addAttribute("patientId", patientId);
+
+                model.addAttribute("patientId", patientId);
 		if(typeOfPatient!=null){
 			return "/module/billing/indoorQueue/billableServiceBillAddForIndoorPatient";	
 		}
@@ -89,6 +101,8 @@ public class BillableServiceBillAddForBDController {
 			return "/module/billing/main/billableServiceBillAdd";
 		}
 	}
+     
+        
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public String onSubmit(Model model, Object command, BindingResult bindingResult, HttpServletRequest request,

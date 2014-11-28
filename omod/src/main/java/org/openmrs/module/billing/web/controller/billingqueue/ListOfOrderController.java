@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.openmrs.Patient;
+import org.openmrs.User;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.BillingService;
@@ -62,7 +63,7 @@ public class ListOfOrderController {
 		// Kesavulu loka 25-06-2013, Add Patient Details on the page where Order ID is clicked
 		HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
 		PatientSearch patientSearch = hospitalCoreService.getPatientByPatientId(patientId);
-
+                
 		model.addAttribute("age",patient.getAge());
 		
 		if(patient.getGender().equals("M"))
@@ -89,7 +90,9 @@ public class ListOfOrderController {
 		model.addAttribute("listOfOrders", listOfOrders);
 		//model.addAttribute("serviceOrderSize", serviceOrderList.size());
 		model.addAttribute("patientId", patientId);
-		model.addAttribute("date", dateStr);
+		model.addAttribute("date", dateStr);   
+                
+                
 		return "/module/billing/queue/listOfOrder";
 	}
 }

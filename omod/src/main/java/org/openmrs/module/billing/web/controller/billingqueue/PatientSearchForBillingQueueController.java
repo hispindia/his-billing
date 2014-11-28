@@ -27,9 +27,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JOptionPane;
+import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.hospitalcore.BillingConstants;
+
 import org.openmrs.module.hospitalcore.BillingService;
+import org.openmrs.module.hospitalcore.model.OpdTestOrder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,8 +50,11 @@ public class PatientSearchForBillingQueueController {
 			@RequestParam(value = "date", required = false) String dateStr,
 			@RequestParam(value = "searchKey", required = false) String searchKey,
 			@RequestParam(value = "currentPage", required = false) Integer currentPage,
+                        // 21/11/2014 to work with size selector
+                        @RequestParam(value = "pgSize", required = false) Integer pgSize,
 			Model model) {
 		BillingService billingService = Context.getService(BillingService.class);
+                
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Date date = null;
 		try {
@@ -55,14 +62,21 @@ public class PatientSearchForBillingQueueController {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		List<PatientSearch> patientSearchResult = billingService.searchListOfPatient(date, searchKey, currentPage);
-		currentPage = 1;
-		int total = patientSearchResult.size();
-		PagingUtil pagingUtil = new PagingUtil(BillingConstants.PAGESIZE,
-				currentPage, total);
+                
+                // 21/11/2014 to work with size selector for OPDQueue
+		List<PatientSearch> patientSearchResult = billingService.searchListOfPatient(date, searchKey, currentPage,pgSize);
+		if (currentPage == null) currentPage = 1;
+		int total = billingService.countSearchListOfPatient(date, searchKey, currentPage);
+		PagingUtil pagingUtil = new PagingUtil(pgSize,currentPage, total);
 		model.addAttribute("pagingUtil", pagingUtil);
 		model.addAttribute("patientList", patientSearchResult);
 		model.addAttribute("date", dateStr);
+                                
+                // 21/11/2014 to get the cashier processing column
+//                User authenticatedUser=Context.getAuthenticatedUser();
+//                model.addAttribute("user", authenticatedUser);  
+                
+                
 		return "/module/billing/queue/searchResult";
 	}
 }

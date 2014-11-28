@@ -50,6 +50,8 @@ public class PatientSearchForIpdBillingQueueController {
 //			@RequestParam(value = "date", required = false) String dateStr,
 			@RequestParam(value = "searchKey", required = false) String searchKey,
 			@RequestParam(value = "currentPage", required = false) Integer currentPage,
+                        // 21/11/2014 to work with size selector
+                        @RequestParam(value = "pgSize", required = false) Integer pgSize,
 			Model model) {
 		
 		IpdService ipdService = (IpdService) Context.getService(IpdService.class);
@@ -62,11 +64,14 @@ public class PatientSearchForIpdBillingQueueController {
 		}
 */
 //		List<IpdPatientAdmission> listIndoorPatient1 = ipdService.getAllIndoorPatient();
-		List<IpdPatientAdmissionLog> listIndoorPatient2 = ipdService.getAllIndoorPatientFromAdmissionLog(searchKey, currentPage);
+                // 24/11/2014 to Work with size selctor for IPDQueue
+		List<IpdPatientAdmissionLog> listIndoorPatient2 = ipdService.getAllIndoorPatientFromAdmissionLog(searchKey, currentPage,pgSize);
 
-		currentPage = 1;
-		int total = listIndoorPatient2.size();
-		PagingUtil pagingUtil = new PagingUtil(BillingConstants.PAGESIZE,currentPage, total);
+		if (currentPage == null) currentPage = 1;
+                
+                
+		int total = ipdService.countGetAllIndoorPatientFromAdmissionLog(searchKey, currentPage);
+		PagingUtil pagingUtil = new PagingUtil(pgSize,currentPage, total);
 
 //		model.addAttribute("listIndoorPatient1", listIndoorPatient1);
 		model.addAttribute("listIndoorPatient2", listIndoorPatient2);
