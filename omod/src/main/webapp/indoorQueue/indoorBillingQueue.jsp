@@ -65,6 +65,7 @@ window.location.href = openmrsContextPath + "/module/billing/patientServiceBillF
 	<th>Gender</th>
 	<th>Admission Ward</th>
 	<th>Admission By</th>
+    <th>Absconed</th>
 	<th>Action</th>
 </tr>
 <c:set var="index" value="1"/> 
@@ -92,6 +93,14 @@ window.location.href = openmrsContextPath + "/module/billing/patientServiceBillF
 		
 		<c:set var="person" value="${pAdmissionLog.opdAmittedUser.person }"/>
 		<td>${person.givenName}${person.familyName }  ${fn:replace(person.middleName ,',',' ')} </td>
+        <td>
+        <c:choose>
+		    <c:when test="${pAdmissionLog.absconded == 1}"><font color="#FF0000"> Yes</Font>
+            </c:when>
+            <c:otherwise> No
+            </c:otherwise>
+            </c:choose>
+         </td>
 		<td><input type="button" class="ui-button ui-widget ui-state-default ui-corner-all"  value="Add Bill" onclick="addBill('${pAdmissionLog.patient.id}','${pAdmissionLog.ipdEncounter.id}');"/>
 		<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all"  value="View Bill" onclick="viewBill('${pAdmissionLog.patient.id}','${pAdmissionLog.ipdEncounter.id}','${pAdmissionLog.id}','${pAdmissionLog.requestForDischargeStatus}');"/></td>
 		<c:set var="index" value="${index+1}"/>	
@@ -125,6 +134,14 @@ window.location.href = openmrsContextPath + "/module/billing/patientServiceBillF
 		
 		<c:set var="person" value="${pAdmission.opdAmittedUser.person }"/>
 		<td>${person.givenName} ${person.familyName }  ${fn:replace(person.middleName ,',',' ')}</td>
+        <td>
+        <c:choose>
+		    <c:when test="${pAdmissionLog.absconded == 1}"><font color="#FF0000"> Yes</Font>
+            </c:when>
+            <c:otherwise> No
+            </c:otherwise>
+            </c:choose>
+         </td>
 		<td><input type="button" class="ui-button ui-widget ui-state-default ui-corner-all"  value="Add Bill" onclick="addBill('${pAdmission.patient.id}','${pAdmission.ipdEncounter.id}');"/>
 		<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all"  value="View Bill" onclick="viewBill('${pAdmission.patient.id}','${pAdmission.ipdEncounter.id}','${pAdmission.id}',0);"/></td>
 		<c:set var="index" value="${index+1}"/> 
