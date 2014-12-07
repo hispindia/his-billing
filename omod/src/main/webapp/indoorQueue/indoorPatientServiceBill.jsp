@@ -204,11 +204,19 @@
 				<td colspan="3" align='right'><b>Waiver Amount(If any)</td>
 				<td align="right"><b>${bill.waiverAmount}</b></td>
 			</tr>
-			
+			<c:if test="${bill.rebateAmount > 0}">
+            <tr>
+				<td colspan="3" align='right'><b>Rebate Amount</td>
+				<td align="right"><b>${bill.rebateAmount}</b></td>
+			</tr>
+            </c:if>
+            
 			<tr>
 				<td colspan="3" align='right'><b>Net Amount</td>
-				<td align="right"><b>${bill.actualAmount - billItem.actualAmount - bill.waiverAmount -2*initialtotal}</b></td>
+				<td align="right">
+                <b>${bill.actualAmount - billItem.actualAmount - bill.waiverAmount -2*initialtotal}</b></td>
 			</tr>
+
 			
 			
 		</table>
@@ -359,11 +367,24 @@
 				<td align="right"><b>${bill.waiverAmount}</b></td>
 			</tr>
 			
+            <c:if test="${bill.rebateAmount > 0}">
+            <tr>
+				<td>&nbsp;</td>
+				<td colspan="3" align='right'><b>Rebate Amount</td>
+				<td align="right"><b>${bill.rebateAmount}</b></td>
+			</tr>
+            </c:if>
+            
+            
+            
+            
 			<tr>
 				<td>&nbsp;</td>
 				<td colspan="3" align='right'><b>Net Amount</td>
 				<td align="right"><b>${bill.actualAmount - billItem.actualAmount - bill.waiverAmount -2*initialtotal}</b></td>
 			</tr>
+            
+            
 			
 		</table>
 		<br>

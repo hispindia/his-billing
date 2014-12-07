@@ -24,13 +24,19 @@ package org.openmrs.module.billing.web.controller.main;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.openmrs.Concept;
+import org.openmrs.ConceptAnswer;
 import org.openmrs.Patient;
 import org.openmrs.User;
 import org.openmrs.api.PatientService;
@@ -45,10 +51,12 @@ import org.openmrs.module.hospitalcore.model.IpdPatientAdmissionLog;
 import org.openmrs.module.hospitalcore.model.IpdPatientAdmitted;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
+import org.openmrs.module.hospitalcore.util.ConceptAnswerComparator;
 import org.openmrs.module.hospitalcore.util.Money;
 import org.openmrs.module.hospitalcore.util.PagingUtil;
 import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.openmrs.module.hospitalcore.util.RequestUtil;
+//import org.openmrs.module.ipd.util.IpdConstants;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -91,6 +99,25 @@ public class BillableServiceBillListForBDController {
 			        patientId);
 			
 			model.addAttribute("age",patient.getAge());
+			
+			Concept category = Context.getConceptService().getConceptByName("Patient Category");
+			List<ConceptAnswer> categoryList = (category!= null ?  new ArrayList<ConceptAnswer>(category.getAnswers()) : null);
+			if(CollectionUtils.isNotEmpty(categoryList)){
+				Collections.sort(categoryList, new ConceptAnswerComparator());
+			}
+			
+			Integer nhifCatId = Context.getConceptService().getConceptByName("NHIF PATIENT").getConceptId();
+			Integer generalCatId = Context.getConceptService().getConceptByName("GENERAL PATIENT").getConceptId();
+			Integer exemptedCatId = Context.getConceptService().getConceptByName("EXEMPTED PATIENT").getConceptId();
+			Integer ChildCatId = Context.getConceptService().getConceptByName("CHILD LESS THAN 5 YEARS").getConceptId();
+			model.addAttribute("nhifCatId", nhifCatId);
+			model.addAttribute("generalCatId", generalCatId);
+			model.addAttribute("exemptedCatId", exemptedCatId);
+			model.addAttribute("ChildCatId", ChildCatId);
+			model.addAttribute("categoryList", categoryList);
+			
+			model.addAttribute("categoryList", categoryList);
+
 			model.addAttribute("category",patient.getAttribute(14));
 			
 			if(patient.getGender().equals("M"))
@@ -101,7 +128,7 @@ public class BillableServiceBillListForBDController {
 			{
 				model.addAttribute("gender","Female");
 			}
-			if(patient.getAttribute(14).getValue() == "Waiver"){
+/*			if(patient.getAttribute(14).getValue() == "Waiver"){
 				model.addAttribute("exemption", patient.getAttribute(32));
 			}
 			else if(patient.getAttribute(14).getValue()!="General" && patient.getAttribute(14).getValue()!="Waiver"){
@@ -110,7 +137,7 @@ public class BillableServiceBillListForBDController {
 			else {
 				model.addAttribute("exemption", " ");
 			}
-			
+			*/
 			if (typeOfPatient != null) {
 				if (encounterId != null) {
 					if(ipdPatientAdmitted.getAdmittedWard()!=null){	
@@ -195,11 +222,17 @@ public class BillableServiceBillListForBDController {
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public String onSubmit(@RequestParam("patientId") Integer patientId, @RequestParam(value = "billId",required = false) Integer billId,
+	public String onSubmit(@RequestParam("patientId") Integer patientId, 
+                        @RequestParam(value = "billId",required = false) Integer billId,
 			@RequestParam(value = "encounterId", required = false) Integer encounterId,
 			@RequestParam(value = "admissionLogId", required = false) Integer admissionLogId,
 			@RequestParam(value = "waiverAmount", required = false) BigDecimal waiverAmount,
 			@RequestParam(value = "paymentMode", required = false) String paymentMode,
+			@RequestParam(value = "adDays", required = false) Integer admittedDays,
+	        @RequestParam(value = "rebateAmount", required = false) BigDecimal rebateAmount,
+	        @RequestParam(value = "comment", required = false) String comment,            
+                        
+			@RequestParam(value = "patientCategory", required = false) String patientCategory,
 			HttpServletRequest request) {
 		if(encounterId!=null){
 			BillingService billingService = Context.getService(BillingService.class);
@@ -236,7 +269,12 @@ public class BillableServiceBillListForBDController {
 				item.setAmount(ipsbi.getAmount());
 				item.setOrder(ipsbi.getOrder());
 				item.setActualAmount(ipsbi.getActualAmount());
+				if(patientCategory.equals("EXEMPTED PATIENT")){
+					totalActualAmount = BigDecimal.ZERO;
+				}
+				else{
 				totalActualAmount = totalActualAmount.add(item.getActualAmount());
+				}
 				bill.addBillItem(item);
 				}
 			}
@@ -254,6 +292,11 @@ public class BillableServiceBillListForBDController {
 			}
 			bill.setEncounter(Context.getEncounterService().getEncounter(encounterId));	
 			bill.setPaymentMode(paymentMode);
+			bill.setAdmittedDays(admittedDays);
+                        bill.setRebateAmount(rebateAmount);
+                        bill.setPatientCategory(patientCategory);
+                        bill.setComment(comment);
+                        
 			bill = billingService.savePatientServiceBill(bill);
 			
 			if(bill!=null){

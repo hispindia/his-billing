@@ -87,7 +87,7 @@ public class IndoorPatientServiceBillController {
 				model.addAttribute("gender", "Female");
 			}
 			model.addAttribute("category", patient.getAttribute(14).getValue());
-			
+			/*
 			if(patient.getAttribute(14).getValue() == "Waiver"){
 				model.addAttribute("exemption", patient.getAttribute(32));
 			}
@@ -97,7 +97,7 @@ public class IndoorPatientServiceBillController {
 			else {
 				model.addAttribute("exemption", " ");
 			}
-			
+			*/
 			model.addAttribute("listBill", billingService
 					.listPatientServiceBillByPatient(pagingUtil.getStartPos(),
 							pagingUtil.getPageSize(), patient));

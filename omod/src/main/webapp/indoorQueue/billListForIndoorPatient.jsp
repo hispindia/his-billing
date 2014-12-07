@@ -24,10 +24,15 @@
 <openmrs:globalProperty var="userLocation" key="hospital.location_user" defaultValue="false"/>
 <openmrs:globalProperty var="userLocationPoBox" key="hospital.location_PoBox" defaultValue="false"/>
 <openmrs:globalProperty var="userLocationTel" key="hospital.location_Telephone" defaultValue="false"/>
+<openmrs:globalProperty var="normalDelivery" key="billing.invoice.normalDelivery" defaultValue="false"/>
+<openmrs:globalProperty var="general" key="billing.invoice.general" defaultValue="false"/>
+<openmrs:globalProperty var="Caesarian" key="billing.invoice.Caesarian" defaultValue="false"/>
 <script type="text/javascript">
+
+			var totalAmount="0";
+			var change=false;
 	jQuery(document).ready(
 			function() {
-			
 			if(${requestForDischargeStatus}==1){
 			jQuery("#waiverAmt").show();
 			}
@@ -74,7 +79,92 @@
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery-ui-1.8.2.custom.min.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery.PrintArea.js"></script>
+    
+   <script type="text/javascript">
+   function resetRadios(){
+	       var ele = document.getElementsByName("NHIF");
+   for(var i=0;i<ele.length;i++)
+      ele[i].checked = false;
+   }
+	  </script>
+    
+    <script type="text/javascript">
+	
+	
+	function categoryChange(){  
+		if(!change) 
+		totalAmount=document.getElementById('tot').innerHTML;
+		change=true;
+				
+		document.getElementById("patientCategory").value='';	
+		var patientCat=document.getElementById("categoryList").value;
+		var myTable = document.getElementById('myTablee');
+		var lengthTa=myTable.rows.length;
+		document.getElementById("rebateAmount").value=0;	
+		//Assuming that PatientCat value is global one	
+		if(patientCat==${nhifCatId}){
+		document.getElementById("NHIFRadio").style.display='block';		
+		myTable.rows[lengthTa-1].cells[4].innerHTML = '0';
+		myTable.rows[lengthTa-1].cells[3].innerHTML = 'Rebate Amount';
+		document.getElementById("patientCategory").value='NHIF Patient';
+		document.getElementById('tot').innerHTML=totalAmount;
+		document.getElementById('tot2').innerHTML=totalAmount;
+		
+		}
+		else{			
+			document.getElementById("NHIFRadio").style.display='none';	
+			myTable.rows[lengthTa-1].cells[4].innerHTML = ' ';
+			myTable.rows[lengthTa-1].cells[3].innerHTML = ' ';
+			document.getElementById('tot').innerHTML=totalAmount;
+			document.getElementById('tot2').innerHTML=totalAmount;	
+			
+			if(patientCat==${ChildCatId}){
+				document.getElementById("patientCategory").value='CHILD LESS THAN 5 YEARS';
+				document.getElementById('tot').innerHTML=totalAmount;
+				document.getElementById('tot2').innerHTML=totalAmount;
+				
+				}
+				if(patientCat==${exemptedCatId}){
+				document.getElementById("patientCategory").value='EXEMPTED PATIENT';
+				document.getElementById('tot').innerHTML=0;
+				document.getElementById('tot2').innerHTML=0;
+				
+				
+				
+				}
+				if(patientCat==${generalCatId}){
+				document.getElementById("patientCategory").value='GENERAL PATIENT';
+				document.getElementById('tot').innerHTML=totalAmount;
+				document.getElementById('tot2').innerHTML=totalAmount;
+				
+				}
+				
+					
+		}
+	}
+    </script>
+     <script type="text/javascript">
+	function nhifChange(type){
+		var myTable = document.getElementById('myTablee');
+		var lengthTa=myTable.rows.length;
+		if(type==0){			
+			myTable.rows[lengthTa-1].cells[4].innerHTML = '${general*admittedDays}';
+			document.getElementById("rebateAmount").value='${general*admittedDays}';
+			}
+			else if(type==1){
+				myTable.rows[lengthTa-1].cells[4].innerHTML='${normalDelivery}';
+				document.getElementById("rebateAmount").value='${normalDelivery}';
+				}
+				else if(type==2){
+					myTable.rows[lengthTa-1].cells[4].innerHTML='${Caesarian}';
+					document.getElementById("rebateAmount").value='${Caesarian}';
+					}
+		}
+	</script>
+    
+    
 <%@ include file="../queue/billingQueueHeader.jsp"%>
+<body onLoad="resetRadios();categoryChange();">
 	<div id="billContainer" style="margin: 10px auto; width: 100%;">
 		<table>
 
@@ -101,7 +191,7 @@
 				<td>${doctor}</td>
 			</tr>
 			<tr>
-				<td>TEl No.:</td>
+				<td>Contact Number:</td>
 				<td align="left">${phone}&nbsp;&nbsp;
 					</td>
 				<td style="width: 20%;">&nbsp;</td>
@@ -123,8 +213,9 @@
 				<td>Scheme Name:</td>
 				<td align="left">&nbsp;&nbsp;</td>
 				<td style="width: 20%;">&nbsp;</td>
-				<td align="left">Patient Category:</td>
-				<td>${category}</td>
+				<td align="left">File Number:</td>
+				<td>${fileNumber}</td>
+			
 					
 			</tr>
 			<tr>
@@ -132,8 +223,22 @@
 				<td align="left">${admittedDays}&nbsp;&nbsp;
 					</td>
 			<td style="width: 20%;">&nbsp;</td>
-				<td align="left">File Number:</td>
-				<td>${fileNumber}</td>
+				<td align="left">Patient Category:</td>
+				<td><select id="categoryList"  name="categoryList" onChange="categoryChange()">
+					<option value="">                    
+						<c:forEach items="${categoryList}" var="category" >
+			          			<option value="${category.answerConcept.id}">
+			          			${category.answerConcept.name}
+			          			</option> 
+			        	</c:forEach>
+			        	</option>
+		       	</select>                 
+                <form id="NHIFRadio">
+                <br />
+                <input id="nhifgeneral" name="NHIF" type="radio" value="General" onClick="nhifChange(0);"/> General &nbsp;&nbsp;&nbsp;
+                <input id="nhifnormal" name="NHIF" type="radio" value="Normal Delivery" onClick="nhifChange(1);"/> Normal Delivery &nbsp;&nbsp;&nbsp;
+                <input id="nhifcasarian" name="NHIF" type="radio" value="Caesarian Section"  onclick="nhifChange(2);" /> Caesarian Section &nbsp;&nbsp;&nbsp;
+		       	</form>
 			</tr>
 
 		</table>
@@ -195,7 +300,7 @@
 		<td></td>
 		<td align="right"><b>Total</b></td>
 		<c:set var="total" value="0"/>  
-		<td><c:forEach var="bill" items="${billList}" varStatus="statusOuter">
+		<td id='tot'><c:forEach var="bill" items="${billList}" varStatus="statusOuter">
 		<c:forEach var="item" items="${bill.billItems}" varStatus="statusInner">
 				<c:set var="total" value="${item.amount + total}"/>  
 			</c:forEach>
@@ -203,18 +308,29 @@
 		<b>${total -2*initialtotal}</b>
 		</td>
 		</tr>
-		
+		<tr>
+        <td></td>
+		<td></td>
+		<td></td>
+        
+		<td align="right"><b>Rebate Amount</b></td>
+        <td><b>0</b></td>
+        </td>
+        </tr>
 	</tbody>
 </table>
 <table>
 <form method="post" id="billListForIndoorPatient">
 <div id="waiverAmt">
 <b>Waiver Amount:</b><input type="text" id="waiverAmount" name="waiverAmount">
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Payment Mode:</b>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!-- <b>Payment Mode:</b>
 			<select id="paymentMode" name="paymentMode">
 					<option value="Cash">Cash</option>
 					<option value="Card">Card</option>
-				</select>
+				</select>  --><b>Comment if Waiver:</b><input id="comment" name="comment" type="text"/>
+                <input name="adDays" type="hidden" value="${admittedDays}" />
+                <input id="rebateAmount" name="rebateAmount" type="hidden"/>
+                <input id="patientCategory" name="patientCategory" type="hidden" value="" />
 			
 
 </div>
@@ -380,14 +496,22 @@
 		<td></td>
 		<td align="right"><b>Total</b></td>
 		<c:set var="total" value="0"/>  
-		<td><c:forEach var="bill" items="${billList}" varStatus="statusOuter">
+		<td id='tot2'><c:forEach var="bill" items="${billList}" varStatus="statusOuter">
 		<c:forEach var="item" items="${bill.billItems}" varStatus="statusInner">
 				<c:set var="total" value="${item.amount + total}"/>  
 			</c:forEach>
 		</c:forEach>
 		<b>${total -2*initialtotal}</b>
+		</td></tr>
+        <tr>
+		<td></td>
+		<td></td>
+		<td></td>
+		<td align="right"><b>Rebate Amount</b></td>
+		<td id='dAmount'>
+
 		</td>
-		</tr>
+        </tr>
 	</tbody>
 </table>
 <br>
@@ -420,10 +544,14 @@ be claimed at the time of discharge. Claims after discharge must be made with NH
 		//setTimeout(function(){window.location.href = $("#contextPath").val()+"/getBill.list"}, 1000);	
 	}
 	function printDiv2() {
+		
+		document.getElementById('dAmount').innerHTML = document.getElementById('rebateAmount').value;
 		var printer = window.open('', '', 'width=300,height=300');
+		var R = document.getElementById('rebateAmount').value;		
 		printer.document.open("text/html");
 		printer.document.write(document.getElementById('printDiv').innerHTML);
-		printer.print();
+				
+				printer.print();
 		printer.document.close();
 		printer.window.close();
 		//alert("Printing ...");

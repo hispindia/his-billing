@@ -241,10 +241,21 @@ function validate(){
 					</c:choose></td>
 			</tr>
 			
+            <tr>
+				<td colspan="3" align='right'><b>Amount Paid as Advance</td>
+				<td align="right"><b>${initialtotal}</b></td>
+			</tr>
+            
 			<tr>
 				<td colspan="3" align='right'><b>Waiver Amount(If any)</td>
 				<td align="right"><b>${bill.waiverAmount}</b></td>
 			</tr>
+            <c:if test="${bill.rebateAmount > 0}">
+            <tr>
+				<td colspan="3" align='right'><b>Rebate Amount</td>
+				<td align="right"><b>${bill.rebateAmount}</b></td>
+			</tr>
+            </c:if>
 			
 			<tr>
 				<td colspan="3" align='right'><b>Net Amount</td>
@@ -383,31 +394,46 @@ function validate(){
 
 					</c:when>
 					<c:otherwise>
-						<td align="right"><center>${bill.actualAmount -initialtotal}</center></td>
+						<td align="right">${bill.actualAmount -initialtotal}</td>
 					</c:otherwise>
 				</c:choose>
+			</tr>
+            
+            <tr>
+            	<td>&nbsp;</td>
+				<td colspan="3" align='right'><b>Amount Paid as Advance</td>
+				<td align="right"><b>${initialtotal}</b></td>
 			</tr>
 			
 			<tr>
 				<td>&nbsp;</td>
 				<td colspan="3" align='right'><b>Waiver Amount(If any)</td>
-				<td align="right"><b><center>${bill.waiverAmount}</center></b></td>
+				<td align="right"><b>${bill.waiverAmount}</b></td>
 			</tr>
-			
+            
+			<c:if test="${bill.rebateAmount > 0}">
+            <tr>
+            	<td>&nbsp;</td>
+				<td colspan="3" align='right'><b>Rebate Amount</td>
+				<td align="right"><b>${bill.rebateAmount}</b></td>
+			</tr>
+            </c:if>
+            
+            
 			<tr>
 				<td>&nbsp;</td>
 				<td colspan="3" align='right'><b>Net Amount</td>
-				<td align="right"><b><center>${bill.actualAmount - bill.waiverAmount -initialtotal}</center></b></td>
+				<td align="right"><b>${bill.actualAmount - bill.waiverAmount -initialtotal}</b></td>
 			</tr>
 			
 		</table>
 	
 		
 		<table class="spacer" style="margin-left: 60px;">
-		<tr>
+	<!-- 	<tr>
 			<td>PAYMENT MODE :</td>
 			<td><b>${paymentMode}</b></td>
-		</tr>
+		</tr> -->
 		<tr>
 			<td>CASHIER :</td>
 			<td><b>${cashier}</b></td>
