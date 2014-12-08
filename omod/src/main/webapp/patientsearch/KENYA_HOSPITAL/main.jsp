@@ -67,41 +67,42 @@
 	<c:when test="${not empty patients}">
 		<table style="width: 100%">
 			<tr>
-				<td><b>Identifier</b>
+				<td align="center"><b>Patient ID</b>
 				</td>
-				<td><b>Name</b>
+				<td align="center"><b>Name</b>
 				</td>
-				<td><b>Age</b>
+				<td align="center"><b>Age</b>
 				</td>
-				<td><b>Gender</b>
+				<td align="center"><b>Gender</b>
 				</td>
-				<td><b>Category</b>
+				<td align="center"><b>Category</b>
 				</td>
-				<td><b>Relative Name</b>
+				<!-- <td><b>Relative Name</b> -->
 				</td>
-				<td><b>Last day of visit</b>
+				<td align="center"><b>Previous day of visit</b>
 				</td>
 			</tr>
 			<c:forEach items="${patients}" var="patient" varStatus="varStatus">
 				<tr
 					class='${varStatus.index % 2 == 0 ? "oddRow" : "evenRow" } patientSearchRow'
 					onclick="PATIENTSEARCHRESULT.visit(${patient.patientId},'${patient.dead}');">
-					<td>${patient.patientIdentifier.identifier}</td>
-					<td>${patient.givenName} ${patient.familyName} ${fn:replace(patient.middleName,',',' ')}
+					<td align="center">${patient.patientIdentifier.identifier}</td>
+					<td align="center">${patient.givenName} ${patient.familyName} ${fn:replace(patient.middleName,',',' ')}
 						</td>
-					<td><c:choose>
+					<td align="center"><c:choose>
 							<c:when test="${patient.age == 0}">&lt 1</c:when>
 							<c:otherwise>${patient.age}</c:otherwise>
 						</c:choose></td>
-					<td><c:choose>
+					<%-- <td><c:choose>
 							<c:when test="${patient.gender eq 'M'}">
 								<img src="${pageContext.request.contextPath}/images/male.gif" />
 							</c:when>
 							<c:otherwise>
 								<img src="${pageContext.request.contextPath}/images/female.gif" />
 							</c:otherwise>
-						</c:choose></td>
-					<td>	<%	
+						</c:choose></td> --%>
+					<td align="center">${patient.gender}</td>
+					<td align="center">	<%	
 						Patient patient = (Patient) pageContext.getAttribute("patient");
 						Map<Integer, Map<Integer, String>> attributes = (Map<Integer, Map<Integer, String>>) pageContext.findAttribute("attributeMap");						
 						Map<Integer, String> patientAttributes = (Map<Integer, String>) attributes.get(patient.getPatientId());						
@@ -109,15 +110,15 @@
 						if(category!=null)
 							out.print(category);					
 					%></td>
-					<td>
+					<%-- <td align="center">
 						<%
 										
 						String relativeName = patientAttributes.get(8); 
 						if(relativeName!=null)
 							out.print(relativeName);
 					%>
-					</td>
-					<td>
+					</td> --%>
+					<td align="center">
 						 <openmrs:formatDate date="${lastVisitTime[patient.patientId]}"/>
 					</td>
 				</tr>
