@@ -65,7 +65,7 @@ window.location.href = openmrsContextPath + "/module/billing/patientServiceBillF
 	<th>Gender</th>
 	<th>Admission Ward</th>
 	<th>Admission By</th>
-    <th>Absconed</th>
+    <th>Abscond</th>
 	<th>Action</th>
 </tr>
 <c:set var="index" value="1"/> 
