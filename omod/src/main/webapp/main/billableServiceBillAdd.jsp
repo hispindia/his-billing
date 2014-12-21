@@ -211,12 +211,12 @@ jQuery(document).ready(function(){
 			<td>
 			<input id="waiverAmount" name="waiverAmount" type='text' size='5' />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
 			</td>
-			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Payment Mode:</b>
+<!-- 			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Payment Mode:</b>
 			<td><select id="paymentMode" name="paymentMode">
 					<option value="Cash">Cash</option>
 					<option value="Card">Card</option>
 				</select></td>	
-			</td>
+			</td> -->
 			<hr />
 		</div>
 		

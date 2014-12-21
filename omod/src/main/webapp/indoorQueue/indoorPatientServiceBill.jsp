@@ -389,10 +389,10 @@
 		</table>
 		<br>
 		<table class="spacer" style="margin-left: 60px;">
-		<tr>
+	<!-- 	<tr>
 			<td>PAYMENT MODE :</td>
 			<td><b>${paymentMode}</b></td>
-		</tr>
+		</tr> -->
 		<tr>
 			<td>CASHIER :</td>
 			<td><b>${cashier}</b></td>

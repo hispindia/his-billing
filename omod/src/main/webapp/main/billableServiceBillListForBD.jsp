@@ -150,7 +150,7 @@ function validate(){
 			</tr>
 			<tr>
 				<td>File Number:</td>
-				<td> </td>
+				<td>${fileNumber}</td>
 			</tr>
 		</table>
 		<table width="100%" border="1">
@@ -338,7 +338,7 @@ function validate(){
 			</tr>			
 			<tr>
 				<td>File Number</td>
-				<td>:</td>
+				<td>:${fileNumber}</td>
 			</tr>			
 			<c:if test="${bill.voided==true }">
 				<tr>

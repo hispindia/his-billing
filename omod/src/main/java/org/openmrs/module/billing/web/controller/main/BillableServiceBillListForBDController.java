@@ -119,6 +119,7 @@ public class BillableServiceBillListForBDController {
 			model.addAttribute("categoryList", categoryList);
 
 			model.addAttribute("category",patient.getAttribute(14));
+			model.addAttribute("fileNumber",patient.getAttribute(43));
 			
 			if(patient.getGender().equals("M"))
 			{

@@ -162,7 +162,7 @@ if (serqun!=null || quantity!=""){
 		
 		<tr>
 			<td>File Number:</td>
-			<td>  </td>
+			<td>${fileNumber}</td>
 		</tr>
 		</table>
 </div>
@@ -239,7 +239,7 @@ if (serqun!=null || quantity!=""){
 			<td align="right"><input type="text" id="waiverAmount" name="waiverAmount"
 				size="7" /></td>
 		</tr>
-
+<!-- 
 		<tr>
 			<td colspan="6" align="right">Payment Mode:</td>
 			<td align="right"><select id="paymentMode" name="paymentMode">
@@ -248,7 +248,7 @@ if (serqun!=null || quantity!=""){
 				</select>
 			</td>
 		</tr>
-		
+ -->		
 	</table>
 	<tr>
 		<td><input type="submit" id="savebill" name="savebill"

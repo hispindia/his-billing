@@ -59,7 +59,7 @@
 		</tr>
 		<tr>
 			<td>File Number:</td>
-			<td></td>
+			<td>${fileNumber}</td>
 		</tr>
 	</table>
 </div>
