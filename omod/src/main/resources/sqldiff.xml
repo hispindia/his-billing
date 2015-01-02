@@ -617,4 +617,15 @@
 			varchar(50)); -->
 		</sql>
 	</diff>
+	<diff>
+		<version>3.2.4</version>
+		<author>Amit Sharma</author>
+		<date>December 31, 2014</date>
+		<description>
+			ALTER  TABLE indoor_patient_service_bill_item   
+		</description>
+		<sql>
+			ALTER  TABLE indoor_patient_service_bill_item add COLUMN `order_type` varchar(50) NULL;
+		</sql>
+	</diff>
 </sqldiff>

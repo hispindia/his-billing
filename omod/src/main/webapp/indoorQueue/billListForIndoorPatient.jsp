@@ -248,7 +248,8 @@
 		<tr align="center">
 			<th>S.No</th>
 			<th>Date</th>
-			<th>Service</th>
+			<th>Service Type</th>
+			<th>Service / Drug / Item</th>
 			<th>Unit Price</th>
 			<th>Amount</th>
 		</tr>
@@ -270,6 +271,7 @@
 			<tr class="${klass}">
 				<td>${index}</td>
 				<td><openmrs:formatDate date="${item.createdDate}" type="textbox"/></td>
+				<td>${item.orderType}</td>
 				<td>${item.name}</td>
 				<td>${item.unitPrice}</td>
 				<td>${item.amount}</td>
@@ -279,6 +281,7 @@
 			</c:choose>
 		</c:forEach>
 		</c:forEach>
+		<td></td>
 		<td></td>
 		<td></td>
 		<td></td>
@@ -298,6 +301,7 @@
 		<td></td>
 		<td></td>
 		<td></td>
+		<td></td>
 		<td align="right"><b>Total</b></td>
 		<c:set var="total" value="0"/>  
 		<td id='tot'><c:forEach var="bill" items="${billList}" varStatus="statusOuter">
@@ -312,7 +316,7 @@
         <td></td>
 		<td></td>
 		<td></td>
-        
+        <td></td>
 		<td align="right"><b>Rebate Amount</b></td>
         <td><b>0</b></td>
         </td>
@@ -438,7 +442,8 @@
 		<tr align="left">
 			<th>S.No</th>
 			<th>Date</th>
-			<th>Service</th>
+			<th>Service Type</th>
+			<th>Service / Drug / Item</th>
 			<th>Unit Price</th>
 			<th>Amount</th>
 		</tr>
@@ -462,6 +467,7 @@
 			<tr class="${klass}">
 				<td>${index}</td>
 				<td><openmrs:formatDate date="${item.createdDate}" type="textbox"/></td>
+				<td>${item.orderType}</td>
 				<td>${item.name}</td>
 				<td>${item.unitPrice}</td>
 				<td>${item.amount}</td>
@@ -475,6 +481,7 @@
 		</tr>
 		<b><b>
 		<tr>
+		<td></td>
 		<td></td>
 		<td></td>
 		<td></td>
@@ -494,6 +501,7 @@
 		<td></td>
 		<td></td>
 		<td></td>
+		<td></td>
 		<td align="right"><b>Total</b></td>
 		<c:set var="total" value="0"/>  
 		<td id='tot2'><c:forEach var="bill" items="${billList}" varStatus="statusOuter">
@@ -504,6 +512,7 @@
 		<b>${total -2*initialtotal}</b>
 		</td></tr>
         <tr>
+		<td></td>
 		<td></td>
 		<td></td>
 		<td></td>
