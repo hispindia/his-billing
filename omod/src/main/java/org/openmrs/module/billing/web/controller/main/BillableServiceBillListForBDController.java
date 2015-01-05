@@ -38,6 +38,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Patient;
+import org.openmrs.PersonAttribute;
 import org.openmrs.User;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
@@ -110,6 +111,7 @@ public class BillableServiceBillListForBDController {
 			Integer generalCatId = Context.getConceptService().getConceptByName("GENERAL PATIENT").getConceptId();
 			Integer exemptedCatId = Context.getConceptService().getConceptByName("EXEMPTED PATIENT").getConceptId();
 			Integer ChildCatId = Context.getConceptService().getConceptByName("CHILD LESS THAN 5 YEARS").getConceptId();
+
 			model.addAttribute("nhifCatId", nhifCatId);
 			model.addAttribute("generalCatId", generalCatId);
 			model.addAttribute("exemptedCatId", exemptedCatId);
@@ -129,16 +131,7 @@ public class BillableServiceBillListForBDController {
 			{
 				model.addAttribute("gender","Female");
 			}
-/*			if(patient.getAttribute(14).getValue() == "Waiver"){
-				model.addAttribute("exemption", patient.getAttribute(32));
-			}
-			else if(patient.getAttribute(14).getValue()!="General" && patient.getAttribute(14).getValue()!="Waiver"){
-				model.addAttribute("exemption", patient.getAttribute(36));
-			}
-			else {
-				model.addAttribute("exemption", " ");
-			}
-			*/
+
 			if (typeOfPatient != null) {
 				if (encounterId != null) {
 					if(ipdPatientAdmitted.getAdmittedWard()!=null){	
@@ -147,6 +140,11 @@ public class BillableServiceBillListForBDController {
 						if(ipdPatientAdmitted.getBed()!=null){
 						model.addAttribute("bed", ipdPatientAdmitted.getBed());
 						}
+						PersonAttribute fileNumber = patient.getAttribute(43);
+						if(fileNumber!=null){
+							model.addAttribute("fileNumber", fileNumber.getValue());					
+						}
+
 						if(ipdPatientAdmitted.getUser().getGivenName()!=null){
 							model.addAttribute("doctor", ipdPatientAdmitted.getIpdAdmittedUser().getGivenName());				
 						}
@@ -162,9 +160,7 @@ public class BillableServiceBillListForBDController {
 							
 							}
 						}
-						if(ipdPatientAdmitted.getComments()!=null){
-							model.addAttribute("fileNumber", ipdPatientAdmitted.getComments());				
-						}
+					
 
 					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					model.addAttribute("curDate", formatter.format(new Date()));
@@ -322,7 +318,7 @@ public class BillableServiceBillListForBDController {
 				
 				BillCalculatorForBDService calculator = new BillCalculatorForBDService();
 				
-				//ghanshyam 3-june-2013 New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue
+				// New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue
 				if (patientServiceBill.getFreeBill().equals(1)) {
 					String billType = "free";
 					patientServiceBill.setFreeBill(calculator.isFreeBill(billType));
