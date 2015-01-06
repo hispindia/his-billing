@@ -80,6 +80,8 @@ public class BillableServiceBillListForBDController {
 	                       @RequestParam(value = "typeOfPatient", required = false) String typeOfPatient,
 	                       @RequestParam(value = "admissionLogId", required = false) Integer admissionLogId,
 	                       @RequestParam(value = "requestForDischargeStatus", required = false) Integer requestForDischargeStatus,
+                           @RequestParam(value="itemID", required = false) Integer itemID, 
+                           @RequestParam(value = "voidStatus",required = false) Boolean voidStatus, 
 	                       HttpServletRequest request) {
 		long admitMili = 0;
 		BillingService billingService = Context.getService(BillingService.class);
@@ -91,6 +93,13 @@ public class BillableServiceBillListForBDController {
 		IpdService ipdService = Context.getService(IpdService.class);
 		IpdPatientAdmissionLog ipdPatientAdmissionLog = ipdService.getIpdPatientAdmissionLog(admissionLogId);
 		IpdPatientAdmitted ipdPatientAdmitted = ipdService.getAdmittedByAdmissionLogId(ipdPatientAdmissionLog);
+        
+        if(itemID!=null){
+            BillingService billingService2 = Context.getService(BillingService.class);
+            String voidedBy =voidStatus?Context.getAuthenticatedUser().getUsername():null;
+            Date voidedDate=voidStatus?new Date():null;
+            billingService2.updateVoidBillItems(voidStatus, voidedBy, voidedDate, itemID);
+         }
 
 		if (patient != null) {
 			
@@ -111,7 +120,6 @@ public class BillableServiceBillListForBDController {
 			Integer generalCatId = Context.getConceptService().getConceptByName("GENERAL PATIENT").getConceptId();
 			Integer exemptedCatId = Context.getConceptService().getConceptByName("EXEMPTED PATIENT").getConceptId();
 			Integer ChildCatId = Context.getConceptService().getConceptByName("CHILD LESS THAN 5 YEARS").getConceptId();
-
 			model.addAttribute("nhifCatId", nhifCatId);
 			model.addAttribute("generalCatId", generalCatId);
 			model.addAttribute("exemptedCatId", exemptedCatId);
@@ -132,6 +140,7 @@ public class BillableServiceBillListForBDController {
 				model.addAttribute("gender","Female");
 			}
 
+
 			if (typeOfPatient != null) {
 				if (encounterId != null) {
 					if(ipdPatientAdmitted.getAdmittedWard()!=null){	
@@ -144,7 +153,6 @@ public class BillableServiceBillListForBDController {
 						if(fileNumber!=null){
 							model.addAttribute("fileNumber", fileNumber.getValue());					
 						}
-
 						if(ipdPatientAdmitted.getUser().getGivenName()!=null){
 							model.addAttribute("doctor", ipdPatientAdmitted.getIpdAdmittedUser().getGivenName());				
 						}
@@ -160,7 +168,6 @@ public class BillableServiceBillListForBDController {
 							
 							}
 						}
-					
 
 					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					model.addAttribute("curDate", formatter.format(new Date()));
@@ -186,6 +193,7 @@ public class BillableServiceBillListForBDController {
 		model.addAttribute("canEdit", user.hasPrivilege(BillingConstants.PRIV_EDIT_BILL_ONCE_PRINTED));
 		if (billId != null) {
 			PatientServiceBill bill = billingService.getPatientServiceBillById(billId);
+                   
 
 			if (bill.getFreeBill().equals(1)) {
 				String billType = "free";
@@ -200,7 +208,7 @@ public class BillableServiceBillListForBDController {
 			model.addAttribute("dateTime",bill.getCreatedDate());
 			model.addAttribute("paymentMode",bill.getPaymentMode());
 			model.addAttribute("cashier",bill.getCreator().getGivenName());
-			model.addAttribute("bill", bill);
+			model.addAttribute("bill", bill);                        
 		}
 		
 		if (typeOfPatient != null) {
@@ -226,16 +234,17 @@ public class BillableServiceBillListForBDController {
 			@RequestParam(value = "waiverAmount", required = false) BigDecimal waiverAmount,
 			@RequestParam(value = "paymentMode", required = false) String paymentMode,
 			@RequestParam(value = "adDays", required = false) Integer admittedDays,
-	        @RequestParam(value = "rebateAmount", required = false) BigDecimal rebateAmount,
-	        @RequestParam(value = "comment", required = false) String comment,            
-                        
-			@RequestParam(value = "patientCategory", required = false) String patientCategory,
+            @RequestParam(value = "rebateAmount", required = false) BigDecimal rebateAmount,
+            @RequestParam(value = "comment", required = false) String comment,          
+            @RequestParam(value = "patientCategory", required = false) String patientCategory,
+            @RequestParam(value = "voidedAmount", required = false) BigDecimal voidedAmount,
 			HttpServletRequest request) {
 		if(encounterId!=null){
 			BillingService billingService = Context.getService(BillingService.class);
 			IpdService ipdService = Context.getService(IpdService.class);
 			PatientService patientService = Context.getPatientService();
 			Patient patient = patientService.getPatient(patientId);
+                        
 			PatientServiceBill bill = new PatientServiceBill();
 			
 			bill.setCreatedDate(new Date());
@@ -248,37 +257,44 @@ public class BillableServiceBillListForBDController {
 			Money itemAmount;
 			BigDecimal totalActualAmount = new BigDecimal(0);
 			
-			List<IndoorPatientServiceBill> bills = billingService.getIndoorPatientServiceBillByEncounter(Context.getEncounterService().getEncounter(encounterId));
-			
+			List<IndoorPatientServiceBill> bills = billingService.getIndoorPatientServiceBillByEncounter(Context.getEncounterService().getEncounter(encounterId));		
 			for(IndoorPatientServiceBill ipsb:bills){
 				
-				for(IndoorPatientServiceBillItem ipsbi:ipsb.getBillItems()){
-				mUnitPrice = new Money(ipsbi.getUnitPrice());
-				itemAmount = mUnitPrice.times(ipsbi.getQuantity());
-				totalAmount = totalAmount.plus(itemAmount);
-				item = new PatientServiceBillItem();
-				item.setCreatedDate(new Date());
-				item.setName(ipsbi.getName());
-				item.setPatientServiceBill(bill);
-				item.setQuantity(ipsbi.getQuantity());
-				item.setService(ipsbi.getService());
-				item.setUnitPrice(ipsbi.getUnitPrice());
-				item.setAmount(ipsbi.getAmount());
-				item.setOrder(ipsbi.getOrder());
-				item.setActualAmount(ipsbi.getActualAmount());
-				if(patientCategory.equals("EXEMPTED PATIENT")){
-					totalActualAmount = BigDecimal.ZERO;
-				}
-				else{
-				totalActualAmount = totalActualAmount.add(item.getActualAmount());
-				}
-				bill.addBillItem(item);
-				}
+					for(IndoorPatientServiceBillItem ipsbi:ipsb.getBillItems()){
+						mUnitPrice = new Money(ipsbi.getUnitPrice());
+						itemAmount = mUnitPrice.times(ipsbi.getQuantity());
+						totalAmount = totalAmount.plus(itemAmount);
+						item = new PatientServiceBillItem();
+						item.setCreatedDate(new Date());
+						item.setName(ipsbi.getName());
+						item.setPatientServiceBill(bill);
+						item.setQuantity(ipsbi.getQuantity());
+						item.setService(ipsbi.getService());				
+						item.setVoidedby(ipsbi.getVoidedby());
+						item.setVoided(ipsbi.getVoided());
+		                item.setVoidedDate(ipsbi.getVoidedDate());                                        
+						item.setUnitPrice(ipsbi.getUnitPrice());
+						item.setAmount(ipsbi.getAmount());
+						item.setOrder(ipsbi.getOrder());
+						item.setActualAmount(ipsbi.getActualAmount());
+						
+						if(patientCategory.equals("EXEMPTED PATIENT")){
+							totalActualAmount = BigDecimal.ZERO;
+						}
+						else{
+						totalActualAmount = totalActualAmount.add(item.getActualAmount());
+						}
+						bill.addBillItem(item);
+					}
 			}
 			bill.setAmount(totalAmount.getAmount());
 			bill.setReceipt(billingService.createReceipt());
 			bill.setFreeBill(0);
 			//bill.setActualAmount(totalActualAmount.subtract(waiverAmount));
+                        
+                        if(voidedAmount!=null){
+                            totalActualAmount=totalActualAmount.subtract(voidedAmount);
+                        }
 			bill.setActualAmount(totalActualAmount);
 			if(waiverAmount != null){
 				bill.setWaiverAmount(waiverAmount);
@@ -318,7 +334,7 @@ public class BillableServiceBillListForBDController {
 				
 				BillCalculatorForBDService calculator = new BillCalculatorForBDService();
 				
-				// New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue
+				// 3-june-2013 New Requirement #1632 Orders from dashboard must be appear in billing queue.User must be able to generate bills from this queue
 				if (patientServiceBill.getFreeBill().equals(1)) {
 					String billType = "free";
 					patientServiceBill.setFreeBill(calculator.isFreeBill(billType));

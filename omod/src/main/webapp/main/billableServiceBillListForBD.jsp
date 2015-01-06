@@ -164,7 +164,7 @@ function validate(){
 			</tr>
 			<c:forEach items="${bill.billItems}" var="item" varStatus="status">
 				<%-- ghanshyam Support #339 [Billing]print of void bill [3.2.7 snapshot][DDU,Mohali,Solan,Tanda,] --%>
-				<c:if test="${item.voidedDate==null}">
+				<c:if test="${bill.voidedDate==null}">
 				<c:choose>
 				<c:when test="${item.name != 'INPATIENT DEPOSIT'}">
 					<tr>
@@ -175,7 +175,13 @@ function validate(){
 								<c:when test="${not empty item.actualAmount}">
 									<c:choose>
 										<c:when test="${item.actualAmount eq item.amount}">
-									${item.amount}
+									<c:choose>
+                                        <c:when test="${item.voidedDate != null}">
+									<span style="text-decoration: line-through;">${item.amount}</span>
+                                    </c:when>
+                                    <c:otherwise>
+                                    ${item.amount}</c:otherwise>
+                                    </c:choose>
 								</c:when>
 										<c:otherwise>
 											<span style="text-decoration: line-through;">${item.amount}</span>
@@ -240,9 +246,36 @@ function validate(){
 						</c:otherwise>
 					</c:choose></td>
 			</tr>
-			
+			<c:forEach items="${bill.billItems}" var="item" varStatus="status">
+				<c:if test="${bill.voidedDate==null}">
+				<c:choose>
+				<c:when test="${item.name == 'INPATIENT DEPOSIT'}">
+					<tr>
+						<td colspan="3" align='right'>Amount Paid as Advance</td>
+						<td class="printfont" height="20" align="right" style=""><c:choose>
+								<c:when test="${not empty item.actualAmount}">
+									<c:choose>
+										<c:when test="${item.actualAmount eq item.amount}">
+									${item.amount}
+								</c:when>
+										<c:otherwise>
+											<span style="text-decoration: line-through;">${item.amount}</span>
+											<b>${item.actualAmount}</b>
+										</c:otherwise>
+									</c:choose>
+								</c:when>
+								<c:otherwise>
+							${item.amount}
+						</c:otherwise>
+
+							</c:choose></td>
+					</tr>
+				</c:when>
+				</c:choose>
+				</c:if>
+			</c:forEach>
             <tr>
-				<td colspan="3" align='right'><b>Amount Paid as Advance</td>
+				<td colspan="3" align='right'><b>Total Amount Paid as Advance</td>
 				<td align="right"><b>${initialtotal}</b></td>
 			</tr>
             

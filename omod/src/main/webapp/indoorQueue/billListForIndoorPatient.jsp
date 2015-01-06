@@ -41,7 +41,54 @@
 			}
 			
 });
+
+function getContextPath(){		
+		pn = location.pathname;
+		len = pn.indexOf("/", 1);				
+		cp = pn.substring(0, len);
+		return cp;
+	}
+	
+	function getQueryVariable(variable) {
+  			var query = window.location.search.substring(1);
+  			var vars = query.split("&");
+  			for (var i=0;i<vars.length;i++) {
+    			var pair = vars[i].split("=");
+    			if (pair[0] == variable) {
+      				return pair[1];
+    			}
+  			}   
+	}
 </script>
+<script type="text/javascript">
+        function OnChangeCheckbox (checkbox) {
+			var itemID=checkbox.value;
+			var voidStatus=false;
+			if (checkbox.checked) {	
+				voidStatus=true;	
+	        }	
+			var patientId = getQueryVariable('patientId');
+			var encounterId = getQueryVariable('encounterId'); 
+			var typeOfPatient = getQueryVariable('typeOfPatient'); 
+			var admissionLogId = getQueryVariable('admissionLogId'); 
+			var requestForDischargeStatus = getQueryVariable('requestForDischargeStatus');
+			
+			window.location.href = getContextPath() + "/module/billing/patientServiceBillForBD.list?itemID="+itemID+"&voidStatus="+voidStatus+"&patientId="+patientId+"&encounterId="+encounterId+"&typeOfPatient="+typeOfPatient+"&admissionLogId="+admissionLogId+"&requestForDischargeStatus="+requestForDischargeStatus;	
+        
+				
+}
+		function validateWaiver(amount){
+			var total=parseFloat(document.getElementById('tot').innerHTML);
+			var waiver=document.getElementById('waiverAmount').value;
+			if(waiver>total){
+				alert('Waiver Amount cannot exceed total');
+				document.getElementById('waiverAmount').value=''
+			}
+		}
+		
+		
+    </script>
+    
 <style type="text/css">
 .hidden {
 	display: none;
@@ -80,20 +127,26 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery.PrintArea.js"></script>
     
-   <script type="text/javascript">
+   <script type="text/javascript">   
    function resetRadios(){
 	       var ele = document.getElementsByName("NHIF");
    for(var i=0;i<ele.length;i++)
       ele[i].checked = false;
    }
+     
+   
 	  </script>
+	      
+      
     
     <script type="text/javascript">
 	
 	
-	function categoryChange(){  
+	function categoryChange(){ 
+	 totalAmount=document.getElementById('totalAmountHid').innerHTML;
 		if(!change) 
-		totalAmount=document.getElementById('tot').innerHTML;
+		//edited
+		
 		change=true;
 				
 		document.getElementById("patientCategory").value='';	
@@ -106,8 +159,12 @@
 		document.getElementById("NHIFRadio").style.display='block';		
 		myTable.rows[lengthTa-1].cells[4].innerHTML = '0';
 		myTable.rows[lengthTa-1].cells[3].innerHTML = 'Rebate Amount';
+
 		document.getElementById("patientCategory").value='NHIF Patient';
 		document.getElementById('tot').innerHTML=totalAmount;
+		
+		//eddited
+		document.getElementById('totalAmountHid').innerHTML=totalAmount;
 		document.getElementById('tot2').innerHTML=totalAmount;
 		
 		}
@@ -116,11 +173,15 @@
 			myTable.rows[lengthTa-1].cells[4].innerHTML = ' ';
 			myTable.rows[lengthTa-1].cells[3].innerHTML = ' ';
 			document.getElementById('tot').innerHTML=totalAmount;
+			//edited
+			document.getElementById('totalAmountHid').innerHTML=totalAmount;
 			document.getElementById('tot2').innerHTML=totalAmount;	
 			
 			if(patientCat==${ChildCatId}){
 				document.getElementById("patientCategory").value='CHILD LESS THAN 5 YEARS';
 				document.getElementById('tot').innerHTML=totalAmount;
+				//edited
+				document.getElementById('totalAmountHid').innerHTML=totalAmount;
 				document.getElementById('tot2').innerHTML=totalAmount;
 				
 				}
@@ -135,6 +196,8 @@
 				if(patientCat==${generalCatId}){
 				document.getElementById("patientCategory").value='GENERAL PATIENT';
 				document.getElementById('tot').innerHTML=totalAmount;
+				//edited
+				document.getElementById('totalAmountHid').innerHTML=totalAmount;
 				document.getElementById('tot2').innerHTML=totalAmount;
 				
 				}
@@ -224,14 +287,20 @@
 					</td>
 			<td style="width: 20%;">&nbsp;</td>
 				<td align="left">Patient Category:</td>
-				<td><select id="categoryList"  name="categoryList" onChange="categoryChange()">
-					<option value="">                    
-						<c:forEach items="${categoryList}" var="category" >
-			          			<option value="${category.answerConcept.id}">
+				<td><select id="categoryList"  name="categoryList" onChange="categoryChange()">					        
+               <option value="GENERAL PATIENT"> GENERAL PATIENT</option>
+               		<c:forEach items="${categoryList}" var="category" >
+                        <c:choose>                        
+                        <c:when test="${category.answerConcept.name =='GENERAL PATIENT'}">			          			
+                                </c:when>
+                                <c:otherwise>
+                                <option value="${category.answerConcept.id}">
 			          			${category.answerConcept.name}
 			          			</option> 
+                                </c:otherwise>
+                                </c:choose>
 			        	</c:forEach>
-			        	</option>
+			        	
 		       	</select>                 
                 <form id="NHIFRadio">
                 <br />
@@ -242,6 +311,8 @@
 			</tr>
 
 		</table>
+        <c:set var="totalVoidedAmount" value="0"/>  
+<div id="tabletest">
 
 <table id="myTablee" class="tablesorter" class="thickbox">
 	<thead>
@@ -249,12 +320,13 @@
 			<th>S.No</th>
 			<th>Date</th>
 			<th>Service Type</th>
-			<th>Service / Drug / Item</th>
-			<th>Unit Price</th>
+			<th>Service / Drug / Item</th>			<th>Unit Price</th>
 			<th>Amount</th>
+            <th>Void</th>
 		</tr>
 	</thead>
 	<tbody>
+  
 		<c:set var="index" value="1"/>  
 		<c:forEach var="bill" items="${billList}" varStatus="statusOuter">
 		<c:forEach var="item" items="${bill.billItems}" varStatus="statusInner">
@@ -271,11 +343,55 @@
 			<tr class="${klass}">
 				<td>${index}</td>
 				<td><openmrs:formatDate date="${item.createdDate}" type="textbox"/></td>
-				<td>${item.orderType}</td>
-				<td>${item.name}</td>
+				<td>${item.orderType}</td>				<td>${item.name}</td>
 				<td>${item.unitPrice}</td>
-				<td>${item.amount}</td>
+				<td id="${index}amount">${item.amount}</td>
 				<c:set var="index" value="${index+1}"/>  
+                <td>
+                <c:choose>
+                <c:when test="${item.voided==true}">
+                <input id="voided"  type="checkbox" value="${item.indoorPatientServiceBillItemId}" checked onChange="OnChangeCheckbox (this);" > 
+                <script type="text/javascript">
+					var value=${item.amount};
+		            document.getElementById('${index-1}amount').innerHTML='<S>'+value.toFixed(2)+'</S>';					
+					<c:set var="totalVoidedAmount" value="${totalVoidedAmount+item.amount}"/>
+                </script>
+                
+                </c:when>
+                <c:otherwise>
+                <input id="voided"  type="checkbox"  value="${item.indoorPatientServiceBillItemId}" onChange="OnChangeCheckbox (this);">
+                </c:otherwise>
+                </c:choose>
+                </td>   
+                             
+			</tr>
+				</c:when>
+			</c:choose>
+		</c:forEach>
+		</c:forEach>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <c:set var="index" value="1"/>  
+		<c:forEach var="bill" items="${billList}" varStatus="statusOuter">
+		<c:forEach var="item" items="${bill.billItems}" varStatus="statusInner">
+			<c:choose>
+				<c:when test="${index mod 2 == 0}">
+					<c:set var="klass" value="odd" />
+				</c:when>
+				<c:otherwise>
+					<c:set var="klass" value="even" />
+				</c:otherwise>
+			</c:choose>
+			<c:choose>
+				<c:when test="${item.name == 'INPATIENT DEPOSIT'}">
+			<tr class="${klass}">
+				<td></td>
+				<td><openmrs:formatDate date="${item.createdDate}" type="textbox"/></td>
+				<td></td>
+				<td align="right">ADVANCE PAYMENT(paid)</td>
+				<td id="${index}amount">${item.amount}</td>
+				<c:set var="index" value="${index+1}"/>  
+                <td></td>   
+                             
 			</tr>
 				</c:when>
 			</c:choose>
@@ -283,9 +399,9 @@
 		</c:forEach>
 		<td></td>
 		<td></td>
+        
 		<td></td>
-		<td></td>
-		<td align="right"><b>ADVANCE PAYMENT</b></td>
+		<td align="right"><b>TOTAL ADVANCE PAYMENT</b></td>
 		<c:set var="initialtotal" value="0"/>  
 		<td><c:forEach var="bill" items="${billList}" varStatus="statusOuter">
 		<c:forEach var="item" items="${bill.billItems}" varStatus="statusInner">
@@ -297,11 +413,14 @@
 			</c:forEach>
 		</c:forEach>
 		<b>${initialtotal}</b>
+        </td>
+        <td></td>
 		<tr>
 		<td></td>
+        
 		<td></td>
 		<td></td>
-		<td></td>
+        <input id="totalAmountHid" type="hidden" value="">        
 		<td align="right"><b>Total</b></td>
 		<c:set var="total" value="0"/>  
 		<td id='tot'><c:forEach var="bill" items="${billList}" varStatus="statusOuter">
@@ -309,24 +428,28 @@
 				<c:set var="total" value="${item.amount + total}"/>  
 			</c:forEach>
 		</c:forEach>
-		<b>${total -2*initialtotal}</b>
+		<b>${total -initialtotal}</b><script type="text/javascript">document.getElementById('totalAmountHid').innerHTML=${total -initialtotal-totalVoidedAmount};</script>
 		</td>
+        
+        <td></td>
 		</tr>
 		<tr>
         <td></td>
 		<td></td>
 		<td></td>
-        <td></td>
+        
 		<td align="right"><b>Rebate Amount</b></td>
         <td><b>0</b></td>
+        <td></td>
         </td>
         </tr>
 	</tbody>
 </table>
+</div>
 <table>
 <form method="post" id="billListForIndoorPatient">
 <div id="waiverAmt">
-<b>Waiver Amount:</b><input type="text" id="waiverAmount" name="waiverAmount">
+<b>Waiver Amount:</b><input type="text" id="waiverAmount" name="waiverAmount" onChange="validateWaiver();">
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<!-- <b>Payment Mode:</b>
 			<select id="paymentMode" name="paymentMode">
 					<option value="Cash">Cash</option>
@@ -335,13 +458,13 @@
                 <input name="adDays" type="hidden" value="${admittedDays}" />
                 <input id="rebateAmount" name="rebateAmount" type="hidden"/>
                 <input id="patientCategory" name="patientCategory" type="hidden" value="" />
-			
-
+                <input id="voidedAmount" name="voidedAmount" value="${totalVoidedAmount}" type="hidden"/>               
 </div>
 <div style="text-align:center"> 
 <c:choose>
 <c:when test="${requestForDischargeStatus== 1}"> 
 <input type="submit" id="billSubmitForIndoorPatient" name="billSubmitForIndoorPatient" value="Complete Payment">
+
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 </c:when>
 </c:choose>
@@ -437,14 +560,15 @@
 		</table>
 
 
+
 <table id="myTablee" class="tablesorter" class="thickbox" style="width:100%; margin-top:30px">
+
 	<thead>
 		<tr align="left">
 			<th>S.No</th>
 			<th>Date</th>
 			<th>Service Type</th>
-			<th>Service / Drug / Item</th>
-			<th>Unit Price</th>
+			<th>Service / Drug / Item</th>			<th>Unit Price</th>
 			<th>Amount</th>
 		</tr>
 		<hr>
@@ -467,11 +591,18 @@
 			<tr class="${klass}">
 				<td>${index}</td>
 				<td><openmrs:formatDate date="${item.createdDate}" type="textbox"/></td>
-				<td>${item.orderType}</td>
-				<td>${item.name}</td>
-				<td>${item.unitPrice}</td>
-				<td>${item.amount}</td>
-				<c:set var="index" value="${index+1}"/>  
+				<td>${item.orderType}</td>				<td>${item.name}</td>
+				<td>${item.unitPrice}</td>	 
+                <c:choose>
+                <c:when test="${item.voided==true}">
+                <td><S>${item.amount}</td></S>                
+                </c:when>
+                <c:otherwise>
+                <td>${item.amount}</td>
+                </c:otherwise>
+                </c:choose>
+                
+                <c:set var="index" value="${index+1}"/> 
 			</tr>
 			</c:when>
 			</c:choose>
@@ -481,11 +612,37 @@
 		</tr>
 		<b><b>
 		<tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <c:set var="index" value="1"/>  
+		<c:forEach var="bill" items="${billList}" varStatus="statusOuter">
+		<c:forEach var="item" items="${bill.billItems}" varStatus="statusInner">
+			<c:choose>
+				<c:when test="${index mod 2 == 0}">
+					<c:set var="klass" value="odd" />
+				</c:when>
+				<c:otherwise>
+					<c:set var="klass" value="even" />
+				</c:otherwise>
+			</c:choose>
+			<c:choose>
+				<c:when test="${item.name == 'INPATIENT DEPOSIT'}">
+			<tr class="${klass}">
+				<td></td>
+				<td><openmrs:formatDate date="${item.createdDate}" type="textbox"/></td>
+				<td></td>
+				<td align="right">ADVANCE PAYMENT</td>
+				<td id="${index}amount">${item.amount}</td>
+				<c:set var="index" value="${index+1}"/>  
+                <td></td>   
+                             
+			</tr>
+				</c:when>
+			</c:choose>
+		</c:forEach>
+		</c:forEach>
 		<td></td>
-		<td></td>
-		<td></td>
-		<td></td>
-		<td align="right"><b>ADVANCE PAYMENT</b></td>
+		<td></td>		
+		<td colspan="2" align="right"><b>TOTAL ADVANCE PAYMENT(paid)</b></td>
 		<c:set var="initialtotal" value="0"/>  
 		<td><c:forEach var="bill" items="${billList}" varStatus="statusOuter">
 		<c:forEach var="item" items="${bill.billItems}" varStatus="statusInner">
@@ -498,7 +655,6 @@
 		</c:forEach>
 		<b>${initialtotal}</b>
 		<tr>
-		<td></td>
 		<td></td>
 		<td></td>
 		<td></td>
@@ -515,26 +671,27 @@
 		<td></td>
 		<td></td>
 		<td></td>
-		<td></td>
 		<td align="right"><b>Rebate Amount</b></td>
 		<td id='dAmount'>
 
 		</td>
         </tr>
 	</tbody>
-</table>
+    
+</table> 
+
 <br>
 <br>
 <br>
 <br>
-<div style="position: fixed; bottom: 0; width:100%;">
+
 <hr>
 At the time of discharge you are billed provisionally for services computed at that time. A final
 invoice will be sent to you three(3) days after discharge that may include services not billed at the
 time of discharge. A cheque or cash payment for such charges willbe expected. NHIF rebate must
 be claimed at the time of discharge. Claims after discharge must be made with NHIF Authorities
 <hr>
-</div>
+
 
 
 
