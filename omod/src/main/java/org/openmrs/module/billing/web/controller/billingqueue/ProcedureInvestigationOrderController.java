@@ -68,7 +68,7 @@ public class ProcedureInvestigationOrderController {
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		model.addAttribute("age",patient.getAge());
 		model.addAttribute("category",patient.getAttribute(14));
-		model.addAttribute("fileNumber",patient.getAttribute(43));
+		model.addAttribute("fileNumber",patient.getAttribute(41));
 		if(patient.getGender().equals("M"))
 		{
 			model.addAttribute("gender","Male");
@@ -77,15 +77,7 @@ public class ProcedureInvestigationOrderController {
 		{
 			model.addAttribute("gender","Female");
 		}
-/*		if(patient.getAttribute(14).getValue() == "Waiver"){
-			model.addAttribute("exemption", patient.getAttribute(32));
-		}
-		else if(patient.getAttribute(14).getValue()!="General" && patient.getAttribute(14).getValue()!="Waiver"){
-			model.addAttribute("exemption", patient.getAttribute(36));
-		}
-		else {
-			model.addAttribute("exemption", " ");
-		}*/
+
 		model.addAttribute("patientSearch", patientSearch);
 		model.addAttribute("date", dateStr);
 		return "/module/billing/queue/procedureInvestigationOrder";

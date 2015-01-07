@@ -75,7 +75,7 @@ public class ListOfOrderController {
 			model.addAttribute("gender","Female");
 		}
 		model.addAttribute("category",patient.getAttribute(14));
-		model.addAttribute("fileNumber",patient.getAttribute(43));
+		model.addAttribute("fileNumber",patient.getAttribute(41));
 		/*
 		if(patient.getAttribute(14).getValue() == "Waiver"){
 			model.addAttribute("exemption", patient.getAttribute(32));

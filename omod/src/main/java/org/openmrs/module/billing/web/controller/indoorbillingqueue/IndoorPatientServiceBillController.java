@@ -23,6 +23,7 @@ package org.openmrs.module.billing.web.controller.indoorbillingqueue;
 import javax.servlet.http.HttpServletRequest;
 
 import org.openmrs.Patient;
+import org.openmrs.PersonAttribute;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculatorForBDService;
@@ -67,8 +68,10 @@ public class IndoorPatientServiceBillController {
 		IpdService ipdService = Context.getService(IpdService.class);
 		IpdPatientAdmissionLog ipdPatientAdmissionLog = ipdService.getIpdPatientAdmissionLog(admissionLogId);
 		IpdPatientAdmitted ipdPatientAdmitted = ipdService.getAdmittedByAdmissionLogId(ipdPatientAdmissionLog);
-		if(ipdPatientAdmitted.getComments()!=null){
-			model.addAttribute("fileNumber", ipdPatientAdmitted.getComments());				
+
+		PersonAttribute fileNumber = patient.getAttribute(41);
+		if(fileNumber!=null){
+			model.addAttribute("fileNumber", fileNumber.getValue());					
 		}
 		
 		if (patient != null) {
@@ -87,17 +90,7 @@ public class IndoorPatientServiceBillController {
 				model.addAttribute("gender", "Female");
 			}
 			model.addAttribute("category", patient.getAttribute(14).getValue());
-			/*
-			if(patient.getAttribute(14).getValue() == "Waiver"){
-				model.addAttribute("exemption", patient.getAttribute(32));
-			}
-			else if(patient.getAttribute(14).getValue()!="General" && patient.getAttribute(14).getValue()!="Waiver"){
-				model.addAttribute("exemption", patient.getAttribute(36));
-			}
-			else {
-				model.addAttribute("exemption", " ");
-			}
-			*/
+
 			model.addAttribute("listBill", billingService
 					.listPatientServiceBillByPatient(pagingUtil.getStartPos(),
 							pagingUtil.getPageSize(), patient));

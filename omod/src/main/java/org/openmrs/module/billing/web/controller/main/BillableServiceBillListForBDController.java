@@ -129,7 +129,7 @@ public class BillableServiceBillListForBDController {
 			model.addAttribute("categoryList", categoryList);
 
 			model.addAttribute("category",patient.getAttribute(14));
-			model.addAttribute("fileNumber",patient.getAttribute(43));
+			model.addAttribute("fileNumber",patient.getAttribute(41));
 			
 			if(patient.getGender().equals("M"))
 			{
@@ -149,7 +149,7 @@ public class BillableServiceBillListForBDController {
 						if(ipdPatientAdmitted.getBed()!=null){
 						model.addAttribute("bed", ipdPatientAdmitted.getBed());
 						}
-						PersonAttribute fileNumber = patient.getAttribute(43);
+						PersonAttribute fileNumber = patient.getAttribute(41);
 						if(fileNumber!=null){
 							model.addAttribute("fileNumber", fileNumber.getValue());					
 						}
@@ -269,10 +269,14 @@ public class BillableServiceBillListForBDController {
 						item.setName(ipsbi.getName());
 						item.setPatientServiceBill(bill);
 						item.setQuantity(ipsbi.getQuantity());
-						item.setService(ipsbi.getService());				
+						item.setService(ipsbi.getService());	
 						item.setVoidedby(ipsbi.getVoidedby());
-						item.setVoided(ipsbi.getVoided());
-		                item.setVoidedDate(ipsbi.getVoidedDate());                                        
+						if(ipsbi.getVoidedby()!=null){
+							item.setVoided(true);
+			                item.setVoidedDate(new Date());                                        
+						}
+//						item.setVoided(ipsbi.getVoided());
+//		                item.setVoidedDate(ipsbi.getVoidedDate());                                        
 						item.setUnitPrice(ipsbi.getUnitPrice());
 						item.setAmount(ipsbi.getAmount());
 						item.setOrder(ipsbi.getOrder());
