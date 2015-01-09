@@ -46,7 +46,8 @@ span {
 ${tabs }
 <script type="text/javascript">
 jQuery(document).ready(function(){ 
-	
+	$('#waiverNumber').hide();
+	$('#waiverNumberSpan').hide();
 	if(jQuery('#freePat').val()==1){
 		jQuery('#WaiverAmountEditField').hide();
 	}
@@ -59,11 +60,22 @@ jQuery(document).ready(function(){
     * June 5th 2012: Thai Chuong supported issue #246
     * [PUNJAB] Text box when bill is voided & Print out of a bill that is voided 
     */
-	if(jQuery("#action").val() != "void")
-		jQuery('#descriptionDiv').hide();
+	//if(jQuery("#action").val() != "void")
+		//jQuery('#descriptionDiv').hide();
 });
 </script>
+<<script type="text/javascript">
 
+$(document).ready(function(){              
+     $('#waiverAmountEdit').change(function () {
+     $('#waiverNumberSpan').show();
+     $('#waiverNumber').show();
+     
+     
+     });
+ });
+
+</script>
 
 <script type="text/javascript">
 	function addToBill( conceptId, serviceName, servicePrice, qty) {
@@ -182,6 +194,12 @@ jQuery(document).ready(function(){
 		}
 		function submitBillForm(){
 			$('#totalprice').focus();
+			var desc = $("#description").val();
+			if(desc == '' || desc == null)
+				{
+					alert("Please enter Comments");
+					return false;
+				}
 			var ok = true;
 			var objRegExp  = /^ *[0-9]+ *$/;
 			jQuery(".qtyField").each(function(){
@@ -190,6 +208,7 @@ jQuery(document).ready(function(){
 					ok = false;
 				}
 			});
+			
 			if( !ok ) {
 				alert("Please enter valid quantity!!!");
 			}else if(! jQuery("input[type='checkbox']","div#extra").length ) {
@@ -251,8 +270,14 @@ jQuery(document).ready(function(){
 		<div id="WaiverAmountEditField" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
 			<td type='text' size='20'>Waiver Amount:</td>
+			
 			<input id="freePat" name="freePat" type='hidden' value="${freeBill}" size='5' />&nbsp;</b>
 			<input id="waiverAmountEdit" name="waiverAmountEdit" type='text' value="${waiverAm}" size='5' />&nbsp;</b>
+			<td>
+			<span id="waiverNumberSpan" style="color: black;  font-weight: bolder;">
+				Waiver Number:</span> <input type="text" size=20" value=""
+				name="waiverNumber" id="waiverNumber" class="cancelDraggable" />
+			</td>
 			<hr />
 		</div>
 
@@ -267,8 +292,9 @@ jQuery(document).ready(function(){
 
 		<div id="descriptionDiv">
 			<span style="color: blue; font-style: oblique; font-weight: bolder;">
-				Description:</span> <input type="text" size="50" value=""
+				Comments:</span> <input type="text" size="50" value=""
 				name="description" id="description" class="cancelDraggable" />
+			
 		</div>
 
 

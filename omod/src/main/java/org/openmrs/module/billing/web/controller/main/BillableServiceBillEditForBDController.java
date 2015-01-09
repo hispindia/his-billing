@@ -88,7 +88,8 @@ public class BillableServiceBillEditForBDController {
 	                       @RequestParam("cons") Integer[] cons, @RequestParam("patientId") Integer patientId,
 	                       @RequestParam("billId") Integer billId, @RequestParam("action") String action,
 	                       @RequestParam(value = "description", required = false) String description,
-	                       @RequestParam(value = "waiverAmountEdit", required = false) BigDecimal waiverAmount) {
+	                       @RequestParam(value = "waiverAmountEdit", required = false) BigDecimal waiverAmount,
+	                       @RequestParam(value = "waiverNumber", required = false) String waiverNumber) {
 		
 		validate(cons, bindingResult, request);
 		if (bindingResult.hasErrors()) {
@@ -280,6 +281,12 @@ public class BillableServiceBillEditForBDController {
 			BigDecimal wavAmt = new BigDecimal(0);
 			bill.setWaiverAmount(wavAmt);
 		}
+		
+		if(waiverNumber != null){
+			bill.setPatientCategory("Waiver Number - "+waiverNumber);
+		}
+		
+		
 		// Determine whether the bill is free or not
 		
 		//ghanshyam 25-02-2013 New Requirement #966[Billing]Add Paid Bill/Add Free Bill for Bangladesh module
