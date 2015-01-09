@@ -33,12 +33,19 @@
 			var change=false;
 	jQuery(document).ready(
 			function() {
+			
 			if(${requestForDischargeStatus}==1){
 			jQuery("#waiverAmt").show();
 			}
 			else{
 			jQuery("#waiverAmt").hide();
 			}
+			
+			if('${canEdit}'=="false")
+		    {
+		      	$("#myTablee th:last-child, #myTablee td:last-child").hide();
+			}
+			
 			
 });
 
@@ -369,7 +376,7 @@ function getContextPath(){
 			</c:choose>
 		</c:forEach>
 		</c:forEach>
-        <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
         <c:set var="index" value="1"/>  
 		<c:forEach var="bill" items="${billList}" varStatus="statusOuter">
 		<c:forEach var="item" items="${bill.billItems}" varStatus="statusInner">
@@ -391,7 +398,7 @@ function getContextPath(){
 				<td id="${index}amount">${item.amount}</td>
 				<c:set var="index" value="${index+1}"/>  
                 <td></td>   
-                             
+                <td></td>           
 			</tr>
 				</c:when>
 			</c:choose>
@@ -399,7 +406,9 @@ function getContextPath(){
 		</c:forEach>
 		<td></td>
 		<td></td>
+		
         
+		<td></td>
 		<td></td>
 		<td align="right"><b>TOTAL ADVANCE PAYMENT</b></td>
 		<c:set var="initialtotal" value="0"/>  
@@ -418,6 +427,7 @@ function getContextPath(){
 		<tr>
 		<td></td>
         
+		<td></td>
 		<td></td>
 		<td></td>
         <input id="totalAmountHid" type="hidden" value="">        
@@ -441,7 +451,8 @@ function getContextPath(){
 		<td align="right"><b>Rebate Amount</b></td>
         <td><b>0</b></td>
         <td></td>
-        </td>
+        <td></td>
+        
         </tr>
 	</tbody>
 </table>
@@ -612,7 +623,7 @@ function getContextPath(){
 		</tr>
 		<b><b>
 		<tr>
-        <tr><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
         <c:set var="index" value="1"/>  
 		<c:forEach var="bill" items="${billList}" varStatus="statusOuter">
 		<c:forEach var="item" items="${bill.billItems}" varStatus="statusInner">
@@ -658,6 +669,7 @@ function getContextPath(){
 		<td></td>
 		<td></td>
 		<td></td>
+		<td></td>
 		<td align="right"><b>Total</b></td>
 		<c:set var="total" value="0"/>  
 		<td id='tot2'><c:forEach var="bill" items="${billList}" varStatus="statusOuter">
@@ -666,7 +678,9 @@ function getContextPath(){
 			</c:forEach>
 		</c:forEach>
 		<b>${total -2*initialtotal}</b>
-		</td></tr>
+		</td>
+		<td></td>
+		</tr>
         <tr>
 		<td></td>
 		<td></td>
