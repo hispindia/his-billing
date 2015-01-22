@@ -27,6 +27,7 @@
 
 <script type="text/javascript">
 jQuery(document).ready(function(){
+$("#waiverCommentDiv").hide();
 $('.serquncalc').keyup(function() {
     var result = 0;
     $('#total').attr('value', function() {
@@ -55,6 +56,12 @@ jQuery("#savebill").hide();
  
 
 });
+
+
+function loadWaiverCommentDiv()
+{
+	$("#waiverCommentDiv").show();
+}
 </script>
 
 <script type="text/javascript">
@@ -237,7 +244,7 @@ if (serqun!=null || quantity!=""){
 		<tr>
 			<td colspan="6" align="right">Waiver Amount</td>
 			<td align="right"><input type="text" id="waiverAmount" name="waiverAmount"
-				size="7" /></td>
+				size="7" onblur="loadWaiverCommentDiv();" /></td>
 		</tr>
 <!-- 
 		<tr>
@@ -250,6 +257,9 @@ if (serqun!=null || quantity!=""){
 		</tr>
  -->		
 	</table>
+	<div align="right" id="waiverCommentDiv">
+	Waiver Number/Comment <input type="text" id="waiverComment" name="waiverComment"  size="20" />
+	</div>
 	<tr>
 		<td><input type="submit" id="savebill" name="savebill"
 			value="Save Bill">

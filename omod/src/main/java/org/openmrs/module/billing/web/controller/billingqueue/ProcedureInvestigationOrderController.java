@@ -90,6 +90,7 @@ public class ProcedureInvestigationOrderController {
 			@RequestParam("encounterId") Integer encounterId,
 			@RequestParam("indCount") Integer indCount,
 			@RequestParam(value= "waiverAmount", required = false) BigDecimal waiverAmount,
+			@RequestParam(value= "waiverComment", required = false) String waiverComment,
 			@RequestParam(value= "paymentMode", required = false) String paymentMode,
 			@RequestParam(value = "billType", required = false) String billType) {
 
@@ -194,6 +195,7 @@ public class ProcedureInvestigationOrderController {
 			BigDecimal wavAmt = new BigDecimal(0);
 			bill.setWaiverAmount(wavAmt);
 		}
+		bill.setComment(waiverComment);
 		bill.setPaymentMode(paymentMode);
 		
 		bill.setFreeBill(2);
