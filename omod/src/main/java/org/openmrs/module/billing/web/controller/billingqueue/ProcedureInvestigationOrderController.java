@@ -68,7 +68,7 @@ public class ProcedureInvestigationOrderController {
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		model.addAttribute("age",patient.getAge());
 		model.addAttribute("category",patient.getAttribute(14));
-		model.addAttribute("fileNumber",patient.getAttribute(41));
+		model.addAttribute("fileNumber",patient.getAttribute(43));
 		if(patient.getGender().equals("M"))
 		{
 			model.addAttribute("gender","Male");

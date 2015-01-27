@@ -69,7 +69,7 @@ public class IndoorPatientServiceBillController {
 		IpdPatientAdmissionLog ipdPatientAdmissionLog = ipdService.getIpdPatientAdmissionLog(admissionLogId);
 		IpdPatientAdmitted ipdPatientAdmitted = ipdService.getAdmittedByAdmissionLogId(ipdPatientAdmissionLog);
 
-		PersonAttribute fileNumber = patient.getAttribute(41);
+		PersonAttribute fileNumber = patient.getAttribute(43);
 		if(fileNumber!=null){
 			model.addAttribute("fileNumber", fileNumber.getValue());					
 		}

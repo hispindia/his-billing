@@ -129,7 +129,7 @@ public class BillableServiceBillListForBDController {
 			model.addAttribute("categoryList", categoryList);
 
 			model.addAttribute("category",patient.getAttribute(14));
-			model.addAttribute("fileNumber",patient.getAttribute(41));
+			model.addAttribute("fileNumber",patient.getAttribute(43));
 			
 			if(patient.getGender().equals("M"))
 			{
@@ -149,7 +149,7 @@ public class BillableServiceBillListForBDController {
 						if(ipdPatientAdmitted.getBed()!=null){
 						model.addAttribute("bed", ipdPatientAdmitted.getBed());
 						}
-						PersonAttribute fileNumber = patient.getAttribute(41);
+						PersonAttribute fileNumber = patient.getAttribute(43);
 						if(fileNumber!=null){
 							model.addAttribute("fileNumber", fileNumber.getValue());					
 						}
