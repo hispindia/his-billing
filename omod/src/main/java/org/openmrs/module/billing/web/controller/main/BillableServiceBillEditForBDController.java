@@ -282,7 +282,7 @@ public class BillableServiceBillEditForBDController {
 			bill.setWaiverAmount(wavAmt);
 		}
 		
-		if(waiverNumber != null){
+		if(waiverNumber != null && waiverNumber !=""){
 			bill.setPatientCategory("Waiver Number - "+waiverNumber);
 		}
 		
