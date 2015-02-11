@@ -294,20 +294,35 @@ function getContextPath(){
 					</td>
 			<td style="width: 20%;">&nbsp;</td>
 				<td align="left">Patient Category:</td>
-				<td><select id="categoryList"  name="categoryList" onChange="categoryChange()">					        
+				<td><select id="categoryList"  name="categoryList" onChange="categoryChange()">	
+
+				<c:set var="initialtotal" value="0"/>  
+				<c:forEach var="bill" items="${billList}" varStatus="statusOuter">
+				<c:forEach var="item" items="${bill.billItems}" varStatus="statusInner">
+				<c:choose>
+						<c:when test="${item.name == 'INPATIENT DEPOSIT'}">
+						<c:set var="initialtotal" value="${item.amount + initialtotal}"/>  
+								</c:when>
+					</c:choose>
+					</c:forEach>
+				</c:forEach>
+
+				
                <option value="GENERAL PATIENT"> GENERAL PATIENT</option>
                		<c:forEach items="${categoryList}" var="category" >
-                        <c:choose>                        
-                        <c:when test="${category.answerConcept.name =='GENERAL PATIENT'}">			          			
-                                </c:when>
-                                <c:otherwise>
-                                <option value="${category.answerConcept.id}">
-			          			${category.answerConcept.name}
-			          			</option> 
-                                </c:otherwise>
+				               		
+		                        <c:choose>                        
+			                        <c:when test="${category.answerConcept.name =='GENERAL PATIENT'}"></c:when>
+	                                <c:otherwise>
+										<c:choose>
+											<c:when test="${initialtotal > 0 && category.answerConcept.name =='EXEMPTED PATIENT'}"></c:when>
+			                                <c:otherwise>
+				                                <option value="${category.answerConcept.id}">${category.answerConcept.name}</option>
+			                                </c:otherwise>
+			                            </c:choose>     
+	                                </c:otherwise>
                                 </c:choose>
-			        	</c:forEach>
-			        	
+			        </c:forEach>
 		       	</select>                 
                 <form id="NHIFRadio">
                 <br />

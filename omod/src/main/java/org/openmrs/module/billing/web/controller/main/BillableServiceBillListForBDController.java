@@ -126,8 +126,6 @@ public class BillableServiceBillListForBDController {
 			model.addAttribute("ChildCatId", ChildCatId);
 			model.addAttribute("categoryList", categoryList);
 			
-			model.addAttribute("categoryList", categoryList);
-
 			model.addAttribute("category",patient.getAttribute(14));
 			model.addAttribute("fileNumber",patient.getAttribute(43));
 			
