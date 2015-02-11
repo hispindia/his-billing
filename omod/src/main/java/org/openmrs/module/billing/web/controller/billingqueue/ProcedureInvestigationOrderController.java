@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.math.NumberUtils;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttribute;
+import org.openmrs.PersonAttributeType;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculatorForBDService;
@@ -96,7 +97,7 @@ public class ProcedureInvestigationOrderController {
 			@RequestParam(value = "billType", required = false) String billType) {
 
 		BillingService billingService = Context.getService(BillingService.class);
-		
+
 		PatientDashboardService patientDashboardService = Context.getService(PatientDashboardService.class);
 
 		PatientService patientService = Context.getPatientService();
@@ -127,7 +128,25 @@ public class ProcedureInvestigationOrderController {
 		String billTyp;
 		BigDecimal totalActualAmount = new BigDecimal(0);
 		OpdTestOrder opdTestOrder=new OpdTestOrder();
-	
+		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
+		String patientCategory = null;
+        for (PersonAttribute pa : pas) {
+            PersonAttributeType attributeType = pa.getAttributeType();
+            PersonAttributeType personAttributePCT=hcs.getPersonAttributeTypeByName("Paying Category Type");
+            PersonAttributeType personAttributeNPCT=hcs.getPersonAttributeTypeByName("Non-Paying Category Type");
+            PersonAttributeType personAttributeSSCT=hcs.getPersonAttributeTypeByName("Special Scheme Category Type");
+            if(attributeType.getPersonAttributeTypeId()==personAttributePCT.getPersonAttributeTypeId()){
+            	patientCategory = pa.getValue();
+            }
+            else if(attributeType.getPersonAttributeTypeId()==personAttributeNPCT.getPersonAttributeTypeId()){
+            	patientCategory = pa.getValue();
+            }
+            else if(attributeType.getPersonAttributeTypeId()==personAttributeSSCT.getPersonAttributeTypeId()){
+            	patientCategory = pa.getValue();
+            }
+        }
+
 		for (Integer i = 1; i <= indCount; i++) {
 			selectservice = request.getParameter(i.toString() + "selectservice");
 			if("billed".equals(selectservice)){
@@ -153,30 +172,30 @@ public class ProcedureInvestigationOrderController {
 			item.setUnitPrice(unitPrice);
 
 			item.setAmount(itemAmount.getAmount());
-			
+
 
 			// Get the ratio for each bill item
 			Map<String, Object> parameters = HospitalCoreUtils.buildParameters(
 					"patient", patient, "attributes", attributes, "billItem",
 					item, "request", request);
-			
+
 			if("pay".equals( paybill)){
 				billTyp = "paid";
 			}
 			else{
 				billTyp = "free";
-			
+
 			}
-			
+
 			rate = calculator.getRate(parameters, billTyp);
 			item.setActualAmount(item.getAmount().multiply(rate));
 			totalActualAmount = totalActualAmount.add(item.getActualAmount());
 			bill.addBillItem(item);
-	
+
 			opdTestOrder=billingService.getOpdTestOrder(encounterId,service.getConceptId());
 			opdTestOrder.setBillingStatus(1);
 			patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
-			
+
 		  }
 			else{
 				servicename = request.getParameter(i.toString() + "service");
@@ -199,17 +218,21 @@ public class ProcedureInvestigationOrderController {
 		}
 		bill.setComment(waiverComment);
 		bill.setPaymentMode(paymentMode);
-		
-		PersonAttribute pCat = patient.getAttribute(45);
-		
-		if(pCat!= null && pCat.getValue().equals("NHIF CIVIL SERVANT")){
-				bill.setPatientCategory("NHIF Patient");	
+		if(patientCategory.equals("PRISONER") || patientCategory.equals("STUDENT SCHEME"))
+				{
+					bill.setPatientCategory("EXEMPTED PATIENT");
+					bill.setComment("");
 		}
-		
+		PersonAttribute pCat = patient.getAttribute(45);
+
+		if(pCat!= null && pCat.getValue().equals("NHIF CIVIL SERVANT")){
+				bill.setPatientCategory("NHIF Patient");
+		}
+
 		bill.setFreeBill(2);
 		bill.setReceipt(billingService.createReceipt());
 		bill = billingService.savePatientServiceBill(bill);
-	    
+
 		return "redirect:/module/billing/patientServiceBillForBD.list?patientId=" + patientId + "&billId="
         + bill.getPatientServiceBillId() + "&billType=" + billType;
 	}
