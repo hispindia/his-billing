@@ -165,7 +165,7 @@ jQuery(document).ready(function(){
 					alert("Please enter correct Waiver Amount");
 					return false;
 				}
-				else if( isNaN(jQuery("#waiverAmount").val())){
+				else if( isNaN(jQuery("#waiverAmount").val()) || jQuery("#waiverAmount").val() < 0){
 					alert("Please enter correct Waiver Amount");
 					return false;
 				}

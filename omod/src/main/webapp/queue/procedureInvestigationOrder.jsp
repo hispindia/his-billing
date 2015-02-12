@@ -111,7 +111,7 @@ if( Number(jQuery("#total").val()) < Number(jQuery("#waiverAmount").val())){
 	alert("Please enter correct Waiver Amount");
 	return false;
 }
-if(isNaN(jQuery("#waiverAmount").val())){
+if(isNaN(jQuery("#waiverAmount").val()) || jQuery("#waiverAmount").val() < 0 ){
 	alert("Please enter correct Waiver Amount");
 	return false;
 }

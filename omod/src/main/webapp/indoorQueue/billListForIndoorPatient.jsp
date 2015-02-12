@@ -89,11 +89,17 @@ function getContextPath(){
 			var waiver=document.getElementById('waiverAmount').value;
 			if(waiver>total){
 				alert('Waiver Amount cannot exceed total');
-				document.getElementById('waiverAmount').value=''
+				document.getElementById('waiverAmount').value='';
+				return false;
+			}
+			if(waiver < 0 || isNaN(waiver)){
+				alert('Enter Waiver Amount in Correct format');
+				document.getElementById('waiverAmount').value='';
+				return false; 
 			}
 		}
 		
-		
+	
     </script>
     
 <style type="text/css">
