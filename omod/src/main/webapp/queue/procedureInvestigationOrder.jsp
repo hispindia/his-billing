@@ -80,17 +80,54 @@ jQuery("#"+serpriid).val(serqun*unpri);
 <script type="text/javascript">
 function disable(incon){
 var icon=incon.toString();
+
 if(jQuery("#"+icon+"selectservice").attr('checked')) {
   jQuery("#"+icon+"servicequantity").removeAttr("disabled");
   jQuery("#"+icon+"serviceprice").removeAttr("disabled");
   jQuery("#"+icon+"paybill").removeAttr("disabled");
+  
+  var totalValue = $("#total").val();
+  var toBeAdded = $("#"+icon+"serviceprice").val();
+  var added =  parseInt(totalValue,10) +   parseInt(toBeAdded,10);
+  $('#total').val(added);
 } 
 else{
  jQuery("#"+icon+"servicequantity").attr("disabled", "disabled"); 
  jQuery("#"+icon+"paybill").attr("disabled", "disabled"); 
  jQuery("#"+icon+"serviceprice").attr("disabled", "disabled"); 
+ var totalValue = $("#total").val();
+ var toBeMinus = $("#"+icon+"serviceprice").val();
+ var left = totalValue - toBeMinus;
+ $('#total').val(left);
 }
+
 }
+
+
+
+function payCheckBox(incon){
+
+var icon=incon.toString();
+if(jQuery("#"+icon+"paybill").attr('checked')) {
+  jQuery("#"+icon+"serviceprice").removeAttr("disabled");
+  var totalValue = $("#total").val();
+  var toBeAdded = $("#"+icon+"serviceprice").val();
+  var added =  parseInt(totalValue,10) +   parseInt(toBeAdded,10);
+  $('#total').val(added);
+   
+} 
+else{
+ var totalValue = $("#total").val();
+ var toBeMinus = $("#"+icon+"serviceprice").val();
+ var left = totalValue - toBeMinus;
+ $('#total').val(left);
+ jQuery("#"+icon+"serviceprice").attr("disabled", "disabled"); 
+}
+
+
+}
+
+
 </script>
 
 <script type="text/javascript">
@@ -225,7 +262,7 @@ if (serqun!=null || quantity!=""){
 					</td>
 					<td align="center"><input type="checkbox"
 						id="${index.count}paybill" name="${index.count}paybill"
-						checked="checked" value="pay">
+						checked="checked" value="pay" onclick="payCheckBox(${index.count});">
 					</td>
 					<td align="right"><input type="text"
 						id="${index.count}unitprice" name="${index.count}unitprice"
