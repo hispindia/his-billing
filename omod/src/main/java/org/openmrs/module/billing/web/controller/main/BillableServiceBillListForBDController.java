@@ -39,12 +39,14 @@ import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttribute;
+import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculatorForBDService;
 import org.openmrs.module.hospitalcore.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
+import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.IpdService;
 import org.openmrs.module.hospitalcore.model.IndoorPatientServiceBill;
 import org.openmrs.module.hospitalcore.model.IndoorPatientServiceBillItem;
@@ -311,7 +313,28 @@ public class BillableServiceBillListForBDController {
                         bill.setRebateAmount(rebateAmount);
                         bill.setPatientCategory(patientCategory);
                         bill.setComment(comment);
+            
+    		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+    		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
+    		String patientSubCategory = null;
+            for (PersonAttribute pa : pas) {
+                PersonAttributeType attributeType = pa.getAttributeType();
+                PersonAttributeType personAttributePCT=hcs.getPersonAttributeTypeByName("Paying Category Type");
+                PersonAttributeType personAttributeNPCT=hcs.getPersonAttributeTypeByName("Non-Paying Category Type");
+                PersonAttributeType personAttributeSSCT=hcs.getPersonAttributeTypeByName("Special Scheme Category Type");
+                if(attributeType.getPersonAttributeTypeId()==personAttributePCT.getPersonAttributeTypeId()){
+                	patientSubCategory = pa.getValue();
+                }
+                else if(attributeType.getPersonAttributeTypeId()==personAttributeNPCT.getPersonAttributeTypeId()){
+                	patientSubCategory = pa.getValue();
+                }
+                else if(attributeType.getPersonAttributeTypeId()==personAttributeSSCT.getPersonAttributeTypeId()){
+                	patientSubCategory = pa.getValue();
+                }
+            }            
                         
+            bill.setPatientSubCategory(patientSubCategory);
+            
 			bill = billingService.savePatientServiceBill(bill);
 			
 			if(bill!=null){

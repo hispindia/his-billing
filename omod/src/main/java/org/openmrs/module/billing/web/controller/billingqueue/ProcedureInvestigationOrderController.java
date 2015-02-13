@@ -223,6 +223,9 @@ public class ProcedureInvestigationOrderController {
 					bill.setPatientCategory("EXEMPTED PATIENT");
 					bill.setComment("");
 		}
+		
+		bill.setPatientSubCategory(patientCategory);
+		
 		PersonAttribute pCat = patient.getAttribute(45);
 
 		if(pCat!= null && pCat.getValue().equals("NHIF CIVIL SERVANT")){
