@@ -172,11 +172,20 @@ public class BillableServiceBillListForBDController {
 					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					model.addAttribute("curDate", formatter.format(new Date()));
 					
-					
-					long admittedDays =   (new Date().getTime()- admitMili)/(3600000*24);
-                                        
-                                        if(admittedDays<1) admittedDays=1;
-					
+					    Calendar c2 = Calendar.getInstance();
+	                    Date eDt = new Date(new Date().getTime());
+					    c2.setTime(eDt);
+					    c2.set(Calendar.HOUR_OF_DAY, 23);
+					    c2.set(Calendar.MINUTE, 59);
+					    c2.set(Calendar.SECOND, 59);
+					    // Put it back in the Date object
+
+			        long admittedDays =   (c2.getTime().getTime() - admitMili)/(3600000*24);
+			        
+                                        if(admittedDays<1) {
+                                        	admittedDays=1;
+                                        	}
+                    
 					model.addAttribute("admittedDays", admittedDays);	
 					}
 				}
@@ -226,6 +235,7 @@ public class BillableServiceBillListForBDController {
 		
 	}
 	
+
 	@RequestMapping(method = RequestMethod.POST)
 	public String onSubmit(@RequestParam("patientId") Integer patientId, 
                         @RequestParam(value = "billId",required = false) Integer billId,
