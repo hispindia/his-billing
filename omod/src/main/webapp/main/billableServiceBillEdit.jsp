@@ -64,7 +64,7 @@ jQuery(document).ready(function(){
 		//jQuery('#descriptionDiv').hide();
 });
 </script>
-<<script type="text/javascript">
+<script type="text/javascript">
 
 $(document).ready(function(){              
      $('#waiverAmountEdit').change(function () {
@@ -222,6 +222,10 @@ $(document).ready(function(){
 					alert("Please enter correct Waiver Amount");
 					return false;
 				}
+				else if(jQuery("#waiverAmountEdit").val() <0){
+					alert("Please enter correct Waiver Amount");
+					return false;
+					}
 				else{
 				jQuery("#subm").attr("disabled", "disabled");
 				jQuery("#billForm").submit();
@@ -237,6 +241,10 @@ $(document).ready(function(){
 /*			jQuery("#subm").attr("disabled", "disabled");
 			jQuery("#billForm").submit();*/
 		}
+
+
+
+
 
 </script>
 
