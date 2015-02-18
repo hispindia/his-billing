@@ -1,3 +1,24 @@
+3.3.0
+- #
+- #The system automatically updates the procedures, investigations and drugs/non-pharma administered to the inpatient, and keeps on updating the consolidated bill from time to time.
+- #Able to bill an NHIF patient and calculate the rebate amount.
+- #The system automatically calculates the number of admitted days.
+- #The system is able to make advance payment and store it from time to time.
+- #Will be able to generate invoice through the system.
+- #File number has been shown on the invoice for further reference. 
+- #Audit report
+- #Cash analysis report
+- #Receipts breakdown report
+- #Editing invoice made role based.
+- #Audit trials and transactions made.
+- #Clear distinction between the outpatient and inpatient bills.
+- #The searching of patient is quicker.
+- #Various validations has been kept at various data entry points like on format for waiver amount, compulsion of waiver number on entering  waiver amount.
+- #Source for investigations, procedures will be shown for Outdoor patient bills.
+- #Department-wise cash breakdown report
+- #Cashier shift wise daily cash collection report
+- #Cashier wise daily cash summary report
+
 3.2.10
 - #Outdoor patient billing
 - #Indoor patient billing - consolidated billing
