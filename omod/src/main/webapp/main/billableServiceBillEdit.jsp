@@ -194,6 +194,12 @@ $(document).ready(function(){
 		}
 		function submitBillForm(){
 			$('#totalprice').focus();
+			var waiverNumber  = $("#waiverNumber").val();
+				if(waiverNumber == '' || waiverNumber == null)
+				{
+					alert("Please enter Waiver Number");
+					return false;
+				}
 			var desc = $("#description").val();
 			if(desc == '' || desc == null)
 				{
