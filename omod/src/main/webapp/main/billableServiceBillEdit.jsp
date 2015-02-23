@@ -195,17 +195,27 @@ $(document).ready(function(){
 		function submitBillForm(){
 			$('#totalprice').focus();
 			var waiverNumber  = $("#waiverNumber").val();
-				if(waiverNumber == '' || waiverNumber == null)
+			/*				if(waiverNumber == '' || waiverNumber == null)
 				{
 					alert("Please enter Waiver Number");
 					return false;
-				}
+				}*/
 			var desc = $("#description").val();
 			if(desc == '' || desc == null)
-				{
-					alert("Please enter Comments");
-					return false;
+					{
+					if(waiverNumber == '' || waiverNumber == null){
+						alert("Please enter Comments/Waiver Number");
+						return false;
+					}	
 				}
+			
+			if(waiverNumber == '' || waiverNumber == null)
+				{
+				if(desc == '' || desc == null){
+				alert("Please enter Comments/Waiver Number");
+				return false;
+				}	
+			}
 			var ok = true;
 			var objRegExp  = /^ *[0-9]+ *$/;
 			jQuery(".qtyField").each(function(){

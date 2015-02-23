@@ -29,6 +29,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -83,7 +84,8 @@ public class BillableServiceBillListForBDController {
 	                       @RequestParam(value = "admissionLogId", required = false) Integer admissionLogId,
 	                       @RequestParam(value = "requestForDischargeStatus", required = false) Integer requestForDischargeStatus,
                            @RequestParam(value="itemID", required = false) Integer itemID, 
-                           @RequestParam(value = "voidStatus",required = false) Boolean voidStatus, 
+                           @RequestParam(value = "voidStatus",required = false) Boolean voidStatus,
+                           @RequestParam(value = "selectedCategory", required = false) Integer selectedCategory,
 	                       HttpServletRequest request) {
 		long admitMili = 0;
 		BillingService billingService = Context.getService(BillingService.class);
@@ -95,6 +97,12 @@ public class BillableServiceBillListForBDController {
 		IpdService ipdService = Context.getService(IpdService.class);
 		IpdPatientAdmissionLog ipdPatientAdmissionLog = ipdService.getIpdPatientAdmissionLog(admissionLogId);
 		IpdPatientAdmitted ipdPatientAdmitted = ipdService.getAdmittedByAdmissionLogId(ipdPatientAdmissionLog);
+                
+                // 13/2/2015 PatientCategory storing            
+                if(selectedCategory!=null){
+                    BillingService billingService3 = Context.getService(BillingService.class);
+                    billingService3.updatePatientCategory(selectedCategory,Context.getEncounterService().getEncounter(encounterId),patient);
+                }
         
         if(itemID!=null){
             BillingService billingService2 = Context.getService(BillingService.class);
@@ -186,7 +194,21 @@ public class BillableServiceBillListForBDController {
                                         	admittedDays=1;
                                         	}
                     
-					model.addAttribute("admittedDays", admittedDays);	
+					model.addAttribute("admittedDays", admittedDays);
+					
+					
+	                List<IndoorPatientServiceBill> indpsb=billingService.getSelectedCategory(Context.getEncounterService().getEncounter(encounterId),patient);
+	                Iterator it=indpsb.listIterator();
+	                while (it.hasNext()) {
+	                    IndoorPatientServiceBill ipsb =(IndoorPatientServiceBill) it.next();
+	                    selectedCategory=ipsb.getSelectedCategory();                      
+	                }    
+	                if(selectedCategory==null){
+	                    selectedCategory=0;
+	                }               
+	              
+	                model.addAttribute("selectedCategory",selectedCategory);
+					
 					}
 				}
 			model.addAttribute("pagingUtil", pagingUtil);
@@ -219,6 +241,8 @@ public class BillableServiceBillListForBDController {
 			model.addAttribute("cashier",bill.getCreator().getGivenName());
 			model.addAttribute("bill", bill);                        
 		}
+                
+
 		
 		if (typeOfPatient != null) {
 			if (encounterId != null) {

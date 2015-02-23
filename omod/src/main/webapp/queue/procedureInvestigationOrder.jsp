@@ -152,6 +152,10 @@ if(isNaN(jQuery("#waiverAmount").val()) || jQuery("#waiverAmount").val() < 0 ){
 	alert("Please enter correct Waiver Amount");
 	return false;
 }
+if(jQuery("#waiverAmount").val()>0 && jQuery("#waiverComment").val() ==""){
+	alert("Please enter Waiver Number");
+	return false;
+}
 
 if (serqun!=null || quantity!=""){
    if(isNaN(serqun)){

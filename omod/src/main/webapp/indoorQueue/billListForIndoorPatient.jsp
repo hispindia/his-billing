@@ -46,6 +46,9 @@
 		      	$("#myTablee th:last-child, #myTablee td:last-child").hide();
 			}
 			
+			var selectedCategory = ${selectedCategory};			
+			document.getElementById('categoryList').selectedIndex=selectedCategory;
+			
 			
 });
 
@@ -79,11 +82,32 @@ function getContextPath(){
 			var typeOfPatient = getQueryVariable('typeOfPatient'); 
 			var admissionLogId = getQueryVariable('admissionLogId'); 
 			var requestForDischargeStatus = getQueryVariable('requestForDischargeStatus');
+			var selectedCategory=document.getElementById('categoryList').selectedIndex;
 			
-			window.location.href = getContextPath() + "/module/billing/patientServiceBillForBD.list?itemID="+itemID+"&voidStatus="+voidStatus+"&patientId="+patientId+"&encounterId="+encounterId+"&typeOfPatient="+typeOfPatient+"&admissionLogId="+admissionLogId+"&requestForDischargeStatus="+requestForDischargeStatus;	
+			window.location.href = getContextPath() + "/module/billing/patientServiceBillForBD.list?itemID="+itemID+"&voidStatus="+voidStatus+"&patientId="+patientId+"&encounterId="+encounterId+"&typeOfPatient="+typeOfPatient+"&admissionLogId="+admissionLogId+"&requestForDischargeStatus="+requestForDischargeStatus+"&selectedCategory="+selectedCategory;	
         
 				
 }
+
+function saveValues(){
+	var patientId = getQueryVariable('patientId');
+			var encounterId = getQueryVariable('encounterId'); 
+			var typeOfPatient = getQueryVariable('typeOfPatient'); 
+			var admissionLogId = getQueryVariable('admissionLogId'); 
+			var requestForDischargeStatus = getQueryVariable('requestForDischargeStatus');
+			var selectedCategory=document.getElementById('categoryList').selectedIndex;
+			
+			
+			var url=getContextPath() + "/module/billing/patientServiceBillForBD.list?patientId="+patientId+"&encounterId="+encounterId+"&typeOfPatient="+typeOfPatient+"&admissionLogId="+admissionLogId+"&requestForDischargeStatus="+requestForDischargeStatus+"&selectedCategory="+selectedCategory;
+			
+                window.location.href = url;
+				
+				
+				
+		
+	
+	
+	}
 		function validateWaiver(amount){
 			var total=parseFloat(document.getElementById('tot').innerHTML);
 			var waiver=document.getElementById('waiverAmount').value;
@@ -95,6 +119,10 @@ function getContextPath(){
 			if(waiver < 0 || isNaN(waiver)){
 				alert('Enter Waiver Amount in Correct format');
 				document.getElementById('waiverAmount').value='';
+				return false; 
+			}
+			if(waiver > 0 && document.getElementById('comment').value ==""){
+				alert('Enter Reason for Waiving Amount');
 				return false; 
 			}
 		}
@@ -212,7 +240,6 @@ function getContextPath(){
 				//edited
 				document.getElementById('totalAmountHid').innerHTML=totalAmount;
 				document.getElementById('tot2').innerHTML=totalAmount;
-				
 				}
 				
 					
@@ -494,13 +521,22 @@ function getContextPath(){
 </div>
 <div style="text-align:center"> 
 <c:choose>
+<c:when test="${requestForDischargeStatus== 0}"> 
+<input type="button" value="Save" onClick="saveValues();" />
+</c:when>
+</c:choose>
+
+<input type="button" value="Print" onClick="printDiv2();" />
+
+<c:choose>
 <c:when test="${requestForDischargeStatus== 1}"> 
+<div align="right">
 <input type="submit" id="billSubmitForIndoorPatient" name="billSubmitForIndoorPatient" value="Complete Payment">
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</div>
 </c:when>
 </c:choose>
-<input type="button" value="Print" onClick="printDiv2();" />
 </div>
 </form>
 </table>
