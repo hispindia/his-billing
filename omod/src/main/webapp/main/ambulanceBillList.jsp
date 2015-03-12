@@ -25,6 +25,9 @@
 .hidden {
 	display: none;
 }
+.visible {
+	display: all;
+}
 </style>
 <link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/moduleResources/billing/styles/paging.css" />
@@ -109,10 +112,14 @@
 
 	<div id="printDiv" class="hidden"
 		style="margin: 10px auto; width: 981px; font-size: 1.5em; font-family: 'Dot Matrix Normal', Arial, Helvetica, sans-serif;">
-		<img
-			src="${pageContext.request.contextPath}/moduleResources/billing/HEADEROPDSLIP.jpg"
-			width="981" height="170"></img>
+		<%-- <img
+			src="${pageContext.request.contextPath}/moduleResources/billing/kenya_logo.bmp"
+			width="981" height="170"></img> --%>
 		<table>
+			<tr><br /></tr>
+			<tr><br /></tr>
+			<tr><br /></tr>
+			<tr><br /></tr>
 			<tr>
 				<td>Driver name:</td>
 				<td>${driver.name }</td>
@@ -216,6 +223,7 @@
 	<script>
 function printDiv()
 {
+	$("div#printDiv").attr("class","visible");
   	jQuery("div#printDiv").printArea({mode:"popup",popClose:true});
 	jQuery("#billForm").submit();
 }

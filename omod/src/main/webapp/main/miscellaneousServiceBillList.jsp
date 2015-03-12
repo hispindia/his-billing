@@ -25,6 +25,9 @@
 .hidden {
 	display: none;
 }
+.visible {
+	display: all;
+}
 </style>
 <link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/moduleResources/billing/styles/paging.css" />
@@ -110,6 +113,10 @@
 		--%>
 			
 		<table>
+			<tr><br /></tr>
+			<tr><br /></tr>
+			<tr><br /></tr>
+			<tr><br /></tr>
 			<tr>
 				<td>Liable name:</td>
 				<td>${bill.liableName }</td>
@@ -219,6 +226,7 @@
 	<script>
 function printDiv()
 {
+	$("div#printDiv").attr("class","visible");
   	jQuery("div#printDiv").printArea({mode:"popup",popClose:true});
 	jQuery("#billForm").submit();
 }
