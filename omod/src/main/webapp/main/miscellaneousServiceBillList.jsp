@@ -109,6 +109,10 @@
 		--%>
 			
 		<table>
+			<tr><br /></tr>
+			<tr><br /></tr>
+			<tr><br /></tr>
+			<tr><br /></tr>
 			<tr>
 				<td>Liable name:</td>
 				<td>${bill.liableName }</td>

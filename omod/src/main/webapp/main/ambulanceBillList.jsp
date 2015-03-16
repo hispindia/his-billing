@@ -109,10 +109,14 @@
 
 	<div id="printDiv" class="hidden"
 		style="margin: 10px auto; width: 981px; font-size: 1.5em; font-family: 'Dot Matrix Normal', Arial, Helvetica, sans-serif;">
-		<img
+		<%-- <img
 			src="${pageContext.request.contextPath}/moduleResources/billing/HEADEROPDSLIP.jpg"
-			width="981" height="170"></img>
+			width="981" height="170"></img> --%>
 		<table>
+			<tr><br /></tr>
+			<tr><br /></tr>
+			<tr><br /></tr>
+			<tr><br /></tr>
 			<tr>
 				<td>Driver name:</td>
 				<td>${driver.name }</td>
