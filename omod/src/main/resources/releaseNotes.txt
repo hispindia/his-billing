@@ -1,3 +1,7 @@
+3.2.10
+released by ghanshyam on 16-March-2015
+- removed unwanted image from bill print
+
 3.2.9
 released by ghanshyam on 11-Nov-2013
 - #2938 Dealing with Dead Patient
