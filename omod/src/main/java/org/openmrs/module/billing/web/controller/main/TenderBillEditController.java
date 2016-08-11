@@ -89,9 +89,11 @@ public class TenderBillEditController {
 		if( "void".equalsIgnoreCase(action)){
 			tenderBill.setVoided(true);
 			tenderBill.setVoidedDate(new Date());
+			tenderBill.setvoidedby(Context.getAuthenticatedUser());
 			for(TenderBillItem item:tenderBill.getBillItems()){
 				item.setVoided(true);
 				item.setVoidedDate(new Date());
+				item.setvoidedby(Context.getAuthenticatedUser());
 			}
 			billingService.saveTenderBill(tenderBill);
 			return "redirect:/module/billing/tenderBill.list?companyId="+companyId;
@@ -104,6 +106,7 @@ public class TenderBillEditController {
 		for( TenderBillItem item : tenderBill.getBillItems()){
 			item.setVoided(true);
 			item.setVoidedDate(new Date());
+			item.setvoidedby(Context.getAuthenticatedUser());
 			mapOldItems.put(item.getTenderBillItemId(), item);
 		}
 		tenderBill.setAmount(BigDecimal.ZERO);
@@ -127,6 +130,7 @@ public class TenderBillEditController {
 				item = mapOldItems.get(Integer.parseInt(sItemId));
 				item.setVoided(false);
 				item.setVoidedDate(null);
+				item.setvoidedby(null);
 				item.setQuantity(quantity);
 				item.setAmount(itemAmount.getAmount());
 			}else{

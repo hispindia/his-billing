@@ -20,17 +20,29 @@
 
 package org.openmrs.module.billing.web.controller.main;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.openmrs.Concept;
+import org.openmrs.ConceptAnswer;
 import org.openmrs.Patient;
+import org.openmrs.PersonAttribute;
+import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculatorService;
 import org.openmrs.module.hospitalcore.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
+import org.openmrs.module.hospitalcore.HospitalCoreService;
+import org.openmrs.module.hospitalcore.model.IndoorPatientServiceBill;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
+import org.openmrs.module.hospitalcore.util.ConceptAnswerComparator;
 import org.openmrs.module.hospitalcore.util.HospitalCoreUtils;
 import org.openmrs.module.hospitalcore.util.PagingUtil;
 import org.openmrs.module.hospitalcore.util.PatientUtils;
@@ -51,7 +63,9 @@ public class BillableServiceBillListController {
 
 	@RequestMapping(method=RequestMethod.GET)
 	public String viewForm( Model model, @RequestParam("patientId") Integer patientId, @RequestParam(value="billId",required=false) Integer billId
-	                        ,@RequestParam(value="pageSize",required=false)  Integer pageSize, 
+	                        ,@RequestParam(value="pageSize",required=false)  Integer pageSize,
+	                        @RequestParam(value = "encounterId", required = false) Integer encounterId,
+	                
 		                    @RequestParam(value="currentPage",required=false)  Integer currentPage,
 		                    HttpServletRequest request){
 		
@@ -63,6 +77,7 @@ public class BillableServiceBillListController {
 		
 		model.addAttribute("freeBill", calculator.isFreeBill(HospitalCoreUtils.buildParameters("attributes", attributes)));
 		
+        
 		if( patient != null ){
 			
 			int total = billingService.countListPatientServiceBillByPatient(patient);
@@ -71,7 +86,11 @@ public class BillableServiceBillListController {
 			model.addAttribute("pagingUtil", pagingUtil);
 			model.addAttribute("patient", patient);
 			model.addAttribute("listBill", billingService.listPatientServiceBillByPatient(pagingUtil.getStartPos(), pagingUtil.getPageSize(), patient));
+		
+			
+		
 		}
+		
 		if( billId != null ){
 			PatientServiceBill bill = billingService.getPatientServiceBillById(billId);			
 			
@@ -85,8 +104,10 @@ public class BillableServiceBillListController {
 	}
 
 	@RequestMapping(method=RequestMethod.POST)
-	public String onSubmit(@RequestParam("patientId") Integer patientId, @RequestParam("billId") Integer billId){
+	public String onSubmit(@RequestParam("patientId") Integer patientId,
+			@RequestParam("billId") Integer billId){
 		BillingService billingService = (BillingService)Context.getService(BillingService.class);
+		PatientServiceBill bill = new PatientServiceBill();
     	PatientServiceBill patientSerciceBill = billingService.getPatientServiceBillById(billId);
     	if( patientSerciceBill != null && !patientSerciceBill.getPrinted()){
     		patientSerciceBill.setPrinted(true);
@@ -95,6 +116,24 @@ public class BillableServiceBillListController {
 			patientSerciceBill.setFreeBill(calculator.isFreeBill(HospitalCoreUtils.buildParameters("attributes", attributes)));			
     		billingService.saveBillEncounterAndOrder(patientSerciceBill);
     	}
+    	
+    	HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+    	
+		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
+		String patientCategory = null;
+       for (PersonAttribute pa : pas) {
+            PersonAttributeType attributeType = pa.getAttributeType();
+            PersonAttributeType personAttributePC = Context.getPersonService().getPersonAttributeTypeByName("Patient Category");
+            
+            if(attributeType.getPersonAttributeTypeId()==personAttributePC.getPersonAttributeTypeId());
+            {
+            	patientCategory = pa.getValue();
+            }
+           
+        }
+	
+		bill.setPatientCategory(patientCategory);
+    	
 		return "redirect:/module/billing/patientServiceBill.list?patientId="+patientId;
 	}
 }

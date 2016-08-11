@@ -91,9 +91,11 @@ public class AmbulanceBillEditController {
 		if( "void".equalsIgnoreCase(action)){
 			ambulanceBill.setVoided(true);
 			ambulanceBill.setVoidedDate(new Date());
+			ambulanceBill.setvoidedby(Context.getAuthenticatedUser());
 			for(AmbulanceBillItem item:ambulanceBill.getBillItems()){
 				item.setVoided(true);
 				item.setVoidedDate(new Date());
+				item.setvoidedby(Context.getAuthenticatedUser());
 			}
 			billingService.saveAmbulanceBill(ambulanceBill);
 			return "redirect:/module/billing/ambulanceBill.list?driverId="+driverId;
@@ -106,6 +108,7 @@ public class AmbulanceBillEditController {
 		for( AmbulanceBillItem item : ambulanceBill.getBillItems()){
 			item.setVoided(true);
 			item.setVoidedDate(new Date());
+			item.setvoidedby(Context.getAuthenticatedUser());
 			mapOldItems.put(item.getAmbulanceBillItemId(), item);
 		}
 		ambulanceBill.setAmount(BigDecimal.ZERO);
@@ -135,6 +138,7 @@ public class AmbulanceBillEditController {
 				item = mapOldItems.get(Integer.parseInt(sItemId));
 				item.setVoided(false);
 				item.setVoidedDate(null);
+				item.setvoidedby(null);
 				item.setAmount(itemAmount.getAmount());
 				item.setNumberOfTrip(numberOfTrip);
 				//ghanshyam 9-august-2012 New Requirement #333 [Billing]Edit ambulance bill with all details

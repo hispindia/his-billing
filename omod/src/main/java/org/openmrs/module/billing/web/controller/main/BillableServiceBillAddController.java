@@ -33,10 +33,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.Patient;
+import org.openmrs.PersonAttribute;
+import org.openmrs.PersonAttributeType;
 import org.openmrs.api.PatientService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculatorService;
 import org.openmrs.module.hospitalcore.BillingService;
+import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
@@ -98,7 +101,8 @@ public class BillableServiceBillAddController {
 		bill.setPatient(patient);
 		bill.setCreator(Context.getAuthenticatedUser());
 		
-		PatientServiceBillItem item;
+		
+		PatientServiceBillItem item = null;
 		int quantity = 0;
 		Money itemAmount;
 		Money mUnitPrice;
@@ -137,13 +141,29 @@ public class BillableServiceBillAddController {
 			
 			bill.addBillItem(item);
 		}
+		
+		
 		bill.setAmount(totalAmount.getAmount());	
 		bill.setActualAmount(totalActualAmount);
+		
 		
 		bill.setFreeBill(calculator.isFreeBill(HospitalCoreUtils
 				.buildParameters("attributes", attributes)));
 		logger.info("Is free bill: " + bill.getFreeBill());
 		
+		//new requirement capture 'patient_category'
+		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
+		String patientCategory = "";
+       for (PersonAttribute pa : pas) {
+            PersonAttributeType attributeType = pa.getAttributeType();
+            if(pa.getAttributeType().getId()==14)
+            {
+            	patientCategory = pa.getValue();
+            	  bill.setPatientCategory(patientCategory);
+            }
+       }
+ 		
 		bill.setReceipt(billingService.createReceipt());
 		bill = billingService.savePatientServiceBill(bill);		
 		return "redirect:/module/billing/patientServiceBill.list?patientId="+patientId+"&billId="+bill.getPatientServiceBillId();

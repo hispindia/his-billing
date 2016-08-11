@@ -34,9 +34,12 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.Order;
 import org.openmrs.Patient;
+import org.openmrs.PersonAttribute;
+import org.openmrs.PersonAttributeType;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculatorService;
 import org.openmrs.module.hospitalcore.BillingService;
+import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.model.BillableService;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
@@ -115,15 +118,18 @@ public class BillableServiceBillEditController {
 		if ("void".equalsIgnoreCase(action)) {
 			bill.setVoided(true);
 			bill.setVoidedDate(new Date());
+			bill.setvoidedby(Context.getAuthenticatedUser());
 			for (PatientServiceBillItem item : bill.getBillItems()) {
 				item.setVoided(true);
 				item.setVoidedDate(new Date());
+				item.setvoidedby(Context.getAuthenticatedUser());
 				/*ghanshyam 7-sept-2012 these 5 lines of code written only due to voided item is being updated in "billing_patient_service_bill_item" table
 				  but not being updated in "orders" table */
 				Order ord=item.getOrder();
 				if(ord!=null){
 					ord.setVoided(true);
 					ord.setDateVoided(new Date());
+					ord.setVoidedBy(Context.getAuthenticatedUser());
 					}
 					item.setOrder(ord);
 			}
@@ -138,6 +144,7 @@ public class BillableServiceBillEditController {
 		for (PatientServiceBillItem item : bill.getBillItems()) {
 			item.setVoided(true);
 			item.setVoidedDate(new Date());
+			item.setvoidedby(Context.getAuthenticatedUser());
 			//ghanshyam-kesav 16-08-2012 Bug #323 [BILLING] When a bill with a lab\radiology order is edited the order is re-sent
 			Order ord=item.getOrder();
 			/*ghanshyam 18-08-2012 [Billing - Bug #337] [3.2.7 snap shot][billing(DDU,DDU SDMX,Tanda,mohali)]error in edit bill.
@@ -146,6 +153,7 @@ public class BillableServiceBillEditController {
 			if(ord!=null){
 			ord.setVoided(true);	
 			ord.setDateVoided(new Date());
+			ord.setVoidedBy(Context.getAuthenticatedUser());
 			}
 			item.setOrder(ord);
 			mapOldItems.put(item.getPatientServiceBillItemId(), item);
@@ -212,16 +220,19 @@ public class BillableServiceBillEditController {
 				if(quantity!=item.getQuantity()){
 					item.setVoided(true);
 					item.setVoidedDate(new Date());
+					item.setvoidedby(Context.getAuthenticatedUser());
 				}
 				else{
 					item.setVoided(false);
-					item.setVoidedDate(null);	
+					item.setVoidedDate(null);
+					item.setvoidedby(null);
 				}
 				// ghanshyam-kesav 16-08-2012 Bug #323 [BILLING] When a bill with a lab\radiology order is edited the order is re-sent
 				Order ord=item.getOrder();
 				if(ord!=null){
 					ord.setVoided(false);
 					ord.setDateVoided(null);
+					ord.setVoidedBy(null);
 					}
 				item.setOrder(ord);
 				//ghanshyam 5-oct-2012 [Billing - Support #344] [Billing] Edited Quantity and Amount information is lost in database
@@ -254,6 +265,7 @@ public class BillableServiceBillEditController {
 		//ghanshyam 7-sept-2012 Support #343 [Billing][3.2.7-SNAPSHOT]No Queue to be generated from Old bill
 		return "redirect:/module/billing/patientServiceBillEdit.list?patientId="
 				+ patientId + "&billId=" + billId;
+		
 	}
 
 	private void validate(Integer[] ids, BindingResult binding,

@@ -361,4 +361,67 @@
 			ALTER TABLE billing_miscellaneous_service_bill ADD quantity integer NOT NULL;
 		</sql>
 	</diff>
+	
+	<!-- New Requirement capture voided_by ~wasib-->
+	<diff>
+	<version>3.1.8</version>
+		<author>Intern Work, reviewed by sagar</author>
+		<date>July 29 2016</date>
+		<description>
+			Add column voided_by in Billing Patient and patient Category in billing_patient_service_bill table
+		</description>
+		<sql>
+		ALTER TABLE billing_patient_service_bill
+			ADD COLUMN `voided_by` int(11)
+			default NULL
+			AFTER voided_date,
+			ADD CONSTRAINT `fk_patientservicebill_voidedby` FOREIGN KEY (`voided_by`) REFERENCES
+			`users` (`user_id`);
+			
+		ALTER TABLE billing_patient_service_bill_item
+			ADD COLUMN `voided_by` int(11)
+			default NULL
+			AFTER voided_date,
+			ADD CONSTRAINT `fk_patientservicebillitem_voidedby` FOREIGN KEY (`voided_by`) REFERENCES
+			`users` (`user_id`);
+			
+		ALTER TABLE billing_ambulance_bill
+			ADD COLUMN `voided_by` int(11)
+			default NULL
+			AFTER voided_date,
+			ADD CONSTRAINT `fk_ambulancebill_voidedby` FOREIGN KEY (`voided_by`) REFERENCES
+			`users` (`user_id`);
+			
+		ALTER TABLE billing_tender_bill
+			ADD COLUMN `voided_by` int(11)
+			default NULL
+			AFTER voided_date,
+			ADD CONSTRAINT `fk_tenderbill_voidedby` FOREIGN KEY (`voided_by`) REFERENCES
+			`users` (`user_id`);	
+		
+		ALTER TABLE billing_tender_bill_item
+			ADD COLUMN `voided_by` int(11)
+			default NULL
+			AFTER voided_date,
+			ADD CONSTRAINT `fk_tenderbillitem_voidedby` FOREIGN KEY (`voided_by`) REFERENCES
+			`users` (`user_id`);
+		
+		ALTER TABLE billing_ambulance_bill_item
+			ADD COLUMN `voided_by` int(11)
+			default NULL
+			AFTER voided_date,
+			ADD CONSTRAINT `fk_ambulancebillitem_voidedby` FOREIGN KEY (`voided_by`) REFERENCES
+			`users` (`user_id`);
+			
+		ALTER TABLE billing_miscellaneous_service_bill
+			ADD COLUMN `voided_by` int(11)
+			default NULL
+			AFTER voided_date,
+			ADD CONSTRAINT `fk_miscellaneousservicebill_voidedby` FOREIGN KEY (`voided_by`) REFERENCES
+			`users` (`user_id`);
+			
+		ALTER TABLE billing_patient_service_bill
+			 ADD COLUMN `patient_category` varchar(100);						
+		</sql>
+	</diff>
 </sqldiff>

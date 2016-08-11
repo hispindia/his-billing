@@ -21,6 +21,7 @@
 package org.openmrs.module.billing.web.controller.main;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -61,6 +62,8 @@ public class MiscellaneousServiceBillEditController {
 		// if action is void
 		if( "void".equalsIgnoreCase(action)){
 			miscellaneousServiceBill.setVoided(true);
+			miscellaneousServiceBill.setVoidedDate(new Date());
+			miscellaneousServiceBill.setvoidedby(Context.getAuthenticatedUser());
 			billingService.saveMiscellaneousServiceBill(miscellaneousServiceBill);
 			return "redirect:/module/billing/miscellaneousServiceBill.list";
 		}
