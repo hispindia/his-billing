@@ -33,7 +33,8 @@ public class BillCalculatorImpl implements BillCalculator {
 	 * 
 	 * @return
 	 */
-	public BigDecimal getRate(Map<String, Object> parameters) {
+	// Requirement add Paid bill & Free bill Both
+	public BigDecimal getRate(Map<String, Object> parameters,String billType) {
 		return new BigDecimal(0);
 	}
 
@@ -43,8 +44,14 @@ public class BillCalculatorImpl implements BillCalculator {
 	 * 
 	 * @return
 	 */
-	public boolean isFreeBill(Map<String, Object> parameters) {
+	// Requirement add Paid bill & Free bill Both
+	/*public boolean isFreeBill(Map<String, Object> parameters) {
 
 		return true;
+	}*/
+	public Boolean isFreeBill(String billType) {
+
+		return false;
 	}
+	
 }

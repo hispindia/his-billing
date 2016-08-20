@@ -43,14 +43,15 @@ public class BillCalculatorImpl implements BillCalculator {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public BigDecimal getRate(Map<String, Object> parameters) {
+	// Requirement add Paid bill & Free bill Both
+	public BigDecimal getRate(Map<String, Object> parameters,String billType) {
 		// 17/05/12 - Marta: changed to consider the new free categories. Logic has been inverted. #188
 		BigDecimal rate = new BigDecimal(0);
 		Map<String, String> attributes = (Map<String, String>) parameters.get("attributes");
-		String patientCategory = attributes.get("Patient Category");
+	//	String patientCategory = attributes.get("Patient Category");
 		PatientServiceBillItem item = (PatientServiceBillItem) parameters.get("billItem");
 		//ghanshyam 12-sept-2012 Bug #358 [Billing][3.2.7-SNAPSHOT][DDU, DDU_SDMX] Error screen appears on selecting patients for billing
-		if(patientCategory!=null){
+		/*if(patientCategory!=null){
 		
 		// 17/05/12 - Marta: changed to consider the new free categories. Logic has been inverted. #188
 		if (patientCategory.contains("General")) {
@@ -62,7 +63,7 @@ public class BillCalculatorImpl implements BillCalculator {
 		}
 		else{
 			rate = new BigDecimal(1);
-		}
+		}*/
 		
 		//This is the old function
 		/*if (!StringUtils.isBlank(patientCategory)) {
@@ -107,7 +108,12 @@ public class BillCalculatorImpl implements BillCalculator {
 				}
 			}
 		}*/
-		
+		if (billType.equals("paid")) {
+			rate = new BigDecimal(1);
+		}
+	 else{
+			return rate;
+		}
 		return rate;
 	}
 	
@@ -143,7 +149,8 @@ public class BillCalculatorImpl implements BillCalculator {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean isFreeBill(Map<String, Object> parameters) {
+	// Requirement add Paid bill & Free bill Both
+	/*public boolean isFreeBill(Map<String, Object> parameters) {
 		Map<String, String> attributes = (Map<String, String>) parameters.get("attributes");
 		String patientCategory = attributes.get("Patient Category");
 		//ghanshyam 12-sept-2012 Bug #358 [Billing][3.2.7-SNAPSHOT][DDU, DDU_SDMX] Error screen appears on selecting patients for billing
@@ -161,5 +168,12 @@ public class BillCalculatorImpl implements BillCalculator {
 			return false;
 		}
 		return true;
+	}*/
+	public Boolean isFreeBill(String billType) {
+		if (billType.equals("paid")) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }

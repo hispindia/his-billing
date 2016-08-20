@@ -79,8 +79,9 @@ public class BillableServiceBillAddController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
+	//New Requirement add Paid bill & Free bill Both 
 	public String onSubmit(Model model,Object command, BindingResult bindingResult, HttpServletRequest request,
-	                       @RequestParam("cons") Integer[] cons, @RequestParam("patientId") Integer patientId){
+	                       @RequestParam("cons") Integer[] cons,@RequestParam(value = "billType", required = false) String billType, @RequestParam("patientId") Integer patientId){
 		validate(cons, bindingResult, request);		
 		if( bindingResult.hasErrors()){
 			model.addAttribute("errors", bindingResult.getAllErrors());
@@ -135,7 +136,7 @@ public class BillableServiceBillAddController {
 			
 			// Get the ratio for each bill item
 			Map<String, Object> parameters = HospitalCoreUtils.buildParameters("patient", patient, "attributes", attributes, "billItem", item, "request", request);
-			BigDecimal rate = calculator.getRate(parameters);	
+			BigDecimal rate = calculator.getRate(parameters,billType);	
 			item.setActualAmount(item.getAmount().multiply(rate));
 			totalActualAmount = totalActualAmount.add(item.getActualAmount());
 			
@@ -146,10 +147,10 @@ public class BillableServiceBillAddController {
 		bill.setAmount(totalAmount.getAmount());	
 		bill.setActualAmount(totalActualAmount);
 		
-		
-		bill.setFreeBill(calculator.isFreeBill(HospitalCoreUtils
+		//New Requirement add Paid bill & Free bill Both 
+		/*bill.setFreeBill(calculator.isFreeBill(HospitalCoreUtils
 				.buildParameters("attributes", attributes)));
-		logger.info("Is free bill: " + bill.getFreeBill());
+		logger.info("Is free bill: " + bill.getFreeBill());*/
 		
 		//new requirement capture 'patient_category'
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
@@ -163,7 +164,9 @@ public class BillableServiceBillAddController {
             	  bill.setPatientCategory(patientCategory);
             }
        }
- 		
+     //New Requirement add Paid bill & Free bill Both 
+       bill.setFreeBill(calculator.isFreeBill(billType));
+		logger.info("Is free bill: " + bill.getFreeBill());
 		bill.setReceipt(billingService.createReceipt());
 		bill = billingService.savePatientServiceBill(bill);		
 		return "redirect:/module/billing/patientServiceBill.list?patientId="+patientId+"&billId="+bill.getPatientServiceBillId();

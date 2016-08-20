@@ -24,17 +24,30 @@ import java.math.BigDecimal;
 import java.util.Map;
 
 import org.openmrs.module.billing.includable.billcalculator.BillCalculator;
+import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
 
 public class BillCalculatorImpl implements BillCalculator {
 
 	/**
 	 * Return 100%
 	 */
-	public BigDecimal getRate(Map<String, Object> parameters) {
-		return new BigDecimal(1);
+	// Requirement add Paid bill & Free bill Both 
+	public BigDecimal getRate(Map<String, Object> parameters, String billType) {
+		BigDecimal rate = new BigDecimal(0);
+		PatientServiceBillItem item = (PatientServiceBillItem) parameters.get("billItem");
+		
+		if (billType.equals("paid")) {
+			rate = new BigDecimal(1);
+		}
+		
+		return rate;
 	}
+	// Requirement add Paid bill & Free bill Both
+	/*public boolean isFreeBill(Map<String, Object> parameters) {
 
-	public boolean isFreeBill(Map<String, Object> parameters) {
+		return false;
+	}*/
+	public Boolean isFreeBill(String billType) {
 
 		return false;
 	}

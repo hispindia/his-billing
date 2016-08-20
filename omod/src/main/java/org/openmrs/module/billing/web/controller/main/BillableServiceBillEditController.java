@@ -193,8 +193,26 @@ public class BillableServiceBillEditController {
 				Map<String, Object> parameters = HospitalCoreUtils
 						.buildParameters("patient", patient, "attributes",
 								attributes, "billItem", item);
-				BigDecimal rate = calculator.getRate(parameters);
-
+				//New Requirement add Paid bill & Free bill Both 
+				BigDecimal rate;
+				if (bill.getFreeBill().equals(1)) {
+					String billType = "free";
+					rate = calculator.getRate(parameters, billType);
+				} else if (bill.getFreeBill().equals(2)) {
+					String billType = "mixed";
+					PatientServiceBillItem patientServiceBillItem = billingService
+							.getPatientServiceBillItem(billId, name);
+					String psbi= patientServiceBillItem.getActualAmount().toString();
+					if (psbi.equals("0.00")) {
+						rate = new BigDecimal(0);
+					} else {
+						rate = new BigDecimal(1);
+					}
+					item.setActualAmount(item.getAmount().multiply(rate));
+				}else {
+					String billType = "paid";
+					rate = calculator.getRate(parameters, billType);
+				}
 				item.setAmount(itemAmount.getAmount());
 				item.setActualAmount(item.getAmount().multiply(rate));
 				totalActualAmount = totalActualAmount.add(item
@@ -214,8 +232,26 @@ public class BillableServiceBillEditController {
 				Map<String, Object> parameters = HospitalCoreUtils
 						.buildParameters("patient", patient, "attributes",
 								attributes, "billItem", item);
-				BigDecimal rate = calculator.getRate(parameters);
-
+				//New Requirement add Paid bill & Free bill Both 
+				BigDecimal rate = null;
+				if (bill.getFreeBill().equals(1)) {
+					String billType = "free";
+					bill.setFreeBill(calculator.isFreeBill(billType));
+				} else if (bill.getFreeBill().equals(2)) {
+					String billType = "mixed";
+					PatientServiceBillItem patientServiceBillItem = billingService
+							.getPatientServiceBillItem(billId, name);
+					String psbi= patientServiceBillItem.getActualAmount().toString();
+					if (psbi.equals("0.00")) {
+						rate = new BigDecimal(0);
+					} else {
+						rate = new BigDecimal(1);
+					}
+					item.setActualAmount(item.getAmount().multiply(rate));
+				}else {
+					String billType = "paid";
+					rate = calculator.getRate(parameters, billType);
+				}
 				//ghanshyam 5-oct-2012 [Billing - Support #344] [Billing] Edited Quantity and Amount information is lost in database
 				if(quantity!=item.getQuantity()){
 					item.setVoided(true);
@@ -256,9 +292,18 @@ public class BillableServiceBillEditController {
 		bill.setActualAmount(totalActualAmount);
 
 		// Determine whether the bill is free or not
-
-		bill.setFreeBill(calculator.isFreeBill(HospitalCoreUtils
-				.buildParameters("attributes", attributes)));
+		//New Requirement add Paid bill & Free bill Both 
+		if (bill.getFreeBill().equals(1)) {
+			String billType = "free";
+			bill.setFreeBill(calculator.isFreeBill(billType));
+		} else if (bill.getFreeBill().equals(2)) {
+			String billType = "mixed";
+			bill.setFreeBill(calculator.isFreeBill(billType));
+		} else {
+			String billType = "paid";
+			bill.setFreeBill(calculator.isFreeBill(billType));
+		}
+		
 		logger.info("Is free bill: " + bill.getFreeBill());
 
 		bill = billingService.savePatientServiceBill(bill);

@@ -31,12 +31,14 @@ public interface BillCalculator {
 	 * @param parameters TODO
 	 * @return
 	 */
-	public BigDecimal getRate(Map<String, Object> parameters);
+	public BigDecimal getRate(Map<String, Object> parameters, String billType);
 
 	/**
 	 * Determine whether a bill should be free or not
 	 * @param parameters TODO
 	 * @return
 	 */
-	public boolean isFreeBill(Map<String, Object> parameters);
+	// Requirement add Paid bill & Free bill Both 
+	//public boolean isFreeBill(Map<String, Object> parameters);
+	public Boolean isFreeBill(String billType);
 }

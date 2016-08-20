@@ -34,10 +34,12 @@ public class BillCalculatorImpl implements BillCalculator {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public BigDecimal getRate(Map<String, Object> parameters) {
-		BigDecimal ratio = new BigDecimal(1);
+	// Requirement add Paid bill & Free bill Both 
+	public BigDecimal getRate(Map<String, Object> parameters,String billType) {
+		//BigDecimal ratio = new BigDecimal(1);
+		BigDecimal rate = new BigDecimal(0);
 		Map<String, String> attributes = (Map<String, String>) parameters.get("attributes");
-		String patientCategory = attributes.get("Patient Category");
+		/*String patientCategory = attributes.get("Patient Category");
 		String bplNumber = attributes.get("BPL Number");
 		String rsbyNumber = attributes.get("RSBY Number");
 		
@@ -53,7 +55,14 @@ public class BillCalculatorImpl implements BillCalculator {
 			}
 		}
 
-		return ratio;
+		return ratio;*/
+		 if (billType.equals("paid")) {
+				rate = new BigDecimal(1);
+			}
+		 else{
+				return rate;
+			}
+		 return rate;
 	}
 
 	/**
@@ -62,7 +71,8 @@ public class BillCalculatorImpl implements BillCalculator {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public boolean isFreeBill(Map<String, Object> parameters) {
+	// Requirement add Paid bill & Free bill Both
+	/*public boolean isFreeBill(Map<String, Object> parameters) {
 		Map<String, String> attributes = (Map<String, String>) parameters.get("attributes");
 		String patientCategory = attributes.get("Patient Category");
 		String bplNumber = attributes.get("BPL Number");
@@ -81,5 +91,12 @@ public class BillCalculatorImpl implements BillCalculator {
 		}
 
 		return false;
+	}*/
+	public Boolean isFreeBill(String billType) {
+		if (billType.equals("paid")) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }

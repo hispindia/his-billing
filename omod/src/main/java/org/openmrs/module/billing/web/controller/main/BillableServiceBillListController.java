@@ -74,8 +74,8 @@ public class BillableServiceBillListController {
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		Map<String, String> attributes = PatientUtils.getAttributes(patient);
 		BillCalculatorService calculator = new BillCalculatorService();		
-		
-		model.addAttribute("freeBill", calculator.isFreeBill(HospitalCoreUtils.buildParameters("attributes", attributes)));
+		//New Requirement add Paid bill & Free bill Both
+		//model.addAttribute("freeBill", calculator.isFreeBill(HospitalCoreUtils.buildParameters("attributes", attributes)));
 		
         
 		if( patient != null ){
@@ -93,11 +93,21 @@ public class BillableServiceBillListController {
 		
 		if( billId != null ){
 			PatientServiceBill bill = billingService.getPatientServiceBillById(billId);			
-			
-			bill.setFreeBill(calculator.isFreeBill(HospitalCoreUtils.buildParameters("attributes", attributes)));
-			model.addAttribute("bill", bill);
-		}
+			// Requirement add Paid bill & Free bill Both
+						if (bill.getFreeBill().equals(1)) {
+							String billType = "free";
+							bill.setFreeBill(calculator.isFreeBill(billType));
+						} else if (bill.getFreeBill().equals(2)) {
+							String billType = "mixed";
+							bill.setFreeBill(calculator.isFreeBill(billType));
+						} else {
+							String billType = "paid";
+							bill.setFreeBill(calculator.isFreeBill(billType));
+						}
+						model.addAttribute("bill", bill);
+					}
 		User user = Context.getAuthenticatedUser();
+		
 		
 		model.addAttribute("canEdit", user.hasPrivilege(BillingConstants.PRIV_EDIT_BILL_ONCE_PRINTED) );		
 		return "/module/billing/main/billableServiceBillList";
@@ -108,13 +118,28 @@ public class BillableServiceBillListController {
 			@RequestParam("billId") Integer billId){
 		BillingService billingService = (BillingService)Context.getService(BillingService.class);
 		PatientServiceBill bill = new PatientServiceBill();
-    	PatientServiceBill patientSerciceBill = billingService.getPatientServiceBillById(billId);
-    	if( patientSerciceBill != null && !patientSerciceBill.getPrinted()){
-    		patientSerciceBill.setPrinted(true);
-    		Map<String, String> attributes = PatientUtils.getAttributes(patientSerciceBill.getPatient());
+    	PatientServiceBill patientServiceBill = billingService.getPatientServiceBillById(billId);
+    	if( patientServiceBill != null && !patientServiceBill.getPrinted()){
+    		patientServiceBill.setPrinted(true);
+    		Map<String, String> attributes = PatientUtils.getAttributes(patientServiceBill.getPatient());
 			BillCalculatorService calculator = new BillCalculatorService();
-			patientSerciceBill.setFreeBill(calculator.isFreeBill(HospitalCoreUtils.buildParameters("attributes", attributes)));			
-    		billingService.saveBillEncounterAndOrder(patientSerciceBill);
+			
+		//	patientServiceBill.setFreeBill(calculator.isFreeBill(HospitalCoreUtils.buildParameters("attributes", attributes)));			
+    	//	billingService.saveBillEncounterAndOrder(patientServiceBill);
+			// Requirement add Paid bill & Free bill Both 
+			
+			if (patientServiceBill.getFreeBill().equals(1)) {
+				String billType = "free";
+				patientServiceBill.setFreeBill(calculator.isFreeBill(billType));
+			} else if (patientServiceBill.getFreeBill().equals(2)) {
+				String billType = "mixed";
+				patientServiceBill.setFreeBill((calculator.isFreeBill(billType)));
+			} else {
+				String billType = "paid";
+				patientServiceBill.setFreeBill(calculator.isFreeBill(billType));
+			}
+			
+    		billingService.saveBillEncounterAndOrder(patientServiceBill);
     	}
     	
     	HospitalCoreService hcs = Context.getService(HospitalCoreService.class);

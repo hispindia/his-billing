@@ -62,12 +62,14 @@
 <!-- ghanshyam,11-nov-2013,New Requirement #2938 Dealing with Dead Patient -->
 <c:if test="${patient.dead eq '0'}">
 <p>
-	<b><a
-		href="addPatientServiceBill.form?patientId=${patient.patientId}">Add
-			new Bill</a> <c:if test="${freeBill}">
-			<span style="color: red">Free Bill</span>
-		</c:if> </b>
-
+	<b>
+	<%-- New Requirement add Paid bill & Free bill Both --%>
+<td><input type="button" value="Add Paid Bill"
+			onclick="window.location.href='addPatientServiceBill.form?patientId=${patient.patientId}&billType=paid'" />
+	</td>
+		<td><input type="button" value="Add Free Bill" style="color: red"
+			onclick="window.location.href='addPatientServiceBill.form?patientId=${patient.patientId}&billType=free'" /></td>
+		</b>
 </p>
 </c:if>
 

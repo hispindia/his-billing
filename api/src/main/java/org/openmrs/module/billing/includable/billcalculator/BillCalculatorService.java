@@ -65,9 +65,10 @@ public class BillCalculatorService implements BillCalculator {
 	 * `calculator` found, it will be used to calculate Otherwise, it will
 	 * return 1 which means patient will be charged 100%
 	 */
-	public BigDecimal getRate(Map<String, Object> parameters) {
+	// Requirement add Paid bill & Free bill Both
+	public BigDecimal getRate(Map<String, Object> parameters, String billType) {
 		if (calculator != null) {
-			return calculator.getRate(parameters);
+			return calculator.getRate(parameters, billType);
 		} else {
 			return new BigDecimal(1);
 		}
@@ -78,10 +79,20 @@ public class BillCalculatorService implements BillCalculator {
 	 * found, it will be used to determine. Otherwise, it will return `false`
 	 * which means the bill is not free.
 	 */
-	public boolean isFreeBill(Map<String, Object> parameters) {
+	// Requirement add Paid bill & Free bill Both 
+	/*public boolean isFreeBill(Map<String, Object> parameters) {
 		if (calculator != null) {
 			return calculator.isFreeBill(parameters);
 		}
 		return false;
+	}*/
+	public Boolean isFreeBill(String billType)
+	{
+		if (billType.equals("free")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
+	
 }
