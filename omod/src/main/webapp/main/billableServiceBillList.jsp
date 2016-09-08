@@ -59,6 +59,38 @@
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery.PrintArea.js"></script>
 
+<%-- New Requirement add comment for Add Paid Bill/Add Free Bill --%>
+<script type="text/javascript">
+function validate(){
+	if (StringUtils.isBlank(jQuery("#comment").val())) {
+				alert("Please enter comment");
+				return false;
+			}	
+	else{
+	var patientId = ${patient.patientId};
+	var billType = "free";
+	var comment = jQuery("#comment").val();
+	window.location.href="addPatientServiceBill.form?patientId="+patientId+"&billType="+billType+"&comment="+comment;
+	}
+}
+</script>
+
+<script type="text/javascript">
+function givefree(){
+	 var patient_category = document.getElementById('pat');
+	    if(patient_category.value=="General"||patient_category.value=="Staff"){
+	    	jQuery("#commentField");
+			return validate();
+	}
+	else{
+		var comment = jQuery("#comment").val();
+		var patientId = ${patient.patientId};
+		var billType = "free";
+		window.location.href="addPatientServiceBill.form?patientId="+patientId+"&billType="+billType+"&comment="+comment;
+	  }    	
+	}
+</script>
+
 <!-- ghanshyam,11-nov-2013,New Requirement #2938 Dealing with Dead Patient -->
 <c:if test="${patient.dead eq '0'}">
 <p>
@@ -68,7 +100,12 @@
 			onclick="window.location.href='addPatientServiceBill.form?patientId=${patient.patientId}&billType=paid'" />
 	</td>
 		<td><input type="button" value="Add Free Bill" style="color: red"
-			onclick="window.location.href='addPatientServiceBill.form?patientId=${patient.patientId}&billType=free'" /></td>
+			onclick="givefree();" /></td>
+	
+		<td><span id="commentField">Comment <input id="comment"
+				name="comment" /> </span>
+	</td>
+		<input type="hidden" id="pat" value="${selectedCategory}">
 		</b>
 </p>
 </c:if>

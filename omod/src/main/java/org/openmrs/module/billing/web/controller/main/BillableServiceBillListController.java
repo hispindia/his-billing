@@ -88,7 +88,15 @@ public class BillableServiceBillListController {
 			model.addAttribute("listBill", billingService.listPatientServiceBillByPatient(pagingUtil.getStartPos(), pagingUtil.getPageSize(), patient));
 		
 			
-		
+			// New Requirement add comment for Add Paid Bill/Add Free Bill 
+						HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+						List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
+						for (PersonAttribute pa : pas) {
+							PersonAttributeType attributeType = pa.getAttributeType();
+							if (attributeType.getPersonAttributeTypeId() == 14) {
+								model.addAttribute("selectedCategory", pa.getValue());
+							}		   
+					       }
 		}
 		
 		if( billId != null ){
@@ -115,6 +123,7 @@ public class BillableServiceBillListController {
 
 	@RequestMapping(method=RequestMethod.POST)
 	public String onSubmit(@RequestParam("patientId") Integer patientId,
+			@RequestParam(value = "comment", required = false) String comment,
 			@RequestParam("billId") Integer billId){
 		BillingService billingService = (BillingService)Context.getService(BillingService.class);
 		PatientServiceBill bill = new PatientServiceBill();
@@ -158,6 +167,7 @@ public class BillableServiceBillListController {
         }
 	
 		bill.setPatientCategory(patientCategory);
+		bill.setComment(comment);
     	
 		return "redirect:/module/billing/patientServiceBill.list?patientId="+patientId;
 	}

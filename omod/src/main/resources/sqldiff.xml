@@ -362,7 +362,6 @@
 		</sql>
 	</diff>
 	
-	<!-- New Requirement capture voided_by ~wasib-->
 	<diff>
 	<version>3.1.8</version>
 		<author>Intern Work, reviewed by sagar</author>
@@ -421,7 +420,10 @@
 			`users` (`user_id`);
 			
 		ALTER TABLE billing_patient_service_bill
-			 ADD COLUMN `patient_category` varchar(100);						
+			 ADD COLUMN `patient_category` varchar(100);
+			 
+			 ALTER TABLE billing_patient_service_bill 
+		ADD COLUMN `comment` varchar(50);						
 		</sql>
 	</diff>
 </sqldiff>

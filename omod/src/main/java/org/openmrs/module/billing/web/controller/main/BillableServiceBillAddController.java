@@ -64,7 +64,8 @@ public class BillableServiceBillAddController {
 	private Log logger = LogFactory.getLog(getClass());
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public String viewForm( Model model, @RequestParam("patientId") Integer patientId){
+	public String viewForm( Model model, @RequestParam("patientId") Integer patientId,
+	@RequestParam(value = "comment", required = false) String comment){
 		BillingService billingService = Context.getService(BillingService.class);
 		List<BillableService> services = billingService.getAllServices();
     	Map<Integer, BillableService> mapServices = new HashMap<Integer, BillableService>();
@@ -81,7 +82,9 @@ public class BillableServiceBillAddController {
 	@RequestMapping(method=RequestMethod.POST)
 	//New Requirement add Paid bill & Free bill Both 
 	public String onSubmit(Model model,Object command, BindingResult bindingResult, HttpServletRequest request,
-	                       @RequestParam("cons") Integer[] cons,@RequestParam(value = "billType", required = false) String billType, @RequestParam("patientId") Integer patientId){
+	                       @RequestParam("cons") Integer[] cons,@RequestParam(value = "billType", required = false) String billType,
+	                       @RequestParam(value = "comment", required = false) String comment,
+	                       @RequestParam("patientId") Integer patientId){
 		validate(cons, bindingResult, request);		
 		if( bindingResult.hasErrors()){
 			model.addAttribute("errors", bindingResult.getAllErrors());
@@ -143,7 +146,7 @@ public class BillableServiceBillAddController {
 			bill.addBillItem(item);
 		}
 		
-		
+		bill.setComment(comment);
 		bill.setAmount(totalAmount.getAmount());	
 		bill.setActualAmount(totalActualAmount);
 		

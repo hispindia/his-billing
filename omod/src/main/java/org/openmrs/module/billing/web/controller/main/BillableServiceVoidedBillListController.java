@@ -20,16 +20,20 @@
 
 package org.openmrs.module.billing.web.controller.main;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.openmrs.Patient;
+import org.openmrs.PersonAttribute;
+import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculatorService;
 import org.openmrs.module.hospitalcore.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
+import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
 import org.openmrs.module.hospitalcore.util.HospitalCoreUtils;
 import org.openmrs.module.hospitalcore.util.PagingUtil;
@@ -71,10 +75,31 @@ public class BillableServiceVoidedBillListController {
 			model.addAttribute("patient", patient);
 			model.addAttribute("listBill", billingService.listPatientServiceBillByPatient(pagingUtil.getStartPos(), pagingUtil.getPageSize(), patient));
 		}
+		
+		// New Requirement add comment for Add Paid Bill/Add Free Bill 
+		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
+		for (PersonAttribute pa : pas) {
+			PersonAttributeType attributeType = pa.getAttributeType();
+			if (attributeType.getPersonAttributeTypeId() == 14) {
+				model.addAttribute("selectedCategory", pa.getValue());
+			}		   
+	       }
+		
 		if( billId != null ){
 			PatientServiceBill bill = billingService.getPatientServiceBillById(billId);			
 			// Requirement add Paid bill & Free bill Both
 			//bill.setFreeBill(calculator.isFreeBill(HospitalCoreUtils.buildParameters("attributes", attributes)));
+			if (bill.getFreeBill().equals(1)) {
+				String billType = "free";
+				bill.setFreeBill(calculator.isFreeBill(billType));
+			} else if (bill.getFreeBill().equals(2)) {
+				String billType = "mixed";
+				bill.setFreeBill(calculator.isFreeBill(billType));
+			} else {
+				String billType = "paid";
+				bill.setFreeBill(calculator.isFreeBill(billType));
+			}
 			model.addAttribute("bill", bill);
 		}
 		User user = Context.getAuthenticatedUser();
