@@ -69,8 +69,6 @@
 				</td>
 				<td><b>Birthdate</b>
 				</td>
-				<td><b>Relative Name</b>
-				</td>
 				<td><b>Phone number</b>
 				</td>
 			</tr>
@@ -95,20 +93,13 @@
 						</c:choose></td>
 					<td><openmrs:formatDate date="${patient.birthdate}" /></td>
 					<td>
-						<%
+						<%						
 						Patient patient = (Patient) pageContext.getAttribute("patient");
 						Map<Integer, Map<Integer, String>> attributes = (Map<Integer, Map<Integer, String>>) pageContext.findAttribute("attributeMap");						
-						Map<Integer, String> patientAttributes = (Map<Integer, String>) attributes.get(patient.getPatientId());						
-						String relativeName = patientAttributes.get(8); 
-						if(relativeName!=null)
-							out.print(relativeName);
-					%>
-					</td>
-					<td>
-						<%						
+						Map<Integer, String> patientAttributes = (Map<Integer, String>) attributes.get(patient.getPatientId());
 						String phoneNumber = patientAttributes.get(16);
 						if(phoneNumber!=null)
-							out.print(phoneNumber);					
+							out.print(phoneNumber);									
 					%>
 					</td>
 				</tr>
