@@ -140,6 +140,12 @@ function givefree(){
 					<td>${bill.description}</td>
 				</tr>
 			</c:if>
+			<c:if test="${bill.voided==true }">
+				<tr>
+					<td>Voided By:</td>
+					<td>${bill.voidedby.givenName}</td>
+				</tr>
+			</c:if>
 		</table>
 		<table width="100%" border="1">
 			<tr>  <!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --Adjust allignment in table-->
@@ -271,6 +277,12 @@ function givefree(){
 					<td>${bill.description}</td>
 				</tr>
 			</c:if>
+			<c:if test="${bill.voided==true }">
+				<tr>
+					<td>Voided By:</td>
+					<td>${bill.voidedby.givenName}</td>
+				</tr>
+			</c:if>
 		</table>
 		<table class="printfont"
 			style="margin-left: 60px; margin-top: 10px; font-family: 'Dot Matrix Normal', Arial, Helvetica, sans-serif; font-style: normal;"
@@ -345,6 +357,7 @@ function givefree(){
 			<th>#</th>
 			<th>Bill Name</th>
 			<th>Description</th>
+			<th>Voided By</th>
 			<th>Action</th>
 		</thead>
 		<c:forEach items="${listBill}" var="bill" varStatus="varStatus">
@@ -369,6 +382,9 @@ function givefree(){
 				</c:choose>
 				<td>
 					${bill.description}
+				</td>
+				<td>
+					${bill.voidedby.givenName}
 				</td>
 				<td class='<c:if test="${bill.voided}">retired </c:if>'>
 				<c:choose>

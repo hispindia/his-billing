@@ -354,6 +354,7 @@ function givefree(){
 			<th>#</th>
 			<th>Bill Name</th>
 			<th>Description</th>
+			<th>Voided By</th>
 			<th>Action</th>
 		</thead>
 		<c:forEach items="${listBill}" var="bill" varStatus="varStatus">
@@ -378,6 +379,9 @@ function givefree(){
 				</c:choose>
 				<td>
 					${bill.description}
+				</td>
+				<td>
+					${bill.voidedby.givenName}
 				</td>
 				<td class='<c:if test="${bill.voided}">retired </c:if>'>
 				<%-- ghanshyam Support #339 [Billing]print of void bill [3.2.7 snapshot][DDU,Mohali,Solan,Tanda,] --%>
