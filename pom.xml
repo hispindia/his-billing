@@ -5,7 +5,7 @@
 
 	<groupId>org.openmrs.module</groupId>
 	<artifactId>billing</artifactId>
-	<version>3.3.0</version>
+	<version>3.3.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Billing module</name>
 	<description>Parent project for billing</description>
