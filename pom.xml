@@ -23,13 +23,13 @@
             <repository>
                 <id>shimla-nexus</id>
                 <name>Shimla nexus repo</name>
-                <url>http://hospdev.hispindia.org/nexus/content/repositories/impart-releases/</url>
+                <url>http://hospdev.hispindia.org/nexus/content/repositories/intpart-releases/</url>
             </repository>
         <!-- use the following if you ARE using a snapshot version. -->
             <snapshotRepository>
                 <id>shimla-nexus</id>
                 <name>Shimla nexus repo</name>
-                <url>http://hospdev.hispindia.org/nexus/content/repositories/impart-snapshots/</url>
+                <url>http://hospdev.hispindia.org/nexus/content/repositories/intpart-snapshots/</url>
                 <uniqueVersion>false</uniqueVersion>
              </snapshotRepository>
     </distributionManagement>
