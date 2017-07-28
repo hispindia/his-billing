@@ -37,6 +37,6 @@ public class BillingHeader extends Extension {
 	}
 
 	public String getUrl() {
-		return "module/billing/main.form";
+		return "module/billing/outpatientbillingqueue.form";
 	}
 }

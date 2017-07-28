@@ -28,7 +28,13 @@
 	defaultValue="ddu" var="hospitalName" />
 <br />
 <p>
-	<b><a href="searchDriver.form"><spring:message
+	<b><a href="outpatientbillingqueue.form"><spring:message
+	code="billing.outpatient" />
+	</a>
+	</b>&nbsp; | &nbsp; <b><a href="main.form"><spring:message
+	code="billing.walkinpatient" />
+	</a>
+	</b>&nbsp; | &nbsp; <b><a href="searchDriver.form"><spring:message
 				code="billing.ambulance" />
 	</a>
 	</b>&nbsp; | &nbsp; <b><a href="searchCompany.form"><spring:message

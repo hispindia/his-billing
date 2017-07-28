@@ -124,6 +124,16 @@
 		<name>View Miscellaneous Service</name>
 		<description>Allows user to view Miscellaneous Service</description>
 	</privilege>
+	
+	<privilege>
+		<name>Test order queue</name>
+		<description>Allows user to process test order queue</description>
+	</privilege>
+	
+	<privilege>
+		<name>Billing queue Header</name>
+		<description>Allows user to view Billing Header</description>
+	</privilege>
 
 	<!-- Required Global Properties -->
 	<globalProperty>
