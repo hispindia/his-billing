@@ -86,12 +86,12 @@ public class BillCalculatorService implements BillCalculator {
 		}
 		return false;
 	}*/
-	public Boolean isFreeBill(String billType)
+	public int isFreeBill(String billType)
 	{
 		if (billType.equals("free")) {
-			return true;
+			return 1;
 		} else {
-			return false;
+			return 0;
 		}
 	}
 	

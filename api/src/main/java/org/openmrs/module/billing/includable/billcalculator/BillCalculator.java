@@ -40,5 +40,5 @@ public interface BillCalculator {
 	 */
 	// Requirement add Paid bill & Free bill Both 
 	//public boolean isFreeBill(Map<String, Object> parameters);
-	public Boolean isFreeBill(String billType);
+	public int isFreeBill(String billType);
 }

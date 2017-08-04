@@ -58,26 +58,7 @@
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery-ui-1.8.2.custom.min.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/jquery.PrintArea.js"></script>
-
-<script type="text/javascript">
-
-</script>
-
-<c:if test="${patient.dead eq '0'}">
-<p>
-	<b>
 	
-<td>
-<input type="button" value="Add Bill"
-			onclick="window.location.href='addPatientServiceBill.form?patientId=${patient.patientId}&billType=walkin'" />
-</td>
-<td>
-<input type="hidden" id="pat" value="${selectedCategory}">
-</td>
-</b>
-</p>
-</c:if>
-
 <c:forEach items="${errors}" var="error">
 	<span class="error"><spring:message
 			code="${error.defaultMessage}" text="${error.defaultMessage}" /> </span>
@@ -144,7 +125,7 @@
 				</tr>
 				</c:if>
 			</c:forEach>
-			<tr> <!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --Adjust allignment in table-->
+			<tr>
 				<td colspan="3" align='right'><b>Total</td>
 				<td align="right"><c:choose>
 						<c:when test="${not empty bill.actualAmount}">
@@ -180,6 +161,10 @@
 							${bill.amount}
 						</c:otherwise>
 					</c:choose></td>
+			</tr>
+			<tr>
+				<td colspan="3" align='right'><b>Total amount payable</td>
+				<td align='right'><b>${amountPayable}</td>
 			</tr>
 		</table>
 		<br>

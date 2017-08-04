@@ -80,11 +80,17 @@ public class BillableServiceBillAddController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
-	//New Requirement add Paid bill & Free bill Both 
 	public String onSubmit(Model model,Object command, BindingResult bindingResult, HttpServletRequest request,
-	                       @RequestParam("cons") Integer[] cons,@RequestParam(value = "billType", required = false) String billType,
+	                       @RequestParam("cons") Integer[] cons,
+	                       @RequestParam(value = "billType", required = false) String billType,
 	                       @RequestParam(value = "comment", required = false) String comment,
-	                       @RequestParam("patientId") Integer patientId){
+	                       @RequestParam("patientId") Integer patientId,
+	                       @RequestParam(value = "totalprice", required = false) float totalprice,
+	                       @RequestParam(value = "waiverPercentage", required = false) float waiverPercentage,
+	                       @RequestParam(value= "waiverComment", required = false) String waiverComment,
+	           			   @RequestParam(value = "totalAmountPayable", required = false) BigDecimal totalAmountPayable,
+	           			   @RequestParam(value = "amountGiven", required = false) Integer amountGiven,
+	           			   @RequestParam(value = "amountReturned", required = false) Integer amountReturned){
 		validate(cons, bindingResult, request);		
 		if( bindingResult.hasErrors()){
 			model.addAttribute("errors", bindingResult.getAllErrors());
@@ -139,7 +145,8 @@ public class BillableServiceBillAddController {
 			
 			// Get the ratio for each bill item
 			Map<String, Object> parameters = HospitalCoreUtils.buildParameters("patient", patient, "attributes", attributes, "billItem", item, "request", request);
-			BigDecimal rate = calculator.getRate(parameters,billType);	
+			//BigDecimal rate = calculator.getRate(parameters,billType);	
+			BigDecimal rate = new BigDecimal(1);
 			item.setActualAmount(item.getAmount().multiply(rate));
 			totalActualAmount = totalActualAmount.add(item.getActualAmount());
 			
@@ -149,13 +156,7 @@ public class BillableServiceBillAddController {
 		bill.setComment(comment);
 		bill.setAmount(totalAmount.getAmount());	
 		bill.setActualAmount(totalActualAmount);
-		
-		//New Requirement add Paid bill & Free bill Both 
-		/*bill.setFreeBill(calculator.isFreeBill(HospitalCoreUtils
-				.buildParameters("attributes", attributes)));
-		logger.info("Is free bill: " + bill.getFreeBill());*/
-		
-		//new requirement capture 'patient_category'
+	
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
 		String patientCategory = "";
@@ -167,9 +168,15 @@ public class BillableServiceBillAddController {
             	  bill.setPatientCategory(patientCategory);
             }
        }
-     //New Requirement add Paid bill & Free bill Both 
-       bill.setFreeBill(calculator.isFreeBill(billType));
-		logger.info("Is free bill: " + bill.getFreeBill());
+    
+		bill.setWaiverPercentage(waiverPercentage);
+		float waiverAmount=totalprice*waiverPercentage/100;
+		bill.setWaiverAmount(waiverAmount);
+		bill.setAmountPayable(totalAmountPayable);
+		bill.setAmountGiven(amountGiven);
+		bill.setAmountReturned(amountReturned);
+		bill.setComment(waiverComment);
+		bill.setBillType("walkin");
 		bill.setReceipt(billingService.createReceipt());
 		bill = billingService.savePatientServiceBill(bill);		
 		return "redirect:/module/billing/patientServiceBill.list?patientId="+patientId+"&billId="+bill.getPatientServiceBillId();

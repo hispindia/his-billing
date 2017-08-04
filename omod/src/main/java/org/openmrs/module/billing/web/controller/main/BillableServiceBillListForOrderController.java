@@ -48,15 +48,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  *
  */
-@Controller
-@RequestMapping("/module/billing/patientServiceBill.list")
-public class BillableServiceBillListController {
+@Controller("BillableServiceBillListForOrderController")
+@RequestMapping("/module/billing/patientServiceBillForOrder.list")
+public class BillableServiceBillListForOrderController {
 
 	@RequestMapping(method=RequestMethod.GET)
 	public String viewForm( Model model, @RequestParam("patientId") Integer patientId, @RequestParam(value="billId",required=false) Integer billId
 	                        ,@RequestParam(value="pageSize",required=false)  Integer pageSize,
 	                        @RequestParam(value = "encounterId", required = false) Integer encounterId,
-	                
 		                    @RequestParam(value="currentPage",required=false)  Integer currentPage,
 		                    HttpServletRequest request){
 		
@@ -65,21 +64,14 @@ public class BillableServiceBillListController {
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		Map<String, String> attributes = PatientUtils.getAttributes(patient);
 		BillCalculatorService calculator = new BillCalculatorService();		
-		//New Requirement add Paid bill & Free bill Both
-		//model.addAttribute("freeBill", calculator.isFreeBill(HospitalCoreUtils.buildParameters("attributes", attributes)));
-		
-        
+	
 		if( patient != null ){
-			
 			int total = billingService.countListPatientServiceBillByPatient(patient);
-			// ghanshyam 12-sept-2012 Bug #357 [billing][3.2.7-SNAPSHOT] Error screen appears on clicking next page or changing page size in list of bills
 			PagingUtil pagingUtil = new PagingUtil(RequestUtil.getCurrentLink(request), pageSize, currentPage, total, patientId);
 			model.addAttribute("pagingUtil", pagingUtil);
 			model.addAttribute("patient", patient);
 			model.addAttribute("listBill", billingService.listPatientServiceBillByPatient(pagingUtil.getStartPos(), pagingUtil.getPageSize(), patient));
 		
-			
-			// New Requirement add comment for Add Paid Bill/Add Free Bill 
 						HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 						List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
 						for (PersonAttribute pa : pas) {
@@ -90,15 +82,15 @@ public class BillableServiceBillListController {
 					       }
 		}
 		
+		PatientServiceBill bill = null;
 		if( billId != null ){
-			PatientServiceBill bill = billingService.getPatientServiceBillById(billId);			
+			bill = billingService.getPatientServiceBillById(billId);			
 						model.addAttribute("bill", bill);
 					}
 		User user = Context.getAuthenticatedUser();
-		
-		
-		model.addAttribute("canEdit", user.hasPrivilege(BillingConstants.PRIV_EDIT_BILL_ONCE_PRINTED) );		
-		return "/module/billing/main/billableServiceBillList";
+		model.addAttribute("canEdit", user.hasPrivilege(BillingConstants.PRIV_EDIT_BILL_ONCE_PRINTED) );	
+		model.addAttribute("amountPayable",bill.getAmountPayable());	
+		return "/module/billing/main/billableServiceBillListForOrder";
 	}
 
 	@RequestMapping(method=RequestMethod.POST)
@@ -113,7 +105,7 @@ public class BillableServiceBillListController {
     		Map<String, String> attributes = PatientUtils.getAttributes(patientServiceBill.getPatient());
 			BillCalculatorService calculator = new BillCalculatorService();
 			
-			patientServiceBill.setBillType("walkin");
+			patientServiceBill.setBillType("out");
 			
     		billingService.saveBillEncounterAndOrder(patientServiceBill);
     	}

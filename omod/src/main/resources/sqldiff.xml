@@ -308,7 +308,7 @@
 		</description>
 		<sql>
 			ALTER TABLE billing_patient_service_bill
-			ADD COLUMN `free_bill` bit(1)
+			ADD COLUMN `free_bill` varchar(11)
 			default NULL;
 
 			ALTER TABLE billing_patient_service_bill_item
@@ -424,6 +424,17 @@
 			 
 			 ALTER TABLE billing_patient_service_bill 
 		ADD COLUMN `comment` varchar(50);						
+		</sql>
+	</diff>
+	<diff>
+		<version>3.1.9</version>
+		<author>ghanshyan</author>
+		<date>July 31st 2017</date>
+		<description>
+			Alter billing_patient_service_bill
+		</description>
+		<sql>
+		ALTER TABLE billing_patient_service_bill ADD COLUMN(waiver_percetage float(11,2),waiver_amount float(11,2),amount_payable decimal(11,2),amount_given int(11),amount_returned int(11));
 		</sql>
 	</diff>
 </sqldiff>

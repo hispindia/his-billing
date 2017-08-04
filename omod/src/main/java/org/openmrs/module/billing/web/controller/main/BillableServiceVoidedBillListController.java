@@ -88,18 +88,6 @@ public class BillableServiceVoidedBillListController {
 		
 		if( billId != null ){
 			PatientServiceBill bill = billingService.getPatientServiceBillById(billId);			
-			// Requirement add Paid bill & Free bill Both
-			//bill.setFreeBill(calculator.isFreeBill(HospitalCoreUtils.buildParameters("attributes", attributes)));
-			if (bill.getFreeBill().equals(1)) {
-				String billType = "free";
-				bill.setFreeBill(calculator.isFreeBill(billType));
-			} else if (bill.getFreeBill().equals(2)) {
-				String billType = "mixed";
-				bill.setFreeBill(calculator.isFreeBill(billType));
-			} else {
-				String billType = "paid";
-				bill.setFreeBill(calculator.isFreeBill(billType));
-			}
 			model.addAttribute("bill", bill);
 		}
 		User user = Context.getAuthenticatedUser();

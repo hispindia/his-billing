@@ -35,11 +35,7 @@ public class BillCalculatorImpl implements BillCalculator {
 	public BigDecimal getRate(Map<String, Object> parameters, String billType) {
 		BigDecimal rate = new BigDecimal(0);
 		PatientServiceBillItem item = (PatientServiceBillItem) parameters.get("billItem");
-		
-		if (billType.equals("paid")) {
-			rate = new BigDecimal(1);
-		}
-		
+		rate = new BigDecimal(1);
 		return rate;
 	}
 	// Requirement add Paid bill & Free bill Both
@@ -47,8 +43,12 @@ public class BillCalculatorImpl implements BillCalculator {
 
 		return false;
 	}*/
-	public Boolean isFreeBill(String billType) {
+	public int isFreeBill(String billType) {
 
-		return false;
+		if (billType.equals("paid")) {
+			return 0;
+		}
+		
+		return 1;
 	}
 }

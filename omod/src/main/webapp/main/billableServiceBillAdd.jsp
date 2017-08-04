@@ -78,7 +78,7 @@ jQuery(document).ready(function(){
 		        
 		 	newElement.innerHTML = htmlText;
 
-	        var fieldsArea = document.getElementById('extra');
+	        var fieldsArea = document.getElementById('serviceDiv');
 			fieldsArea.appendChild(newElement);
 			var totalprice = parseFloat(document.getElementById('totalprice').value);
 			document.getElementById('totalprice').value = totalprice  + servicePrice;
@@ -145,6 +145,13 @@ jQuery(document).ready(function(){
 			}
 		}
 
+
+function totalAmountToPay(){
+var total=jQuery("#totalprice").val();
+var waiverPercentage=jQuery("#waiverPercentage").val();
+var totalAmountPay=total-(total*waiverPercentage)/100;
+jQuery("#totalAmountPayable").val(totalAmountPay);
+}
 </script>
 
 <!-- Right side div for bill collection -->
@@ -175,12 +182,40 @@ jQuery(document).ready(function(){
 
 		<div id="extra" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
+			<div id="serviceDiv" >
 			<input type='text' size='25' value='Service Name' readonly='readonly' />&nbsp;
 			<input type='text' size="3" value='Qty' readonly="readonly" />&nbsp;
 			<input type='text' size='5' value='Price' readonly="readonly" />&nbsp;</b>
 			<hr />
+			</div>
+		
+		<div id="waiverDiv"
+			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
+			<div>
+			Waiver Percentage&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="text" id="waiverPercentage" name="waiverPercentage"
+				size="11" value="0" onkeyup="totalAmountToPay();"/>
 		</div>
-
+		<div>
+		Total amount payable&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" id="totalAmountPayable" name="totalAmountPayable"
+				size="11" value="0" readOnly="true"/>
+		</div>
+		<div>
+		Waiver Number/Comment&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" id="waiverComment" name="waiverComment" size="11"/>
+		</div>
+		<div>
+		Amount Given&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" id="amountGiven" name="amountGiven" size="11"/>
+		</div>
+		<div>
+		Amount Returned to Patient&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" id="amountReturned" name="amountReturned" size="11"/>
+		</div>
+		</div>
+		
+		</div>
 
 	</form>
 </div>

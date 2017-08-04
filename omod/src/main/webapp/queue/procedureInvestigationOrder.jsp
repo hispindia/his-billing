@@ -27,7 +27,6 @@
 
 <script type="text/javascript">
 jQuery(document).ready(function(){
-$("#waiverCommentDiv").hide();
 $('.serquncalc').keyup(function() {
     var result = 0;
     $('#total').attr('value', function() {
@@ -56,12 +55,6 @@ jQuery("#savebill").hide();
  
 
 });
-
-
-function loadWaiverCommentDiv()
-{
-	$("#waiverCommentDiv").show();
-}
 </script>
 
 <script type="text/javascript">
@@ -127,6 +120,13 @@ else{
 
 }
 
+function totalAmountToPay(){
+var total=jQuery("#total").val();
+var waiverPercentage=jQuery("#waiverPercentage").val();
+var totalAmountPay=total-(total*waiverPercentage)/100;
+jQuery("#totalAmountPayable").val(totalAmountPay);
+}
+
 
 </script>
 
@@ -144,19 +144,6 @@ if (serqun==null || serqun=="")
   return false;
   }
 
-if( Number(jQuery("#total").val()) < Number(jQuery("#waiverAmount").val())){
-	alert("Please enter correct Waiver Amount");
-	return false;
-}
-if(isNaN(jQuery("#waiverAmount").val()) || jQuery("#waiverAmount").val() < 0 ){
-	alert("Please enter correct Waiver Amount");
-	return false;
-}
-if(jQuery("#waiverAmount").val()>0 && jQuery("#waiverComment").val() ==""){
-	alert("Please enter Waiver Number");
-	return false;
-}
-
 if (serqun!=null || quantity!=""){
    if(isNaN(serqun)){
    alert("Please enter quantity in correct format");
@@ -165,6 +152,42 @@ if (serqun!=null || quantity!=""){
    }  
   }
  }
+
+if(jQuery("#waiverPercentage").val() ==""){
+	alert("Please enter Waiver Percentage");
+	return false;
+}
+
+if(jQuery("#waiverPercentage").val() < 0 ){
+	alert("Please enter correct Waiver Percentage");
+	return false;
+}
+
+if(jQuery("#waiverPercentage").val()>0 && jQuery("#waiverComment").val() ==""){
+	alert("Please enter Waiver Number");
+	return false;
+}
+
+if(jQuery("#amountGiven").val() ==""){
+	alert("Please enter Amount Given");
+	return false;
+}
+
+if(jQuery("#amountGiven").val() < 0 || !StringUtils.isDigit(jQuery("#amountGiven").val())){
+	alert("Please enter correct Amount Given");
+	return false;
+}
+
+if(jQuery("#amountReturned").val() ==""){
+	alert("Please enter Amount Returned");
+	return false;
+}
+
+if(jQuery("#amountReturned").val() < 0 || !StringUtils.isDigit(jQuery("#amountReturned").val())){
+	alert("Please enter correct Amount Returned");
+	return false;
+}
+
 }
 
 </script>
@@ -189,7 +212,7 @@ if (serqun!=null || quantity!=""){
 		</tr>
 		<tr>
 			<td>Name:</td>
-			<td>${patientSearch.givenName}&nbsp;${patientSearch.familyName}&nbsp;${fn:replace(patientSearch.middleName,',',' ')}&nbsp;&nbsp;
+			<td>${patientSearch.givenName}&nbsp;${patientSearch.familyName}
 				</td>
 		</tr>
 		<tr>
@@ -283,9 +306,14 @@ if (serqun!=null || quantity!=""){
 				size="7" value="0" readOnly="true" /></td>
 		</tr>
 		<tr>
-			<td colspan="6" align="right">Waiver Amount</td>
-			<td align="right"><input type="text" id="waiverAmount" name="waiverAmount"
-				size="7" onblur="loadWaiverCommentDiv();" /></td>
+			<td colspan="6" align="right">Waiver Percentage</td>
+			<td align="right"><input type="text" id="waiverPercentage" name="waiverPercentage"
+				size="7" value="0" onkeyup="totalAmountToPay();"/></td>
+		</tr>
+		<tr>
+			<td colspan="6" align="right">Total amount payable</td>
+			<td align="right"><input type="text" id="totalAmountPayable" name="totalAmountPayable"
+				size="7" value="0" readOnly="true"/></td>
 		</tr>
 <!-- 
 		<tr>
@@ -296,11 +324,23 @@ if (serqun!=null || quantity!=""){
 				</select>
 			</td>
 		</tr>
- -->		
+ -->
+        <tr>
+			<td colspan="6" align="right">Waiver Number/Comment</td>
+			<td align="right"><input type="text" id="waiverComment" name="waiverComment" size="7"/></td>
+		</tr>
+		
+		<tr>
+			<td colspan="6" align="right">Amount Given</td>
+			<td align="right"><input type="text" id="amountGiven" name="amountGiven" size="7"/></td>
+		</tr>	
+		
+		<tr>
+			<td colspan="6" align="right">Amount Returned to Patient</td>
+			<td align="right"><input type="text" id="amountReturned" name="amountReturned" size="7"/></td>
+		</tr>			
 	</table>
-	<div align="right" id="waiverCommentDiv">
-	Waiver Number/Comment <input type="text" id="waiverComment" name="waiverComment"  size="20" />
-	</div>
+	
 	<tr>
 		<td><input type="submit" id="savebill" name="savebill"
 			value="Save Bill">

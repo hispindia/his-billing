@@ -195,11 +195,7 @@ public class BillableServiceBillEditController {
 								attributes, "billItem", item);
 				//New Requirement add Paid bill & Free bill Both 
 				BigDecimal rate;
-				if (bill.getFreeBill().equals(1)) {
-					String billType = "free";
-					rate = calculator.getRate(parameters, billType);
-				} else if (bill.getFreeBill().equals(2)) {
-					String billType = "mixed";
+					
 					PatientServiceBillItem patientServiceBillItem = billingService
 							.getPatientServiceBillItem(billId, name);
 					String psbi= patientServiceBillItem.getActualAmount().toString();
@@ -209,10 +205,7 @@ public class BillableServiceBillEditController {
 						rate = new BigDecimal(1);
 					}
 					item.setActualAmount(item.getAmount().multiply(rate));
-				}else {
-					String billType = "paid";
-					rate = calculator.getRate(parameters, billType);
-				}
+					
 				item.setAmount(itemAmount.getAmount());
 				item.setActualAmount(item.getAmount().multiply(rate));
 				totalActualAmount = totalActualAmount.add(item
@@ -234,11 +227,7 @@ public class BillableServiceBillEditController {
 								attributes, "billItem", item);
 				//New Requirement add Paid bill & Free bill Both 
 				BigDecimal rate = null;
-				if (bill.getFreeBill().equals(1)) {
-					String billType = "free";
-					bill.setFreeBill(calculator.isFreeBill(billType));
-				} else if (bill.getFreeBill().equals(2)) {
-					String billType = "mixed";
+	
 					PatientServiceBillItem patientServiceBillItem = billingService
 							.getPatientServiceBillItem(billId, name);
 					String psbi= patientServiceBillItem.getActualAmount().toString();
@@ -248,11 +237,7 @@ public class BillableServiceBillEditController {
 						rate = new BigDecimal(1);
 					}
 					item.setActualAmount(item.getAmount().multiply(rate));
-				}else {
-					String billType = "paid";
-					rate = calculator.getRate(parameters, billType);
-				}
-				//ghanshyam 5-oct-2012 [Billing - Support #344] [Billing] Edited Quantity and Amount information is lost in database
+
 				if(quantity!=item.getQuantity()){
 					item.setVoided(true);
 					item.setVoidedDate(new Date());
@@ -291,23 +276,8 @@ public class BillableServiceBillEditController {
 		bill.setAmount(totalAmount.getAmount());
 		bill.setActualAmount(totalActualAmount);
 
-		// Determine whether the bill is free or not
-		//New Requirement add Paid bill & Free bill Both 
-		if (bill.getFreeBill().equals(1)) {
-			String billType = "free";
-			bill.setFreeBill(calculator.isFreeBill(billType));
-		} else if (bill.getFreeBill().equals(2)) {
-			String billType = "mixed";
-			bill.setFreeBill(calculator.isFreeBill(billType));
-		} else {
-			String billType = "paid";
-			bill.setFreeBill(calculator.isFreeBill(billType));
-		}
-		
-		logger.info("Is free bill: " + bill.getFreeBill());
-
 		bill = billingService.savePatientServiceBill(bill);
-		//ghanshyam 7-sept-2012 Support #343 [Billing][3.2.7-SNAPSHOT]No Queue to be generated from Old bill
+		
 		return "redirect:/module/billing/patientServiceBillEdit.list?patientId="
 				+ patientId + "&billId=" + billId;
 		
