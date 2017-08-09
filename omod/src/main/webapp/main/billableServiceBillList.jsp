@@ -144,7 +144,7 @@
 				</tr>
 				</c:if>
 			</c:forEach>
-			<tr> <!-- Sept 22,2012 -- Sagar Bele -- Issue 387 --Adjust allignment in table-->
+			<tr>
 				<td colspan="3" align='right'><b>Total</td>
 				<td align="right"><c:choose>
 						<c:when test="${not empty bill.actualAmount}">
@@ -180,6 +180,10 @@
 							${bill.amount}
 						</c:otherwise>
 					</c:choose></td>
+			</tr>
+			<tr>
+				<td colspan="3" align='right'><b>Total amount payable</td>
+				<td align='right'><b>${amountPayable}</td>
 			</tr>
 		</table>
 		<br>

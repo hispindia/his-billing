@@ -93,6 +93,7 @@ public class BillableServiceBillListController {
 		if( billId != null ){
 			PatientServiceBill bill = billingService.getPatientServiceBillById(billId);			
 						model.addAttribute("bill", bill);
+						model.addAttribute("amountPayable",bill.getAmountPayable());
 					}
 		User user = Context.getAuthenticatedUser();
 		

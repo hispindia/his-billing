@@ -32,6 +32,8 @@
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/ui.tabs.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/common.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/moduleResources/hospitalcore/scripts/string-utils.js"></script>
 <link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/css/start/ui.tabs.css" />
 <script type="text/css" rel="stylesheet"
@@ -140,6 +142,42 @@ jQuery(document).ready(function(){
 			}else if(! jQuery("input[type='checkbox']","div#extra").length ) {
 				alert("Please select item for billing");
 			}else {
+				
+				if(jQuery("#waiverPercentage").val() ==""){
+	            alert("Please enter Waiver Percentage");
+	            return false;
+                }
+
+                if(jQuery("#waiverPercentage").val() < 0 ){
+	            alert("Please enter correct Waiver Percentage");
+	            return false;
+                }
+
+                if(jQuery("#waiverPercentage").val()>0 && jQuery("#waiverComment").val() ==""){
+	            alert("Please enter Waiver Number");
+	            return false;
+                }
+
+                if(jQuery("#amountGiven").val() ==""){
+	            alert("Please enter Amount Given");
+	            return false;
+                }
+
+                if(jQuery("#amountGiven").val() < 0 || !StringUtils.isDigit(jQuery("#amountGiven").val())){
+	            alert("Please enter correct Amount Given");
+	            return false;
+                }
+
+                if(jQuery("#amountReturned").val() ==""){
+	            alert("Please enter Amount Returned");
+	            return false;
+                }
+
+                if(jQuery("#amountReturned").val() < 0 || !StringUtils.isDigit(jQuery("#amountReturned").val())){
+	            alert("Please enter correct Amount Returned");
+	            return false;
+                }
+                
 				jQuery("#subm").attr("disabled", "disabled");
 				jQuery("#billForm").submit();
 			}
