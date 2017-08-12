@@ -124,7 +124,8 @@ function totalAmountToPay(){
 var total=jQuery("#total").val();
 var waiverPercentage=jQuery("#waiverPercentage").val();
 var totalAmountPay=total-(total*waiverPercentage)/100;
-jQuery("#totalAmountPayable").val(totalAmountPay);
+var tap=Math.round(totalAmountPay);
+jQuery("#totalAmountPayable").val(tap);
 }
 
 
@@ -154,19 +155,21 @@ if (serqun!=null || quantity!=""){
  }
 
 if(jQuery("#waiverPercentage").val() ==""){
-	alert("Please enter Waiver Percentage");
+	alert("Please enter Discount Percentage");
 	return false;
 }
 
 if(jQuery("#waiverPercentage").val() < 0 ){
-	alert("Please enter correct Waiver Percentage");
+	alert("Please enter correct Discount Percentage");
 	return false;
 }
 
+/*
 if(jQuery("#waiverPercentage").val()>0 && jQuery("#waiverComment").val() ==""){
-	alert("Please enter Waiver Number");
+	alert("Please enter comment");
 	return false;
 }
+*/
 
 if(jQuery("#amountGiven").val() ==""){
 	alert("Please enter Amount Given");
@@ -188,6 +191,13 @@ if(jQuery("#amountReturned").val() < 0 || !StringUtils.isDigit(jQuery("#amountRe
 	return false;
 }
 
+}
+
+function amountReturnedToPatient(){
+var totalAmountToPay=jQuery("#totalAmountPayable").val();
+var amountGiven=jQuery("#amountGiven").val();
+var amountReturned=amountGiven-totalAmountToPay;
+jQuery("#amountReturned").val(amountReturned);
 }
 
 </script>
@@ -306,7 +316,7 @@ if(jQuery("#amountReturned").val() < 0 || !StringUtils.isDigit(jQuery("#amountRe
 				size="7" value="0" readOnly="true" /></td>
 		</tr>
 		<tr>
-			<td colspan="6" align="right">Waiver Percentage</td>
+			<td colspan="6" align="right">Discount %</td>
 			<td align="right"><input type="text" id="waiverPercentage" name="waiverPercentage"
 				size="7" value="0" onkeyup="totalAmountToPay();"/></td>
 		</tr>
@@ -326,18 +336,18 @@ if(jQuery("#amountReturned").val() < 0 || !StringUtils.isDigit(jQuery("#amountRe
 		</tr>
  -->
         <tr>
-			<td colspan="6" align="right">Waiver Number/Comment</td>
+			<td colspan="6" align="right">Comment</td>
 			<td align="right"><input type="text" id="waiverComment" name="waiverComment" size="7"/></td>
 		</tr>
 		
 		<tr>
 			<td colspan="6" align="right">Amount Given</td>
-			<td align="right"><input type="text" id="amountGiven" name="amountGiven" size="7"/></td>
+			<td align="right"><input type="text" id="amountGiven" name="amountGiven" size="7"/ onkeyup="amountReturnedToPatient();"></td>
 		</tr>	
 		
 		<tr>
 			<td colspan="6" align="right">Amount Returned to Patient</td>
-			<td align="right"><input type="text" id="amountReturned" name="amountReturned" size="7"/></td>
+			<td align="right"><input type="text" id="amountReturned" name="amountReturned" size="7" readOnly="true"/></td>
 		</tr>			
 	</table>
 	

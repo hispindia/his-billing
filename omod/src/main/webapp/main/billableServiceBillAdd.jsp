@@ -144,19 +144,21 @@ jQuery(document).ready(function(){
 			}else {
 				
 				if(jQuery("#waiverPercentage").val() ==""){
-	            alert("Please enter Waiver Percentage");
+	            alert("Please enter Discount Percentage");
 	            return false;
                 }
 
                 if(jQuery("#waiverPercentage").val() < 0 ){
-	            alert("Please enter correct Waiver Percentage");
+	            alert("Please enter correct Discount Percentage");
 	            return false;
                 }
 
-                if(jQuery("#waiverPercentage").val()>0 && jQuery("#waiverComment").val() ==""){
-	            alert("Please enter Waiver Number");
+                
+                /*if(jQuery("#waiverPercentage").val()>0 && jQuery("#waiverComment").val() ==""){
+	            alert("Please enter comment");
 	            return false;
                 }
+                */
 
                 if(jQuery("#amountGiven").val() ==""){
 	            alert("Please enter Amount Given");
@@ -188,7 +190,15 @@ function totalAmountToPay(){
 var total=jQuery("#totalprice").val();
 var waiverPercentage=jQuery("#waiverPercentage").val();
 var totalAmountPay=total-(total*waiverPercentage)/100;
-jQuery("#totalAmountPayable").val(totalAmountPay);
+var tap=Math.round(totalAmountPay);
+jQuery("#totalAmountPayable").val(tap);
+}
+
+function amountReturnedToPatient(){
+var totalAmountToPay=jQuery("#totalAmountPayable").val();
+var amountGiven=jQuery("#amountGiven").val();
+var amountReturned=amountGiven-totalAmountToPay;
+jQuery("#amountReturned").val(amountReturned);
 }
 </script>
 
@@ -230,9 +240,10 @@ jQuery("#totalAmountPayable").val(totalAmountPay);
 		<div id="waiverDiv"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
 			<div>
-			Waiver Percentage&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			Discount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="text" id="waiverPercentage" name="waiverPercentage"
-				size="11" value="0" onkeyup="totalAmountToPay();"/>
+				size="11" value="0" onkeyup="totalAmountToPay();"/>%
 		</div>
 		<div>
 		Total amount payable&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -240,16 +251,17 @@ jQuery("#totalAmountPayable").val(totalAmountPay);
 				size="11" value="0" readOnly="true"/>
 		</div>
 		<div>
-		Waiver Number/Comment&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		Comment&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="text" id="waiverComment" name="waiverComment" size="11"/>
 		</div>
 		<div>
 		Amount Given&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="text" id="amountGiven" name="amountGiven" size="11"/>
+		<input type="text" id="amountGiven" name="amountGiven" size="11"/ onkeyup="amountReturnedToPatient();">
 		</div>
 		<div>
 		Amount Returned to Patient&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="text" id="amountReturned" name="amountReturned" size="11"/>
+		<input type="text" id="amountReturned" name="amountReturned" size="11" readOnly="true"/>
 		</div>
 		</div>
 		

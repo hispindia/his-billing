@@ -182,8 +182,12 @@
 					</c:choose></td>
 			</tr>
 			<tr>
+				<td colspan="3" align='right'><b>Discount</td>
+				<td align='right'><b>${bill.waiverPercentage}0 %</td>
+			</tr>
+			<tr>
 				<td colspan="3" align='right'><b>Total amount payable</td>
-				<td align='right'><b>${amountPayable}</td>
+				<td align='right'><b>${bill.amountPayable}</td>
 			</tr>
 		</table>
 		<br>
@@ -281,6 +285,14 @@
 						<td align="right">${bill.actualAmount}</td>
 					</c:otherwise>
 				</c:choose>
+			</tr>
+			<tr>
+				<td colspan="3" align='right'><b>Discount</td>
+				<td align='right'><b>${bill.waiverPercentage}0 %</td>
+			</tr>
+			<tr>
+				<td colspan="3" align='right'><b>Total amount payable</td>
+				<td align='right'><b>${bill.amountPayable}</td>
 			</tr>
 		</table>
 		<br> <span class="printfont" style="margin-left: 60px;">Total

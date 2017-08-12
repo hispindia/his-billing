@@ -89,7 +89,6 @@ public class BillableServiceBillListForOrderController {
 					}
 		User user = Context.getAuthenticatedUser();
 		model.addAttribute("canEdit", user.hasPrivilege(BillingConstants.PRIV_EDIT_BILL_ONCE_PRINTED) );	
-		model.addAttribute("amountPayable",bill.getAmountPayable());	
 		return "/module/billing/main/billableServiceBillListForOrder";
 	}
 
