@@ -342,7 +342,7 @@ jQuery("#amountReturned").val(amountReturned);
 		
 		<tr>
 			<td colspan="6" align="right">Amount Given</td>
-			<td align="right"><input type="text" id="amountGiven" name="amountGiven" size="7"/ onkeyup="amountReturnedToPatient();"></td>
+			<td align="right"><input type="text" id="amountGiven" name="amountGiven" size="7" onkeyup="amountReturnedToPatient();"></td>
 		</tr>	
 		
 		<tr>
