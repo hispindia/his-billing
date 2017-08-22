@@ -155,6 +155,17 @@ jQuery(document).ready(function(){
 		        var totalprice = parseFloat(document.getElementById('totalprice').value);
 		        document.getElementById('totalprice').value = totalprice  - removevalue;
 		        document.getElementById('box_'+conceptId).style.backgroundColor="#FCCFFF";
+		        
+		        var total=jQuery("#totalprice").val();
+                var waiverPercentage=jQuery("#waiverPercentage").val();
+                var totalAmountPay=total-(total*waiverPercentage)/100;
+                var tap=Math.round(totalAmountPay);
+                jQuery("#totalAmountPayable").val(tap);
+                
+                var totalAmountToPay=jQuery("#totalAmountPayable").val();
+                var amountGiven=jQuery("#amountGiven").val();
+                var amountReturned=amountGiven-totalAmountToPay;
+                jQuery("#amountReturned").val(amountReturned);
 		   }
 		   else {
 		        alert("Element has already been removed or does not exist.");

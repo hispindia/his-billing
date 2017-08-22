@@ -91,20 +91,9 @@ function givefree(){
 	}
 </script>
 
-<!-- ghanshyam,11-nov-2013,New Requirement #2938 Dealing with Dead Patient -->
 <c:if test="${patient.dead eq '0'}">
 <p>
 	<b>
-	<%-- New Requirement add Paid bill & Free bill Both  --%>
-<td><input type="button" value="Add Paid Bill"
-			onclick="window.location.href='addPatientServiceBill.form?patientId=${patient.patientId}&billType=paid'" />
-	</td>
-		<td><input type="button" value="Add Free Bill" style="color: red"
-			onclick="givefree();" /></td>
-	
-		<td><span id="commentField">Comment <input id="comment"
-				name="comment" /> </span>
-	</td>
 		<input type="hidden" id="pat" value="${selectedCategory}">
 		</b>
 </p>
@@ -213,6 +202,25 @@ function givefree(){
 							${bill.amount}
 						</c:otherwise>
 					</c:choose></td>
+			</tr>
+			<tr>
+				<td colspan="3" align='right'><b>Discount</td>
+				<td align='right'><b>${bill.waiverPercentage}0 %</td>
+			</tr>
+			<tr>
+				<td colspan="3" align='right'><b>Total amount payable</td>
+				<td align='right'>
+				<c:choose>
+				<c:when test="${bill.voided==true }">
+				<span style="text-decoration: line-through;">
+				<b>${bill.amountPayable}</b>
+				</span>
+				</c:when>
+				<c:otherwise>
+				<b>${bill.amountPayable}</b>
+				</c:otherwise>
+				</c:choose>
+				</td>
 			</tr>
 		</table>
 		<br>
@@ -404,8 +412,7 @@ function givefree(){
 	</table>
 </c:if>
 
-<input type="hidden" id="total"
-	value="<c:choose><c:when test="${bill.freeBill == true}">zero</c:when><c:otherwise>${bill.amount}</c:otherwise></c:choose>">
+<input type="hidden" id="total" value="${bill.amount}">
 
 <script>
 	function printDiv() {
