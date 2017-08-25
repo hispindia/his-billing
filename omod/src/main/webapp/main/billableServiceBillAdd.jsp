@@ -88,11 +88,22 @@ jQuery(document).ready(function(){
 			var serName = jQuery("#"+conceptId+"_name").val();
 			serName = serName.replace("#","\'");
 			jQuery("#"+conceptId+"_name").val(serName);
+			
+			var total=jQuery("#totalprice").val();
+            var waiverPercentage=jQuery("#waiverPercentage").val();
+            var totalAmountPay=total-(total*waiverPercentage)/100;
+            var tap=Math.round(totalAmountPay);
+            jQuery("#totalAmountPayable").val(tap);
+
+            var totalAmountToPay=tap;
+            var amountGiven=jQuery("#amountGiven").val();
+            var amountReturned=amountGiven-totalAmountToPay;
+            jQuery("#amountReturned").val(amountReturned);
 		}
 	}
 	
 		function deleteInput( conceptId, serviceName, servicePrice,  qty) {
-			var parentDiv = 'extra';
+			var parentDiv = 'serviceDiv';
 			servicePrice = parseInt(servicePrice);
 		   if (conceptId == parentDiv) {
 		        alert("The parent Element cannot be removed.");
@@ -105,6 +116,17 @@ jQuery(document).ready(function(){
 		        var totalprice = parseFloat(document.getElementById('totalprice').value);
 		        document.getElementById('totalprice').value = totalprice  - removevalue;
 		        document.getElementById('box_'+conceptId).style.backgroundColor="#FCCFFF";
+		        
+		        var total=jQuery("#totalprice").val();
+                var waiverPercentage=jQuery("#waiverPercentage").val();
+                var totalAmountPay=total-(total*waiverPercentage)/100;
+                var tap=Math.round(totalAmountPay);
+                jQuery("#totalAmountPayable").val(tap);
+
+                var totalAmountToPay=tap;
+                var amountGiven=jQuery("#amountGiven").val();
+                var amountReturned=amountGiven-totalAmountToPay;
+                jQuery("#amountReturned").val(amountReturned);
 		   }
 		   else {
 		        alert("Element has already been removed or does not exist.");
@@ -139,7 +161,7 @@ jQuery(document).ready(function(){
 			});
 			if( !ok ) {
 				alert("Please enter valid quantity!!!");
-			}else if(! jQuery("input[type='checkbox']","div#extra").length ) {
+			}else if(! jQuery("input[type='checkbox']","div#serviceDiv").length ) {
 				alert("Please select item for billing");
 			}else {
 				
@@ -248,7 +270,7 @@ jQuery("#amountReturned").val(amountReturned);
 		<div>
 		Total amount payable&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="text" id="totalAmountPayable" name="totalAmountPayable"
-				size="11" value="0" readOnly="true"/>
+				size="11" readOnly="true"/>
 		</div>
 		<div>
 		Comment&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

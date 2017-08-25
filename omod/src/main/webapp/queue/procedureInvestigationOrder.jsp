@@ -35,6 +35,18 @@ $('.serquncalc').keyup(function() {
                 result += parseInt($(this).val());
             }
         });
+        
+        var total=result;
+        var waiverPercentage=jQuery("#waiverPercentage").val();
+        var totalAmountPay=total-(total*waiverPercentage)/100;
+        var tap=Math.round(totalAmountPay);
+        jQuery("#totalAmountPayable").val(tap);
+        
+        var totalAmountToPay=tap;
+        var amountGiven=jQuery("#amountGiven").val();
+        var amountReturned=amountGiven-totalAmountToPay;
+        jQuery("#amountReturned").val(amountReturned);
+        
         return result;
     });
 });
@@ -50,6 +62,8 @@ jQuery("#savebill").hide();
                 result += parseInt($(this).val());
             }
         });
+         var tap=Math.round(result);
+         jQuery("#totalAmountPayable").val(tap);
         return result;
     });
  
@@ -83,6 +97,15 @@ if(jQuery("#"+icon+"selectservice").attr('checked')) {
   var toBeAdded = $("#"+icon+"serviceprice").val();
   var added =  parseInt(totalValue,10) +   parseInt(toBeAdded,10);
   $('#total').val(added);
+  
+  var total=added;
+  var waiverPercentage=jQuery("#waiverPercentage").val();
+  var totalAmountPay=total-(total*waiverPercentage)/100;
+  var tap=Math.round(totalAmountPay);
+  jQuery("#totalAmountPayable").val(tap);
+  var amountGiven=jQuery("#amountGiven").val();
+  var amountReturned=amountGiven-tap;
+  jQuery("#amountReturned").val(amountReturned);
 } 
 else{
  jQuery("#"+icon+"servicequantity").attr("disabled", "disabled"); 
@@ -91,7 +114,23 @@ else{
  var totalValue = $("#total").val();
  var toBeMinus = $("#"+icon+"serviceprice").val();
  var left = totalValue - toBeMinus;
+ var total=0;
+ if(left>0){
  $('#total').val(left);
+ total=left;
+ }
+ else{
+  $('#total').val(0);
+  total=0;
+ }
+ 
+  var waiverPercentage=jQuery("#waiverPercentage").val();
+  var totalAmountPay=total-(total*waiverPercentage)/100;
+  var tap=Math.round(totalAmountPay);
+  jQuery("#totalAmountPayable").val(tap);
+  var amountGiven=jQuery("#amountGiven").val();
+  var amountReturned=amountGiven-tap;
+  jQuery("#amountReturned").val(amountReturned);
 }
 
 }
@@ -107,28 +146,36 @@ if(jQuery("#"+icon+"paybill").attr('checked')) {
   var toBeAdded = $("#"+icon+"serviceprice").val();
   var added =  parseInt(totalValue,10) +   parseInt(toBeAdded,10);
   $('#total').val(added);
+  
+  var total=jQuery("#total").val();
+  var waiverPercentage=jQuery("#waiverPercentage").val();
+  var totalAmountPay=total-(total*waiverPercentage)/100;
+  var tap=Math.round(totalAmountPay);
+  jQuery("#totalAmountPayable").val(tap);
+  var amountGiven=jQuery("#amountGiven").val();
+  var amountReturned=amountGiven-tap;
+  jQuery("#amountReturned").val(amountReturned);
    
 } 
 else{
- var totalValue = $("#total").val();
- var toBeMinus = $("#"+icon+"serviceprice").val();
- var left = totalValue - toBeMinus;
- $('#total').val(left);
- jQuery("#"+icon+"serviceprice").attr("disabled", "disabled"); 
+  var totalValue = $("#total").val();
+  var toBeMinus = $("#"+icon+"serviceprice").val();
+  var left = totalValue - toBeMinus;
+  $('#total').val(left);
+  jQuery("#"+icon+"serviceprice").attr("disabled", "disabled");
+ 
+  var total=jQuery("#total").val();
+  var waiverPercentage=jQuery("#waiverPercentage").val();
+  var totalAmountPay=total-(total*waiverPercentage)/100;
+  var tap=Math.round(totalAmountPay);
+  jQuery("#totalAmountPayable").val(tap);
+  var amountGiven=jQuery("#amountGiven").val();
+  var amountReturned=amountGiven-tap;
+  jQuery("#amountReturned").val(amountReturned); 
 }
 
 
 }
-
-function totalAmountToPay(){
-var total=jQuery("#total").val();
-var waiverPercentage=jQuery("#waiverPercentage").val();
-var totalAmountPay=total-(total*waiverPercentage)/100;
-var tap=Math.round(totalAmountPay);
-jQuery("#totalAmountPayable").val(tap);
-}
-
-
 </script>
 
 <script type="text/javascript">
@@ -191,6 +238,18 @@ if(jQuery("#amountReturned").val() < 0 || !StringUtils.isDigit(jQuery("#amountRe
 	return false;
 }
 
+}
+
+
+function totalAmountToPay(){
+var total=jQuery("#total").val();
+var waiverPercentage=jQuery("#waiverPercentage").val();
+var totalAmountPay=total-(total*waiverPercentage)/100;
+var tap=Math.round(totalAmountPay);
+jQuery("#totalAmountPayable").val(tap);
+var amountGiven=jQuery("#amountGiven").val();
+var amountReturned=amountGiven-tap;
+jQuery("#amountReturned").val(amountReturned);
 }
 
 function amountReturnedToPatient(){
@@ -323,7 +382,7 @@ jQuery("#amountReturned").val(amountReturned);
 		<tr>
 			<td colspan="6" align="right">Total amount payable</td>
 			<td align="right"><input type="text" id="totalAmountPayable" name="totalAmountPayable"
-				size="7" value="0" readOnly="true"/></td>
+				size="7" readOnly="true"/></td>
 		</tr>
 <!-- 
 		<tr>
