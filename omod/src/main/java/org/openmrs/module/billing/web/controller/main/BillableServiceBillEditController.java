@@ -93,7 +93,13 @@ public class BillableServiceBillEditController {
 			@RequestParam("patientId") Integer patientId,
 			@RequestParam("billId") Integer billId,
 			@RequestParam("action") String action,
-			@RequestParam(value = "description", required = false) String description) {
+			@RequestParam(value = "description", required = false) String description,
+			@RequestParam(value = "totalprice", required = false) float totalprice,
+		    @RequestParam(value = "waiverPercentage", required = false) float waiverPercentage,
+            @RequestParam(value= "waiverComment", required = false) String waiverComment,
+			@RequestParam(value = "totalAmountPayable", required = false) BigDecimal totalAmountPayable,
+			@RequestParam(value = "amountGiven", required = false) Integer amountGiven,
+			@RequestParam(value = "amountReturned", required = false) Integer amountReturned){
 
 		validate(cons, bindingResult, request);
 		if (bindingResult.hasErrors()) {
@@ -275,6 +281,14 @@ public class BillableServiceBillEditController {
 		}
 		bill.setAmount(totalAmount.getAmount());
 		bill.setActualAmount(totalActualAmount);
+		
+		bill.setWaiverPercentage(waiverPercentage);
+		float waiverAmount=totalprice*waiverPercentage/100;
+		bill.setWaiverAmount(waiverAmount);
+		bill.setAmountPayable(totalAmountPayable);
+		bill.setAmountGiven(amountGiven);
+		bill.setAmountReturned(amountReturned);
+		bill.setComment(waiverComment);
 
 		bill = billingService.savePatientServiceBill(bill);
 		
