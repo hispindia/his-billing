@@ -80,7 +80,7 @@ jQuery(document).ready(function(){
 		        
 		 	newElement.innerHTML = htmlText;
 
-	        var fieldsArea = document.getElementById('serviceDiv');
+	        var fieldsArea = document.getElementById('extra');
 			fieldsArea.appendChild(newElement);
 			var totalprice = parseFloat(document.getElementById('totalprice').value);
 			document.getElementById('totalprice').value = totalprice  + servicePrice;
@@ -103,7 +103,7 @@ jQuery(document).ready(function(){
 	}
 	
 		function deleteInput( conceptId, serviceName, servicePrice,  qty) {
-			var parentDiv = 'serviceDiv';
+			var parentDiv = 'extra';
 			servicePrice = parseInt(servicePrice);
 		   if (conceptId == parentDiv) {
 		        alert("The parent Element cannot be removed.");
@@ -161,7 +161,7 @@ jQuery(document).ready(function(){
 			});
 			if( !ok ) {
 				alert("Please enter valid quantity!!!");
-			}else if(! jQuery("input[type='checkbox']","div#serviceDiv").length ) {
+			}else if(! jQuery("input[type='checkbox']","div#extra").length ) {
 				alert("Please select item for billing");
 			}else {
 				
@@ -214,6 +214,9 @@ var waiverPercentage=jQuery("#waiverPercentage").val();
 var totalAmountPay=total-(total*waiverPercentage)/100;
 var tap=Math.round(totalAmountPay);
 jQuery("#totalAmountPayable").val(tap);
+var amountGiven=jQuery("#amountGiven").val();
+var amountReturned=amountGiven-tap;
+jQuery("#amountReturned").val(amountReturned);
 }
 
 function amountReturnedToPatient(){
@@ -252,7 +255,6 @@ jQuery("#amountReturned").val(amountReturned);
 
 		<div id="extra" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
-			<div id="serviceDiv" >
 			<input type='text' size='25' value='Service Name' readonly='readonly' />&nbsp;
 			<input type='text' size="3" value='Qty' readonly="readonly" />&nbsp;
 			<input type='text' size='5' value='Price' readonly="readonly" />&nbsp;</b>
@@ -265,7 +267,7 @@ jQuery("#amountReturned").val(amountReturned);
 			Discount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="text" id="waiverPercentage" name="waiverPercentage"
-				size="11" value="0" onkeyup="totalAmountToPay();"/>%
+				size="11" class="cancelDraggable" value="0" onkeyup="totalAmountToPay();"/>%
 		</div>
 		<div>
 		Total amount payable&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -275,18 +277,16 @@ jQuery("#amountReturned").val(amountReturned);
 		<div>
 		Comment&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="text" id="waiverComment" name="waiverComment" size="11"/>
+		<input type="text" id="waiverComment" name="waiverComment" size="11" class="cancelDraggable"/>
 		</div>
 		<div>
 		Amount Given&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="text" id="amountGiven" name="amountGiven" size="11" onkeyup="amountReturnedToPatient();">
+		<input type="text" id="amountGiven" name="amountGiven" size="11" class="cancelDraggable" onkeyup="amountReturnedToPatient();"/>
 		</div>
 		<div>
 		Amount Returned to Patient&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="text" id="amountReturned" name="amountReturned" size="11" readOnly="true"/>
 		</div>
-		</div>
-		
 		</div>
 
 	</form>

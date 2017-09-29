@@ -76,6 +76,10 @@
 					${patient.familyName}</td>
 			</tr>
 			<tr>
+			<td>Patient Category:</td>
+			<td>${category} - ${subCategory.name}</td>
+		    </tr>
+			<tr>
 				<td>Date:</td>
 				<td><openmrs:formatDate date="${bill.createdDate}"
 						type="textbox" /></td>
@@ -218,6 +222,10 @@
 				<td colspan="3">${patient.givenName}&nbsp;&nbsp;${patient.middleName}&nbsp;&nbsp;
 					${patient.familyName}</td>
 			</tr>
+			<tr>
+			<td>Patient Category:</td>
+			<td>${category} - ${subCategory.name}</td>
+		    </tr>
 			<tr>
 				<td>Date:</td>
 				<td align="left"><openmrs:formatDate date="${bill.createdDate}"

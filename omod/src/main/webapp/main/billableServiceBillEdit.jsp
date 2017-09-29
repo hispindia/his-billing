@@ -259,6 +259,9 @@ jQuery(document).ready(function(){
         var totalAmountPay=total-(total*waiverPercentage)/100;
         var tap=Math.round(totalAmountPay);
         jQuery("#totalAmountPayable").val(tap);
+        var amountGiven=jQuery("#amountGiven").val();
+        var amountReturned=amountGiven-tap;
+        jQuery("#amountReturned").val(amountReturned);
         }
 
         function amountReturnedToPatient(){

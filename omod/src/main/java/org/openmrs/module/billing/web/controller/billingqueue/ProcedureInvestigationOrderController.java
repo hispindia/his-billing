@@ -24,11 +24,15 @@
 package org.openmrs.module.billing.web.controller.billingqueue;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.math.NumberUtils;
+import org.openmrs.Concept;
+import org.openmrs.ConceptAnswer;
 import org.openmrs.Patient;
 import org.openmrs.PersonAttribute;
 import org.openmrs.PersonAttributeType;
@@ -69,7 +73,6 @@ public class ProcedureInvestigationOrderController {
 		PatientSearch patientSearch = hospitalCoreService.getPatientByPatientId(patientId);
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		model.addAttribute("age",patient.getAge());
-		model.addAttribute("category",patient.getAttribute(14));
 		model.addAttribute("fileNumber",patient.getAttribute(43));
 		if(patient.getGender().equals("M"))
 		{
@@ -82,6 +85,35 @@ public class ProcedureInvestigationOrderController {
 
 		model.addAttribute("patientSearch", patientSearch);
 		model.addAttribute("date", dateStr);
+		
+		List<PersonAttribute> pas = hospitalCoreService.getPersonAttributes(patientId);
+		Concept conceptPaidCategory=Context.getConceptService().getConceptByName("Paid Category");
+		Collection<ConceptAnswer> cpcAns=conceptPaidCategory.getAnswers();
+		List<String> conceptListForPaidCategory = new ArrayList<String>();
+		for(ConceptAnswer cpc:cpcAns){
+			conceptListForPaidCategory.add(cpc.getAnswerConcept().getId().toString());
+		}
+		
+		Concept conceptPrograms=Context.getConceptService().getConceptByName("Programs");
+		Collection<ConceptAnswer> cpAns=conceptPrograms.getAnswers();
+		List<String> conceptListForPrograms = new ArrayList<String>();
+		for(ConceptAnswer cp:cpAns){
+			conceptListForPrograms.add(cp.getAnswerConcept().getId().toString());
+		}
+		
+		for (PersonAttribute pa : pas) {
+			PersonAttributeType attributeType = pa.getAttributeType();
+			if (attributeType.getPersonAttributeTypeId() == 14 && conceptListForPaidCategory.contains(pa.getValue())) {
+				model.addAttribute("selectedCategory", pa.getValue());
+				model.addAttribute("category", "Paid Category");
+				model.addAttribute("subCategory", Context.getConceptService().getConcept(Integer.parseInt(pa.getValue())));
+			}
+			else if(attributeType.getPersonAttributeTypeId() == 14 && conceptListForPrograms.contains(pa.getValue())){
+				model.addAttribute("selectedCategory", pa.getValue());	
+				model.addAttribute("category", "Programs");
+				model.addAttribute("subCategory", Context.getConceptService().getConcept(Integer.parseInt(pa.getValue())));
+			}
+	      }
 		return "/module/billing/queue/procedureInvestigationOrder";
 	}
 	

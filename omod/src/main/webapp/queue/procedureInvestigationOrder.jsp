@@ -295,8 +295,8 @@ jQuery("#amountReturned").val(amountReturned);
 		</tr>
 		
 		<tr>
-			<td>Payment Category:</td>
-			<td>${category}</td>
+			<td>Patient Category:</td>
+			<td>${category} - ${subCategory.name}</td>
 		</tr>
 		
 		
