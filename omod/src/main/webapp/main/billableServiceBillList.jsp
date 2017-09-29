@@ -331,11 +331,10 @@
 		var printer = window.open('', '', 'width=300,height=300');
 		printer.document.open("text/html");
 		printer.document.write(document.getElementById('printDiv').innerHTML);
-		printer.document.close();
-		printer.window.close();
 		printer.print();
+		//printer.document.close();
+		printer.window.close();
 		jQuery("#billForm").submit();
-		//alert("Printing ...");
 	}
 </script>
 

@@ -54,12 +54,8 @@
 		</tr>
 
 		<tr>
-			<td>Payment Category:</td>
-			<td>${category}</td>
-		</tr>
-		<tr>
-			<td>File Number:</td>
-			<td>${fileNumber}</td>
+		     <td>Patient Category:</td>
+			 <td>${category} - ${subCategory.name}</td>
 		</tr>
 	</table>
 </div>
