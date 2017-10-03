@@ -105,6 +105,8 @@ function givefree(){
 		<td><span id="commentField">Comment <input id="comment"
 				name="comment" /> </span>
 	</td>
+		<td><b>Patient Category:</b></td>
+		<td>${selectedCategory}&nbsp;(${selectedOtherFree})</td>
 		<input type="hidden" id="pat" value="${selectedCategory}">
 		</b>
 </p>
@@ -134,6 +136,10 @@ function givefree(){
 			<tr>
 				<td>Bill ID:</td>
 				<td>${bill.receipt.id}</td>
+			</tr>
+			<tr>
+				<td>Patient Category:</td>
+				<td>${selectedCategory}&nbsp;(${selectedOtherFree})</td>
 			</tr>
 			<c:if test="${bill.voided==true }">
 				<tr>
@@ -270,6 +276,10 @@ function givefree(){
 				<td>Bill ID:</td>
 				<td>${bill.receipt.id}</td>
 			</tr>
+			<tr>
+				<td>Patient Category:</td>
+				<td>${selectedCategory}&nbsp;(${selectedOtherFree})</td>
+			</tr>
 			<c:if test="${bill.voided==true }">
 				<tr>
 					<td>Bill Description:</td>
@@ -339,11 +349,10 @@ function givefree(){
 		var printer = window.open('', '', 'width=300,height=300');
 		printer.document.open("text/html");
 		printer.document.write(document.getElementById('printDiv').innerHTML);
-		printer.document.close();
-		printer.window.close();
 		printer.print();
+		//printer.document.close();
+		printer.window.close();
 		jQuery("#billForm").submit();
-		//alert("Printing ...");
 	}
 </script>
 

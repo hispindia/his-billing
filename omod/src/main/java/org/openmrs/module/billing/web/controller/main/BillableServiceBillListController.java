@@ -90,14 +90,23 @@ public class BillableServiceBillListController {
 			
 			// New Requirement add comment for Add Paid Bill/Add Free Bill 
 						HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
+						String patientCategory="";
 						List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
 						for (PersonAttribute pa : pas) {
 							PersonAttributeType attributeType = pa.getAttributeType();
 							if (attributeType.getPersonAttributeTypeId() == 14) {
 								model.addAttribute("selectedCategory", pa.getValue());
-							}		   
+								patientCategory=pa.getValue();
+							 }
 					       }
-		}
+						for (PersonAttribute pa : pas) {
+							PersonAttributeType attributeType = pa.getAttributeType();
+							if (patientCategory.equals("Other Free") && attributeType.getPersonAttributeTypeId() == 19) {
+								Concept concept=Context.getConceptService().getConcept(Integer.parseInt(pa.getValue()));
+								model.addAttribute("selectedOtherFree", concept.getName());
+							}
+					       }
+		      }
 		
 		if( billId != null ){
 			PatientServiceBill bill = billingService.getPatientServiceBillById(billId);			
