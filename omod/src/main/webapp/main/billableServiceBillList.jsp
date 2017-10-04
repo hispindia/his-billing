@@ -106,7 +106,7 @@ function givefree(){
 				name="comment" /> </span>
 	</td>
 		<td><b>Patient Category:</b></td>
-		<td>${selectedCategory}&nbsp;(${selectedOtherFree})</td>
+		<td>${selectedCategory}&nbsp;<c:if test="${not empty selectedOtherFree}">(${selectedOtherFree})</c:if></td>
 		<input type="hidden" id="pat" value="${selectedCategory}">
 		</b>
 </p>
@@ -139,7 +139,7 @@ function givefree(){
 			</tr>
 			<tr>
 				<td>Patient Category:</td>
-				<td>${selectedCategory}&nbsp;(${selectedOtherFree})</td>
+				<td>${selectedCategory}&nbsp;<c:if test="${not empty selectedOtherFree}">(${selectedOtherFree})</c:if></td>
 			</tr>
 			<c:if test="${bill.voided==true }">
 				<tr>
@@ -278,7 +278,7 @@ function givefree(){
 			</tr>
 			<tr>
 				<td>Patient Category:</td>
-				<td>${selectedCategory}&nbsp;(${selectedOtherFree})</td>
+				<td>${selectedCategory}&nbsp;<c:if test="${not empty selectedOtherFree}">(${selectedOtherFree})</c:if></td>
 			</tr>
 			<c:if test="${bill.voided==true }">
 				<tr>
