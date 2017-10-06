@@ -71,6 +71,8 @@
 <input type="button" value="Add Bill"
 			onclick="window.location.href='addPatientServiceBill.form?patientId=${patient.patientId}&billType=walkin'" />
 </td>
+<td>Patient Category:</td>
+<td>${category} (${subCategory.name})</td>
 <td>
 <input type="hidden" id="pat" value="${selectedCategory}">
 </td>
