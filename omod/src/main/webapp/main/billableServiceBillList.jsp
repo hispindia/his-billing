@@ -125,7 +125,7 @@
 			</tr>
 			<c:forEach items="${bill.billItems}" var="item" varStatus="status">
 			<%-- ghanshyam Support #339 [Billing]print of void bill [3.2.7 snapshot][DDU,Mohali,Solan,Tanda,] --%>
-            <c:if test="${item.voidedDate==null}">
+           <%--<c:if test="${item.voidedDate==null}">--%>
 				<tr>
 					<td>${item.name}</td>
 					<td align="right">${item.unitPrice}</td>
@@ -148,7 +148,7 @@
 						
 						</c:choose></td>
 				</tr>
-				</c:if>
+				<%--</c:if>--%>
 			</c:forEach>
 			<tr>
 				<td colspan="3" align='right'><b>Total</td>
@@ -192,8 +192,17 @@
 				<td align='right'><b>${bill.waiverPercentage}0 %</td>
 			</tr>
 			<tr>
-				<td colspan="3" align='right'><b>Total amount payable</td>
-				<td align='right'><b>${bill.amountPayable}</td>
+				<td colspan="3" align='right'><b>Total amount payable^</td>
+				<td align='right'><c:choose>
+										<c:when test="${bill.voided==true }">
+										<span style="text-decoration: line-through;">
+				<b>${bill.amountPayable}</td>
+				</span>
+				</c:when>
+				<c:otherwise>
+											<b>${bill.amountPayable}</b>
+										</c:otherwise>
+									</c:choose>
 			</tr>
 		</table>
 		<br>
