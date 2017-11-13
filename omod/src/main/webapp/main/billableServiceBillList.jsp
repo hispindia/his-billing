@@ -192,7 +192,7 @@
 				<td align='right'><b>${bill.waiverPercentage}0 %</td>
 			</tr>
 			<tr>
-				<td colspan="3" align='right'><b>Total amount payable^</td>
+				<td colspan="3" align='right'><b>Total amount payable</td>
 				<td align='right'><c:choose>
 										<c:when test="${bill.voided==true }">
 										<span style="text-decoration: line-through;">
