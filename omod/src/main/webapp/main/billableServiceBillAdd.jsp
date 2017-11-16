@@ -70,7 +70,7 @@ jQuery(document).ready(function(){
 	       	 +"<input name='cons' type='checkbox' value='"+conceptId+"' style='display:none; visibility:hidden;' checked='true'> "
 	       	 +"<input id='"+conceptId+"_name'  name='"+conceptId+"_name' type='text' size='25' value='"+serviceName+"'  readonly='readonly'/>&nbsp;"
 	       	 +"<input name='"+conceptId+"_unitPrice' value='"+servicePrice+"' type='hidden'/>" 
-	       	 +"<input type='text' name='"+conceptId+"_qty' id='"+conceptId+"_qty'  class='qtyField' onblur='updatePrice("+checkprice+");' value='1' size='3'/>&nbsp;"
+	       	 +"<input type='text' name='"+conceptId+"_qty' id='"+conceptId+"_qty'  class='qtyField' onkeyup='updatePrice("+checkprice+");' value='1' size='3'/>&nbsp;"
 	       	 +"<input type='text' id='"+conceptId+"_price' name='"+conceptId+"_price' value='"+servicePrice+"' size='5'  readonly='readonly'/>"
 	      	 +"<a style='color:red' href='#' onclick='"+deleteString+"' >[X]</a>"					
 	       	 +"</div>";
@@ -148,6 +148,17 @@ jQuery(document).ready(function(){
 				var total = parseFloat(document.getElementById('totalprice').value);
 				document.getElementById('totalprice').value = total + diff;
 			}
+			
+			    var total=jQuery("#totalprice").val();
+                var waiverPercentage=jQuery("#waiverPercentage").val();
+                var totalAmountPay=total-(total*waiverPercentage)/100;
+                var tap=Math.round(totalAmountPay);
+                jQuery("#totalAmountPayable").val(tap);
+
+                var totalAmountToPay=tap;
+                var amountGiven=jQuery("#amountGiven").val();
+                var amountReturned=amountGiven-totalAmountToPay;
+                jQuery("#amountReturned").val(amountReturned);
 		}
 		function submitBillForm(){
 			$('#totalprice').focus();
