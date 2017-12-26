@@ -176,6 +176,28 @@ else{
 
 
 }
+
+
+function creditCheckBox(incon){
+var icon=incon.toString();
+if(jQuery("#"+icon+"credit").attr('checked')) {
+  jQuery("#"+icon+"paybill").attr('checked', false);
+  jQuery("#"+icon+"paybill").attr("disabled", "disabled");
+  jQuery("#waiverPercentage").attr("disabled", "disabled");
+  jQuery("#totalAmountPayable").attr("disabled", "disabled");
+  jQuery("#amountGiven").attr("disabled", "disabled");
+  jQuery("#amountReturned").attr("disabled", "disabled");
+}
+else{
+  jQuery("#"+icon+"paybill").attr('checked', true);
+  jQuery("#"+icon+"paybill").removeAttr("disabled");
+  jQuery("#waiverPercentage").removeAttr("disabled");
+  jQuery("#totalAmountPayable").removeAttr("disabled");
+  jQuery("#amountGiven").removeAttr("disabled");
+  jQuery("#amountReturned").removeAttr("disabled");
+}
+
+}
 </script>
 
 <script type="text/javascript">
@@ -316,6 +338,7 @@ jQuery("#amountReturned").val(amountReturned);
 				<th style="text-align: center;">Reschedule</th>
 				 -->
 				<th style="text-align: center;">Pay</th>
+				<th style="text-align: center;">Credit</th>
 				<th style="text-align: right;">Unit Price</th>
 				<th style="text-align: right;">Q*Unit Price</th>
 			</tr>
@@ -354,6 +377,10 @@ jQuery("#amountReturned").val(amountReturned);
 						id="${index.count}paybill" name="${index.count}paybill"
 						checked="checked" value="pay" onclick="payCheckBox(${index.count});">
 					</td>
+					<td align="center"><input type="checkbox"
+						id="${index.count}credit" name="${index.count}credit"
+						value="credit" onclick="creditCheckBox(${index.count});">
+					</td>
 					<td align="right"><input type="text"
 						id="${index.count}unitprice" name="${index.count}unitprice"
 						size="7" value="${sol.price}" readOnly="true"></td>
@@ -364,17 +391,17 @@ jQuery("#amountReturned").val(amountReturned);
 			</c:forEach>
 		</tbody>
 		<tr>
-			<td colspan="6" align="right">Total</td>
+			<td colspan="7" align="right">Total</td>
 			<td align="right"><input type="text" id="total" name="total"
 				size="7" value="0" readOnly="true" /></td>
 		</tr>
 		<tr>
-			<td colspan="6" align="right">Discount %</td>
+			<td colspan="7" align="right">Discount %</td>
 			<td align="right"><input type="text" id="waiverPercentage" name="waiverPercentage"
 				size="7" value="0" onkeyup="totalAmountToPay();"/></td>
 		</tr>
 		<tr>
-			<td colspan="6" align="right">Total amount payable</td>
+			<td colspan="7" align="right">Total amount payable</td>
 			<td align="right"><input type="text" id="totalAmountPayable" name="totalAmountPayable"
 				size="7" readOnly="true"/></td>
 		</tr>
@@ -389,17 +416,17 @@ jQuery("#amountReturned").val(amountReturned);
 		</tr>
  -->
         <tr>
-			<td colspan="6" align="right">Comment</td>
+			<td colspan="7" align="right">Comment</td>
 			<td align="right"><input type="text" id="waiverComment" name="waiverComment" size="7"/></td>
 		</tr>
 		
 		<tr>
-			<td colspan="6" align="right">Amount Given</td>
+			<td colspan="7" align="right">Amount Given</td>
 			<td align="right"><input type="text" id="amountGiven" name="amountGiven" size="7" onkeyup="amountReturnedToPatient();"></td>
 		</tr>	
 		
 		<tr>
-			<td colspan="6" align="right">Amount Returned to Patient</td>
+			<td colspan="7" align="right">Amount Returned to Patient</td>
 			<td align="right"><input type="text" id="amountReturned" name="amountReturned" size="7" readOnly="true"/></td>
 		</tr>			
 	</table>

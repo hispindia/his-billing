@@ -58,8 +58,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  *
  */
 @Controller
-@RequestMapping("/module/billing/addPatientServiceBill.form")
-public class BillableServiceBillAddController {
+@RequestMapping("/module/billing/creditPatientServiceBill.form")
+public class BillableServiceBillCreditController {
 	
 	private Log logger = LogFactory.getLog(getClass());
 	
@@ -76,21 +76,16 @@ public class BillableServiceBillAddController {
 		Concept concept = Context.getConceptService().getConcept(conceptId);
 		model.addAttribute("tabs", billingService.traversTab(concept, mapServices, 1));
 		model.addAttribute("patientId", patientId);
-		return "/module/billing/main/billableServiceBillAdd";
+		return "/module/billing/main/billableServiceBillCredit";
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
 	public String onSubmit(Model model,Object command, BindingResult bindingResult, HttpServletRequest request,
 	                       @RequestParam("cons") Integer[] cons,
 	                       @RequestParam(value = "billType", required = false) String billType,
-	                       @RequestParam(value = "comment", required = false) String comment,
 	                       @RequestParam("patientId") Integer patientId,
 	                       @RequestParam(value = "totalprice", required = false) float totalprice,
-	                       @RequestParam(value = "waiverPercentage", required = false) float waiverPercentage,
-	                       @RequestParam(value= "waiverComment", required = false) String waiverComment,
-	           			   @RequestParam(value = "totalAmountPayable", required = false) BigDecimal totalAmountPayable,
-	           			   @RequestParam(value = "amountGiven", required = false) Integer amountGiven,
-	           			   @RequestParam(value = "amountReturned", required = false) Integer amountReturned){
+	                       @RequestParam(value= "waiverComment", required = false) String waiverComment){
 		validate(cons, bindingResult, request);		
 		if( bindingResult.hasErrors()){
 			model.addAttribute("errors", bindingResult.getAllErrors());
@@ -153,7 +148,6 @@ public class BillableServiceBillAddController {
 			bill.addBillItem(item);
 		}
 		
-		bill.setComment(comment);
 		bill.setAmount(totalAmount.getAmount());	
 		bill.setActualAmount(totalActualAmount);
 	
@@ -169,14 +163,8 @@ public class BillableServiceBillAddController {
             }
        }
     
-		bill.setWaiverPercentage(waiverPercentage);
-		float waiverAmount=totalprice*waiverPercentage/100;
-		bill.setWaiverAmount(waiverAmount);
-		bill.setAmountPayable(totalAmountPayable);
-		bill.setAmountGiven(amountGiven);
-		bill.setAmountReturned(amountReturned);
 		bill.setComment(waiverComment);
-		bill.setBillType("walkin/Paid");
+		bill.setBillType("walkin/Credit");
 		bill.setReceipt(billingService.createReceipt());
 		bill = billingService.savePatientServiceBill(bill);		
 		return "redirect:/module/billing/patientServiceBill.list?patientId="+patientId+"&billId="+bill.getPatientServiceBillId();

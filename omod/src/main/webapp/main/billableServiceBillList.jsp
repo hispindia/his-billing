@@ -68,11 +68,22 @@
 	<b>
 	
 <td>
-<input type="button" value="Add Bill"
+<input type="button" value="Paid Bill"
 			onclick="window.location.href='addPatientServiceBill.form?patientId=${patient.patientId}&billType=walkin'" />
 </td>
 <td>Patient Category:</td>
+<c:choose>
+<c:when test="${not empty childCategory}">
+<td>${category} (${subCategory.name} - ${childCategory.name})</td>
+</c:when>
+<c:otherwise>
 <td>${category} (${subCategory.name})</td>
+</c:otherwise>
+</c:choose>
+<td>
+<input type="button" value="Credit Bill"
+			onclick="window.location.href='creditPatientServiceBill.form?patientId=${patient.patientId}&billType=walkin'" />
+</td>
 <td>
 <input type="hidden" id="pat" value="${selectedCategory}">
 </td>
@@ -187,7 +198,12 @@
 						</c:otherwise>
 					</c:choose></td>
 			</tr>
-			<tr>
+			<c:choose>
+            <c:when test="${bill.billType=='walkin/Credit'}">
+
+            </c:when>
+            <c:otherwise>
+            <tr>
 				<td colspan="3" align='right'><b>Discount</td>
 				<td align='right'><b>${bill.waiverPercentage}0 %</td>
 			</tr>
@@ -204,6 +220,8 @@
 										</c:otherwise>
 									</c:choose>
 			</tr>
+            </c:otherwise>
+            </c:choose>
 		</table>
 		<br>
 		<form method="POST" id="billForm">
