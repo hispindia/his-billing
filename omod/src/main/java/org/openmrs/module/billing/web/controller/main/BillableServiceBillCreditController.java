@@ -164,7 +164,7 @@ public class BillableServiceBillCreditController {
        }
     
 		bill.setComment(waiverComment);
-		bill.setBillType("walkin/Credit");
+		bill.setBillType("walkin/credit");
 		bill.setReceipt(billingService.createReceipt());
 		bill = billingService.savePatientServiceBill(bill);		
 		return "redirect:/module/billing/patientServiceBill.list?patientId="+patientId+"&billId="+bill.getPatientServiceBillId();

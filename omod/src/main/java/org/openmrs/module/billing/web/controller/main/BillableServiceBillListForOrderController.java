@@ -104,6 +104,10 @@ public class BillableServiceBillListForOrderController {
 					model.addAttribute("category", "Programs");
 					model.addAttribute("subCategory", Context.getConceptService().getConcept(Integer.parseInt(pa.getValue())));
 				}
+				
+				if (attributeType.getPersonAttributeTypeId() == 31) {
+					model.addAttribute("childCategory", Context.getConceptService().getConcept(Integer.parseInt(pa.getValue())));
+				}
 		      }
 		}
 		
@@ -128,8 +132,6 @@ public class BillableServiceBillListForOrderController {
     		patientServiceBill.setPrinted(true);
     		Map<String, String> attributes = PatientUtils.getAttributes(patientServiceBill.getPatient());
 			BillCalculatorService calculator = new BillCalculatorService();
-			
-			patientServiceBill.setBillType("out");
 			
     		billingService.saveBillEncounterAndOrder(patientServiceBill);
     	}

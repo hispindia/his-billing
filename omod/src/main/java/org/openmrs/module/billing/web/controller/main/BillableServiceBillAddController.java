@@ -176,7 +176,7 @@ public class BillableServiceBillAddController {
 		bill.setAmountGiven(amountGiven);
 		bill.setAmountReturned(amountReturned);
 		bill.setComment(waiverComment);
-		bill.setBillType("walkin/Paid");
+		bill.setBillType("walkin/paid");
 		bill.setReceipt(billingService.createReceipt());
 		bill = billingService.savePatientServiceBill(bill);		
 		return "redirect:/module/billing/patientServiceBill.list?patientId="+patientId+"&billId="+bill.getPatientServiceBillId();

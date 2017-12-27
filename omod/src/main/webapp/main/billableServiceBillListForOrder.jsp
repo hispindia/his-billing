@@ -72,12 +72,11 @@
 			</tr>
 			<tr>
 				<td>Name of the patient:</td>
-				<td>${patient.givenName}&nbsp;&nbsp;${patient.middleName}&nbsp;&nbsp;
-					${patient.familyName}</td>
+				<td>${patient.givenName}&nbsp;&nbsp;${patient.familyName}</td>
 			</tr>
 			<tr>
 			<td>Patient Category:</td>
-			<td>${category} - ${subCategory.name}</td>
+			<td>${category} - ${subCategory.name} - ${childCategory.name}</td>
 		    </tr>
 			<tr>
 				<td>Date:</td>
@@ -88,6 +87,20 @@
 				<td>Bill ID:</td>
 				<td>${bill.receipt.id}</td>
 			</tr>
+			<c:choose>
+            <c:when test="${bill.billType=='walkin/credit' || bill.billType=='out/credit'}">
+            <tr>
+				<td>Bill Type:</td>
+				<td>Credit</td>
+			</tr>
+            </c:when>
+            <c:otherwise>
+           <tr>
+				<td>Bill Type:</td>
+				<td>Paid</td>
+			</tr>
+			</c:otherwise>
+			</c:choose>
 			<c:if test="${bill.voided==true }">
 				<tr>
 					<td>Bill Description:</td>
@@ -166,14 +179,30 @@
 						</c:otherwise>
 					</c:choose></td>
 			</tr>
-			<tr>
+			<c:choose>
+            <c:when test="${bill.billType=='walkin/credit' || bill.billType=='out/credit'}">
+
+            </c:when>
+            <c:otherwise>
+            <tr>
 				<td colspan="3" align='right'><b>Discount</td>
 				<td align='right'><b>${bill.waiverPercentage}0 %</td>
 			</tr>
 			<tr>
 				<td colspan="3" align='right'><b>Total amount payable</td>
-				<td align='right'><b>${bill.amountPayable}</td>
+				<td align='right'><c:choose>
+										<c:when test="${bill.voided==true }">
+										<span style="text-decoration: line-through;">
+				<b>${bill.amountPayable}</td>
+				</span>
+				</c:when>
+				<c:otherwise>
+											<b>${bill.amountPayable}</b>
+										</c:otherwise>
+									</c:choose>
 			</tr>
+            </c:otherwise>
+            </c:choose>
 		</table>
 		<br>
 		<form method="POST" id="billForm">
@@ -212,6 +241,9 @@
 			class="donotprint"
 			src="${pageContext.request.contextPath}/moduleResources/billing/HEADEROPDSLIP.jpg"
 			width="981" height="212"></img>
+		<c:if test="${bill.billType=='walkin/credit' || bill.billType=='out/credit'}">
+		<h3 style="text-align:center;">Credit Bill</h3>
+		</c:if>
 		<table class="spacer" style="margin-left: 60px;">
 			<tr>
 				<td>Patient ID:</td>
@@ -219,12 +251,11 @@
 			</tr>
 			<tr>
 				<td>Name:</td>
-				<td colspan="3">${patient.givenName}&nbsp;&nbsp;${patient.middleName}&nbsp;&nbsp;
-					${patient.familyName}</td>
+				<td colspan="3">${patient.givenName}&nbsp;&nbsp;${patient.familyName}</td>
 			</tr>
 			<tr>
 			<td>Patient Category:</td>
-			<td>${category} - ${subCategory.name}</td>
+			<td>${category} - ${subCategory.name} - ${childCategory.name}</td>
 		    </tr>
 			<tr>
 				<td>Date:</td>
@@ -235,6 +266,20 @@
 				<td>Bill ID:</td>
 				<td>${bill.receipt.id}</td>
 			</tr>
+			<c:choose>
+            <c:when test="${bill.billType=='walkin/credit' || bill.billType=='out/credit'}">
+            <tr>
+				<td>Bill Type:</td>
+				<td>Credit</td>
+			</tr>
+            </c:when>
+            <c:otherwise>
+           <tr>
+				<td>Bill Type:</td>
+				<td>Paid</td>
+			</tr>
+			</c:otherwise>
+			</c:choose>
 			<c:if test="${bill.voided==true }">
 				<tr>
 					<td>Bill Description:</td>
@@ -275,19 +320,37 @@
 					</c:otherwise>
 				</c:choose>
 			</tr>
-			<tr>
+			<c:choose>
+            <c:when test="${bill.billType=='walkin/credit' || bill.billType=='out/credit'}">
+
+            </c:when>
+            <c:otherwise>
+            <tr>
 				<td colspan="3" align='right'><b>Discount</td>
 				<td align='right'><b>${bill.waiverPercentage}0 %</td>
 			</tr>
 			<tr>
 				<td colspan="3" align='right'><b>Total amount payable</td>
-				<td align='right'><b>${bill.amountPayable}</td>
+				<td align='right'><c:choose>
+										<c:when test="${bill.voided==true }">
+										<span style="text-decoration: line-through;">
+				<b>${bill.amountPayable}</td>
+				</span>
+				</c:when>
+				<c:otherwise>
+											<b>${bill.amountPayable}</b>
+										</c:otherwise>
+									</c:choose>
 			</tr>
+            </c:otherwise>
+            </c:choose>
 		</table>
+		<c:if test="${bill.billType=='walkin/paid' || bill.billType=='out/paid'}">
 		<br> <span class="printfont" style="margin-left: 60px;">Total
 			Amount Payable:</span> Rupees <span id="totalValue2" class="printfont"> </span> only
-		<br /> <br /> <br /> <br /> <br /> <br /> <span
-			class="printfont" style="margin-left: 200px;">Signature of
+		<br /> <br /> <br /> <br /> <br />
+		</c:if>
+		<br /> <span class="printfont" style="margin-left: 200px;">Signature of
 			billing clerk/ Stamp</span>
 	</div>
 
@@ -387,7 +450,7 @@
 		//setTimeout(function(){window.location.href = $("#contextPath").val()+"/module/billing/getBill.list"}, 1000);
 	}
 	jQuery(document).ready(function() {
-		jQuery("#totalValue2").html(toWords(jQuery("#total").val()));
+		jQuery("#totalValue2").html(toWords(${bill.amountPayable}));
 	});
 </script>
 

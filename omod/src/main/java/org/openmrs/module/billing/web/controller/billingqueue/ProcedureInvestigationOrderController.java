@@ -113,6 +113,10 @@ public class ProcedureInvestigationOrderController {
 				model.addAttribute("category", "Programs");
 				model.addAttribute("subCategory", Context.getConceptService().getConcept(Integer.parseInt(pa.getValue())));
 			}
+			
+			if (attributeType.getPersonAttributeTypeId() == 31) {
+				model.addAttribute("childCategory", Context.getConceptService().getConcept(Integer.parseInt(pa.getValue())));
+			}
 	      }
 		return "/module/billing/queue/procedureInvestigationOrder";
 	}
@@ -124,11 +128,7 @@ public class ProcedureInvestigationOrderController {
 			@RequestParam("encounterId") Integer encounterId,
 			@RequestParam("indCount") Integer indCount,
 			@RequestParam(value= "waiverComment", required = false) String waiverComment,
-			@RequestParam(value = "total", required = false) float total,
-			@RequestParam(value = "waiverPercentage", required = false) float waiverPercentage,
-			@RequestParam(value = "totalAmountPayable", required = false) BigDecimal totalAmountPayable,
-			@RequestParam(value = "amountGiven", required = false) Integer amountGiven,
-			@RequestParam(value = "amountReturned", required = false) Integer amountReturned) {
+			@RequestParam(value = "total", required = false) float total) {
 
 		BillingService billingService = Context.getService(BillingService.class);
 
@@ -172,68 +172,135 @@ public class ProcedureInvestigationOrderController {
 			}
 		}
 
-		for (Integer i = 1; i <= indCount; i++) {
-			selectservice = request.getParameter(i.toString() + "selectservice");
-			if("billed".equals(selectservice)){
-			servicename = request.getParameter(i.toString() + "service");
-			quantity = NumberUtils.createInteger(request.getParameter(i.toString()+ "servicequantity"));
-			reschedule = request.getParameter(i.toString() + "reschedule");
-			paybill = request.getParameter(i.toString() + "paybill");
-			unitPrice = NumberUtils.createBigDecimal(request.getParameter(i.toString() + "unitprice"));
-			service = billingService.getServiceByConceptName(servicename);
-
-			mUnitPrice = new Money(unitPrice);
-			itemAmount = mUnitPrice.times(quantity);
-			totalAmount = totalAmount.plus(itemAmount);
-
-			item = new PatientServiceBillItem();
-			item.setCreatedDate(new Date());
-			item.setName(servicename);
-			item.setPatientServiceBill(bill);
-			item.setQuantity(quantity);
-			item.setService(service);
-			item.setUnitPrice(unitPrice);
-
-			item.setAmount(itemAmount.getAmount());
-
-
-			// Get the ratio for each bill item
-			Map<String, Object> parameters = HospitalCoreUtils.buildParameters(
-					"patient", patient, "attributes", attributes, "billItem",
-					item, "request", request);
-
-			//rate = calculator.getRate(parameters, billTyp);
-			rate=new BigDecimal(1);
-			item.setActualAmount(item.getAmount().multiply(rate));
-			totalActualAmount = totalActualAmount.add(item.getActualAmount());
-			bill.addBillItem(item);
-
-			opdTestOrder=billingService.getOpdTestOrder(encounterId,service.getConceptId());
-			opdTestOrder.setBillingStatus(1);
-			patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
-
-		  }
-			else{
+		String credit=request.getParameter("credit");
+		
+		if(credit!=null){
+			for (Integer i = 1; i <= indCount; i++) {
+				selectservice = request.getParameter(i.toString() + "selectservice");
+				if("billed".equals(selectservice)){
 				servicename = request.getParameter(i.toString() + "service");
+				quantity = NumberUtils.createInteger(request.getParameter(i.toString()+ "servicequantity"));
+				reschedule = request.getParameter(i.toString() + "reschedule");
+				paybill = request.getParameter(i.toString() + "paybill");
+				unitPrice = NumberUtils.createBigDecimal(request.getParameter(i.toString() + "unitprice"));
 				service = billingService.getServiceByConceptName(servicename);
-				opdTestOrder=billingService.getOpdTestOrder(encounterId,service.getConceptId());
-				opdTestOrder.setCancelStatus(1);
-				patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
-			}
-		}
 
-		bill.setAmount(totalAmount.getAmount());
-		bill.setActualAmount(totalActualAmount);
-		bill.setPatientCategory(patientCategory);
-		bill.setWaiverPercentage(waiverPercentage);
-		float waiverAmount=total*waiverPercentage/100;
-		bill.setWaiverAmount(waiverAmount);
-		bill.setAmountPayable(totalAmountPayable);
-		bill.setAmountGiven(amountGiven);
-		bill.setAmountReturned(amountReturned);
-		bill.setComment(waiverComment);
-		bill.setBillType("out");
-		bill.setReceipt(billingService.createReceipt());
+				mUnitPrice = new Money(unitPrice);
+				itemAmount = mUnitPrice.times(quantity);
+				totalAmount = totalAmount.plus(itemAmount);
+
+				item = new PatientServiceBillItem();
+				item.setCreatedDate(new Date());
+				item.setName(servicename);
+				item.setPatientServiceBill(bill);
+				item.setQuantity(quantity);
+				item.setService(service);
+				item.setUnitPrice(unitPrice);
+
+				item.setAmount(itemAmount.getAmount());
+
+
+				// Get the ratio for each bill item
+				Map<String, Object> parameters = HospitalCoreUtils.buildParameters(
+						"patient", patient, "attributes", attributes, "billItem",
+						item, "request", request);
+
+				//rate = calculator.getRate(parameters, billTyp);
+				rate=new BigDecimal(1);
+				item.setActualAmount(item.getAmount().multiply(rate));
+				totalActualAmount = totalActualAmount.add(item.getActualAmount());
+				bill.addBillItem(item);
+
+				opdTestOrder=billingService.getOpdTestOrder(encounterId,service.getConceptId());
+				opdTestOrder.setBillingStatus(1);
+				patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
+
+			  }
+				else{
+					servicename = request.getParameter(i.toString() + "service");
+					service = billingService.getServiceByConceptName(servicename);
+					opdTestOrder=billingService.getOpdTestOrder(encounterId,service.getConceptId());
+					opdTestOrder.setCancelStatus(1);
+					patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
+				}
+			}
+
+			bill.setAmount(totalAmount.getAmount());
+			bill.setActualAmount(totalActualAmount);
+			bill.setPatientCategory(patientCategory);
+			bill.setComment(waiverComment);
+			bill.setBillType("out/credit");
+			bill.setReceipt(billingService.createReceipt());	
+		}
+		else{
+			float waiverPercentage=Float.parseFloat(request.getParameter("waiverPercentage"));
+			BigDecimal totalAmountPayable = new BigDecimal(request.getParameter("totalAmountPayable"));
+			Integer amountGiven=Integer.parseInt(request.getParameter("amountGiven"));
+			Integer amountReturned=Integer.parseInt(request.getParameter("amountReturned"));
+			for (Integer i = 1; i <= indCount; i++) {
+				selectservice = request.getParameter(i.toString() + "selectservice");
+				if("billed".equals(selectservice)){
+				servicename = request.getParameter(i.toString() + "service");
+				quantity = NumberUtils.createInteger(request.getParameter(i.toString()+ "servicequantity"));
+				reschedule = request.getParameter(i.toString() + "reschedule");
+				paybill = request.getParameter(i.toString() + "paybill");
+				unitPrice = NumberUtils.createBigDecimal(request.getParameter(i.toString() + "unitprice"));
+				service = billingService.getServiceByConceptName(servicename);
+
+				mUnitPrice = new Money(unitPrice);
+				itemAmount = mUnitPrice.times(quantity);
+				totalAmount = totalAmount.plus(itemAmount);
+
+				item = new PatientServiceBillItem();
+				item.setCreatedDate(new Date());
+				item.setName(servicename);
+				item.setPatientServiceBill(bill);
+				item.setQuantity(quantity);
+				item.setService(service);
+				item.setUnitPrice(unitPrice);
+
+				item.setAmount(itemAmount.getAmount());
+
+
+				// Get the ratio for each bill item
+				Map<String, Object> parameters = HospitalCoreUtils.buildParameters(
+						"patient", patient, "attributes", attributes, "billItem",
+						item, "request", request);
+
+				//rate = calculator.getRate(parameters, billTyp);
+				rate=new BigDecimal(1);
+				item.setActualAmount(item.getAmount().multiply(rate));
+				totalActualAmount = totalActualAmount.add(item.getActualAmount());
+				bill.addBillItem(item);
+
+				opdTestOrder=billingService.getOpdTestOrder(encounterId,service.getConceptId());
+				opdTestOrder.setBillingStatus(1);
+				patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
+
+			  }
+				else{
+					servicename = request.getParameter(i.toString() + "service");
+					service = billingService.getServiceByConceptName(servicename);
+					opdTestOrder=billingService.getOpdTestOrder(encounterId,service.getConceptId());
+					opdTestOrder.setCancelStatus(1);
+					patientDashboardService.saveOrUpdateOpdOrder(opdTestOrder);
+				}
+			}
+
+			bill.setAmount(totalAmount.getAmount());
+			bill.setActualAmount(totalActualAmount);
+			bill.setPatientCategory(patientCategory);
+			bill.setWaiverPercentage(waiverPercentage);
+			float waiverAmount=total*waiverPercentage/100;
+			bill.setWaiverAmount(waiverAmount);
+			bill.setAmountPayable(totalAmountPayable);
+			bill.setAmountGiven(amountGiven);
+			bill.setAmountReturned(amountReturned);
+			bill.setComment(waiverComment);
+			bill.setBillType("out/paid");
+			bill.setReceipt(billingService.createReceipt());
+			
+		}
 		bill = billingService.savePatientServiceBill(bill);
 
 		return "redirect:/module/billing/patientServiceBillForOrder.list?patientId=" + patientId + "&billId="
