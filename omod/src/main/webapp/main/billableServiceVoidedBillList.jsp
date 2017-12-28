@@ -203,25 +203,30 @@ function givefree(){
 						</c:otherwise>
 					</c:choose></td>
 			</tr>
-			<tr>
+			<c:choose>
+            <c:when test="${bill.billType=='walkin/credit' || bill.billType=='out/credit'}">
+
+            </c:when>
+            <c:otherwise>
+            <tr>
 				<td colspan="3" align='right'><b>Discount</td>
 				<td align='right'><b>${bill.waiverPercentage}0 %</td>
 			</tr>
 			<tr>
 				<td colspan="3" align='right'><b>Total amount payable</td>
-				<td align='right'>
-				<c:choose>
-				<c:when test="${bill.voided==true }">
-				<span style="text-decoration: line-through;">
-				<b>${bill.amountPayable}</b>
+				<td align='right'><c:choose>
+										<c:when test="${bill.voided==true }">
+										<span style="text-decoration: line-through;">
+				<b>${bill.amountPayable}</td>
 				</span>
 				</c:when>
 				<c:otherwise>
-				<b>${bill.amountPayable}</b>
-				</c:otherwise>
-				</c:choose>
-				</td>
+											<b>${bill.amountPayable}</b>
+										</c:otherwise>
+									</c:choose>
 			</tr>
+            </c:otherwise>
+            </c:choose>
 		</table>
 		<br>
 		<form method="POST" id="billForm">

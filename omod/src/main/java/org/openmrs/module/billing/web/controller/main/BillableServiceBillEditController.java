@@ -83,7 +83,12 @@ public class BillableServiceBillEditController {
 				.getPatientServiceBillById(billId);
 
 		model.addAttribute("bill", bill);
-		return "/module/billing/main/billableServiceBillEdit";
+		if(bill.getBillType().equals("walkin/credit") || bill.getBillType().equals("out/credit")){
+			return "/module/billing/main/billableServiceBillEditForCredit";	
+		}
+		else{
+			return "/module/billing/main/billableServiceBillEditForPaid";	
+		}
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
@@ -95,11 +100,7 @@ public class BillableServiceBillEditController {
 			@RequestParam("action") String action,
 			@RequestParam(value = "description", required = false) String description,
 			@RequestParam(value = "totalprice", required = false) float totalprice,
-		    @RequestParam(value = "waiverPercentage", required = false) float waiverPercentage,
-            @RequestParam(value= "waiverComment", required = false) String waiverComment,
-			@RequestParam(value = "totalAmountPayable", required = false) BigDecimal totalAmountPayable,
-			@RequestParam(value = "amountGiven", required = false) Integer amountGiven,
-			@RequestParam(value = "amountReturned", required = false) Integer amountReturned){
+			@RequestParam(value= "waiverComment", required = false) String waiverComment){
 
 		validate(cons, bindingResult, request);
 		if (bindingResult.hasErrors()) {
@@ -125,10 +126,12 @@ public class BillableServiceBillEditController {
 			bill.setVoided(true);
 			bill.setVoidedDate(new Date());
 			bill.setvoidedby(Context.getAuthenticatedUser());
+			bill.setActualAmount(BigDecimal.ZERO);
 			for (PatientServiceBillItem item : bill.getBillItems()) {
 				item.setVoided(true);
 				item.setVoidedDate(new Date());
 				item.setvoidedby(Context.getAuthenticatedUser());
+				item.setActualAmount(BigDecimal.ZERO);
 				/*ghanshyam 7-sept-2012 these 5 lines of code written only due to voided item is being updated in "billing_patient_service_bill_item" table
 				  but not being updated in "orders" table */
 				Order ord=item.getOrder();
@@ -144,7 +147,150 @@ public class BillableServiceBillEditController {
 			return "redirect:/module/billing/patientServiceBillEdit.list?patientId="
 					+ patientId;
 		}
+		
+		if ("credit".equalsIgnoreCase(action)) {
+			// void old items and reset amount
+			Map<Integer, PatientServiceBillItem> mapOldItems = new HashMap<Integer, PatientServiceBillItem>();
+			for (PatientServiceBillItem item : bill.getBillItems()) {
+				item.setVoided(true);
+				item.setVoidedDate(new Date());
+				item.setvoidedby(Context.getAuthenticatedUser());
+				//ghanshyam-kesav 16-08-2012 Bug #323 [BILLING] When a bill with a lab\radiology order is edited the order is re-sent
+				Order ord=item.getOrder();
+				/*ghanshyam 18-08-2012 [Billing - Bug #337] [3.2.7 snap shot][billing(DDU,DDU SDMX,Tanda,mohali)]error in edit bill.
+				  the problem was while we are editing the bill of other than lab and radiology.
+				*/
+				if(ord!=null){
+				ord.setVoided(true);	
+				ord.setDateVoided(new Date());
+				ord.setVoidedBy(Context.getAuthenticatedUser());
+				}
+				item.setOrder(ord);
+				mapOldItems.put(item.getPatientServiceBillItemId(), item);
+			}
+			bill.setAmount(BigDecimal.ZERO);
+			bill.setPrinted(false);
 
+			PatientServiceBillItem item;
+			int quantity = 0;
+			Money itemAmount;
+			Money mUnitPrice;
+			Money totalAmount = new Money(BigDecimal.ZERO);
+			BigDecimal totalActualAmount = new BigDecimal(0);
+			BigDecimal unitPrice;
+			String name;
+			BillableService service;
+
+			for (int conceptId : cons) {
+
+				unitPrice = NumberUtils.createBigDecimal(request
+						.getParameter(conceptId + "_unitPrice"));
+				quantity = NumberUtils.createInteger(request.getParameter(conceptId
+						+ "_qty"));
+				name = request.getParameter(conceptId + "_name");
+				service = billingService.getServiceByConceptId(conceptId);
+
+				mUnitPrice = new Money(unitPrice);
+				itemAmount = mUnitPrice.times(quantity);
+				totalAmount = totalAmount.plus(itemAmount);
+
+				String sItemId = request.getParameter(conceptId + "_itemId");
+
+				if (sItemId == null) {
+					item = new PatientServiceBillItem();
+
+					// Get the ratio for each bill item
+					Map<String, Object> parameters = HospitalCoreUtils
+							.buildParameters("patient", patient, "attributes",
+									attributes, "billItem", item);
+					//New Requirement add Paid bill & Free bill Both 
+					BigDecimal rate;
+						
+						PatientServiceBillItem patientServiceBillItem = billingService
+								.getPatientServiceBillItem(billId, name);
+						String psbi= patientServiceBillItem.getActualAmount().toString();
+						if (psbi.equals("0.00")) {
+							rate = new BigDecimal(0);
+						} else {
+							rate = new BigDecimal(1);
+						}
+						item.setActualAmount(item.getAmount().multiply(rate));
+						
+					item.setAmount(itemAmount.getAmount());
+					item.setActualAmount(item.getAmount().multiply(rate));
+					totalActualAmount = totalActualAmount.add(item
+							.getActualAmount());
+					item.setCreatedDate(new Date());
+					item.setName(name);
+					item.setPatientServiceBill(bill);
+					item.setQuantity(quantity);
+					item.setService(service);
+					item.setUnitPrice(unitPrice);
+					bill.addBillItem(item);
+				} else {
+
+					item = mapOldItems.get(Integer.parseInt(sItemId));
+
+					// Get the ratio for each bill item
+					Map<String, Object> parameters = HospitalCoreUtils
+							.buildParameters("patient", patient, "attributes",
+									attributes, "billItem", item);
+					//New Requirement add Paid bill & Free bill Both 
+					BigDecimal rate = null;
+		
+						PatientServiceBillItem patientServiceBillItem = billingService
+								.getPatientServiceBillItem(billId, name);
+						String psbi= patientServiceBillItem.getActualAmount().toString();
+						if (psbi.equals("0.00")) {
+							rate = new BigDecimal(0);
+						} else {
+							rate = new BigDecimal(1);
+						}
+						item.setActualAmount(item.getAmount().multiply(rate));
+
+					if(quantity!=item.getQuantity()){
+						item.setVoided(true);
+						item.setVoidedDate(new Date());
+						item.setvoidedby(Context.getAuthenticatedUser());
+					}
+					else{
+						item.setVoided(false);
+						item.setVoidedDate(null);
+						item.setvoidedby(null);
+					}
+					// ghanshyam-kesav 16-08-2012 Bug #323 [BILLING] When a bill with a lab\radiology order is edited the order is re-sent
+					Order ord=item.getOrder();
+					if(ord!=null){
+						ord.setVoided(false);
+						ord.setDateVoided(null);
+						ord.setVoidedBy(null);
+						}
+					item.setOrder(ord);
+					//ghanshyam 5-oct-2012 [Billing - Support #344] [Billing] Edited Quantity and Amount information is lost in database
+					if(quantity!=item.getQuantity()){
+					item = new PatientServiceBillItem();
+					item.setService(service);
+					item.setUnitPrice(unitPrice);
+					item.setQuantity(quantity);
+				    item.setName(name);
+				    item.setCreatedDate(new Date());
+				    item.setOrder(ord);
+				    bill.addBillItem(item);
+					}
+					item.setAmount(itemAmount.getAmount());
+					item.setActualAmount(item.getAmount().multiply(rate));
+					totalActualAmount = totalActualAmount.add(item
+							.getActualAmount());
+				}
+			}
+			bill.setAmount(totalAmount.getAmount());
+			bill.setActualAmount(totalActualAmount);
+			bill.setComment(waiverComment);
+
+			bill = billingService.savePatientServiceBill(bill);	
+		}
+
+		if ("paid".equalsIgnoreCase(action)) {
 		// void old items and reset amount
 		Map<Integer, PatientServiceBillItem> mapOldItems = new HashMap<Integer, PatientServiceBillItem>();
 		for (PatientServiceBillItem item : bill.getBillItems()) {
@@ -282,6 +428,11 @@ public class BillableServiceBillEditController {
 		bill.setAmount(totalAmount.getAmount());
 		bill.setActualAmount(totalActualAmount);
 		
+		float waiverPercentage =Float.parseFloat(request.getParameter("waiverPercentage"));
+		BigDecimal totalAmountPayable =new BigDecimal(request.getParameter("totalAmountPayable"));
+		Integer amountGiven =Integer.parseInt(request.getParameter("amountGiven"));
+		Integer amountReturned =Integer.parseInt(request.getParameter("amountReturned"));
+		
 		bill.setWaiverPercentage(waiverPercentage);
 		float waiverAmount=totalprice*waiverPercentage/100;
 		bill.setWaiverAmount(waiverAmount);
@@ -291,6 +442,8 @@ public class BillableServiceBillEditController {
 		bill.setComment(waiverComment);
 
 		bill = billingService.savePatientServiceBill(bill);
+		
+		}
 		
 		return "redirect:/module/billing/patientServiceBillEdit.list?patientId="
 				+ patientId + "&billId=" + billId;
