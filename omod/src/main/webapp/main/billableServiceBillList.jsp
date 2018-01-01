@@ -150,8 +150,7 @@
 				<th align="center">Amount</th>
 			</tr>
 			<c:forEach items="${bill.billItems}" var="item" varStatus="status">
-			<%-- ghanshyam Support #339 [Billing]print of void bill [3.2.7 snapshot][DDU,Mohali,Solan,Tanda,] --%>
-           <%--<c:if test="${item.voidedDate==null}">--%>
+            <c:if test="${item.voidedDate==null}">
 				<tr>
 					<td>${item.name}</td>
 					<td align="right">${item.unitPrice}</td>
@@ -174,7 +173,7 @@
 						
 						</c:choose></td>
 				</tr>
-				<%--</c:if>--%>
+				</c:if>
 			</c:forEach>
 			<tr>
 				<td colspan="3" align='right'><b>Total</td>

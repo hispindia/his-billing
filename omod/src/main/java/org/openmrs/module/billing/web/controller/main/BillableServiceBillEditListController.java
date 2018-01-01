@@ -20,16 +20,24 @@
 
 package org.openmrs.module.billing.web.controller.main;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.openmrs.Concept;
+import org.openmrs.ConceptAnswer;
 import org.openmrs.Patient;
+import org.openmrs.PersonAttribute;
+import org.openmrs.PersonAttributeType;
 import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.billing.includable.billcalculator.BillCalculatorService;
 import org.openmrs.module.hospitalcore.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
+import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
 import org.openmrs.module.hospitalcore.util.HospitalCoreUtils;
 import org.openmrs.module.hospitalcore.util.PagingUtil;
@@ -56,6 +64,7 @@ public class BillableServiceBillEditListController {
 		                    HttpServletRequest request){
 		
 		BillingService billingService = Context.getService(BillingService.class);
+		HospitalCoreService hospitalCoreService = Context.getService(HospitalCoreService.class);
 		
 		Patient patient = Context.getPatientService().getPatient(patientId);
 		Map<String, String> attributes = PatientUtils.getAttributes(patient);
@@ -78,6 +87,39 @@ public class BillableServiceBillEditListController {
 			model.addAttribute("bill", bill);
 		}
 		User user = Context.getAuthenticatedUser();
+		
+		List<PersonAttribute> pas = hospitalCoreService.getPersonAttributes(patientId);
+		Concept conceptPaidCategory=Context.getConceptService().getConceptByName("Paid Category");
+		Collection<ConceptAnswer> cpcAns=conceptPaidCategory.getAnswers();
+		List<String> conceptListForPaidCategory = new ArrayList<String>();
+		for(ConceptAnswer cpc:cpcAns){
+			conceptListForPaidCategory.add(cpc.getAnswerConcept().getId().toString());
+		}
+		
+		Concept conceptPrograms=Context.getConceptService().getConceptByName("Programs");
+		Collection<ConceptAnswer> cpAns=conceptPrograms.getAnswers();
+		List<String> conceptListForPrograms = new ArrayList<String>();
+		for(ConceptAnswer cp:cpAns){
+			conceptListForPrograms.add(cp.getAnswerConcept().getId().toString());
+		}
+		
+		for (PersonAttribute pa : pas) {
+			PersonAttributeType attributeType = pa.getAttributeType();
+			if (attributeType.getPersonAttributeTypeId() == 14 && conceptListForPaidCategory.contains(pa.getValue())) {
+				model.addAttribute("selectedCategory", pa.getValue());
+				model.addAttribute("category", "Paid Category");
+				model.addAttribute("subCategory", Context.getConceptService().getConcept(Integer.parseInt(pa.getValue())));
+			}
+			else if(attributeType.getPersonAttributeTypeId() == 14 && conceptListForPrograms.contains(pa.getValue())){
+				model.addAttribute("selectedCategory", pa.getValue());	
+				model.addAttribute("category", "Programs");
+				model.addAttribute("subCategory", Context.getConceptService().getConcept(Integer.parseInt(pa.getValue())));
+			}
+			
+			if (attributeType.getPersonAttributeTypeId() == 31) {
+				model.addAttribute("childCategory", Context.getConceptService().getConcept(Integer.parseInt(pa.getValue())));
+			}
+	      }
 		
 		model.addAttribute("canEdit", user.hasPrivilege(BillingConstants.PRIV_EDIT_BILL_ONCE_PRINTED) );		
 		return "/module/billing/main/billableServiceBillList";
