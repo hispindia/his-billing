@@ -39,6 +39,7 @@ import org.openmrs.module.hospitalcore.BillingConstants;
 import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
+import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
 import org.openmrs.module.hospitalcore.util.PagingUtil;
 import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.openmrs.module.hospitalcore.util.RequestUtil;
@@ -116,6 +117,9 @@ public class BillableServiceBillListController {
 							if (attributeType.getPersonAttributeTypeId() == 31) {
 								model.addAttribute("childCategory", Context.getConceptService().getConcept(Integer.parseInt(pa.getValue())));
 							}
+							if (attributeType.getPersonAttributeTypeId() == 29) {
+								model.addAttribute("dohId", pa.getValue());
+							}
 							
 					       }
 		}
@@ -123,6 +127,7 @@ public class BillableServiceBillListController {
 		if( billId != null ){
 			PatientServiceBill bill = billingService.getPatientServiceBillById(billId);			
 						model.addAttribute("bill", bill);
+						
 						model.addAttribute("amountPayable",bill.getAmountPayable());
 					}
 		User user = Context.getAuthenticatedUser();

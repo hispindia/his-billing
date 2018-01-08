@@ -257,6 +257,12 @@
 			<td>Patient Category:</td>
 			<td>${category} - ${subCategory.name} - ${childCategory.name}</td>
 		    </tr>
+		    <tr>
+		    	<c:if test="${not empty dohId}">
+			<td id="doh">DoH Id:</td>
+			<td id="dohid">${dohId}</td>
+			</c:if>
+		    </tr>
 			<tr>
 				<td>Date:</td>
 				<td align="left"><openmrs:formatDate date="${bill.createdDate}"

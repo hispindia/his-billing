@@ -108,6 +108,9 @@ public class BillableServiceBillListForOrderController {
 				if (attributeType.getPersonAttributeTypeId() == 31) {
 					model.addAttribute("childCategory", Context.getConceptService().getConcept(Integer.parseInt(pa.getValue())));
 				}
+				if (attributeType.getPersonAttributeTypeId() == 29) {
+					model.addAttribute("dohId", pa.getValue());
+				}
 		      }
 		}
 		
