@@ -413,6 +413,7 @@
 		//setTimeout(function(){window.location.href = $("#contextPath").val()+"/getBill.list"}, 1000);	
 	}
 	function printDiv2() {
+		
 		var printer = window.open('', '', 'width=300,height=300');
 		printer.document.open("text/html");
 		printer.document.write(document.getElementById('printDiv').innerHTML);
@@ -491,7 +492,11 @@
 		//setTimeout(function(){window.location.href = $("#contextPath").val()+"/module/billing/getBill.list"}, 1000);
 	}
 	jQuery(document).ready(function() {
-		jQuery("#totalValue2").html(toWords(${bill.amountPayable}));
+		var totalAmountPayable=jQuery("#total").val();
+		jQuery("#totalValue2").html(toWords(totalAmountPayable));
+		
+		
+		
 	});
 </script>
 

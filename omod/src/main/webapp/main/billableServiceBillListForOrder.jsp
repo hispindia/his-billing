@@ -353,7 +353,7 @@
 		</table>
 		<c:if test="${bill.billType=='walkin/paid' || bill.billType=='out/paid'}">
 		<br> <span class="printfont" style="margin-left: 60px;">Total
-			Amount Payable:</span> Rupees <span id="totalValue2" class="printfont"> </span> only
+			Amount Payable:</span>Rupees <span id="totalValue2" class="printfont"> </span> only
 		<br /> <br /> <br /> <br /> <br />
 		</c:if>
 		<br /> <span class="printfont" style="margin-left: 200px;">Signature of
@@ -455,8 +455,9 @@
 
 		//setTimeout(function(){window.location.href = $("#contextPath").val()+"/module/billing/getBill.list"}, 1000);
 	}
-	jQuery(document).ready(function() {
-		jQuery("#totalValue2").html(toWords(${bill.amountPayable}));
+	jQuery(document).ready(function() { 
+		var totalAmountPayable=jQuery("#total").val();
+		jQuery("#totalValue2").html(toWords(totalAmountPayable));
 	});
 </script>
 
