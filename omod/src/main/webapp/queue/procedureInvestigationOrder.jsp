@@ -446,7 +446,7 @@ jQuery("#amountReturned").val(amountReturned);
 			value="Save Bill">
 		</td>
 		<td><input type="button"
-			onclick="javascript:window.location.href='billingqueue.form?'"
+			onclick="javascript:window.location.href='outpatientbillingqueue.form?'"
 			value="Cancel">
 		</td>
 	</tr>
