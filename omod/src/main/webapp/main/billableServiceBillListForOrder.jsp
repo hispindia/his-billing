@@ -241,6 +241,7 @@
 			class="donotprint"
 			src="${pageContext.request.contextPath}/moduleResources/billing/HEADEROPDSLIP.jpg"
 			width="981" height="212"></img>
+		<center><h3>${hospitalName}</h3></center>
 		<c:if test="${bill.billType=='walkin/credit' || bill.billType=='out/credit'}">
 		<h3 style="text-align:center;">Credit Bill</h3>
 		</c:if>

@@ -40,6 +40,7 @@ import org.openmrs.module.hospitalcore.BillingService;
 import org.openmrs.module.hospitalcore.HospitalCoreService;
 import org.openmrs.module.hospitalcore.model.PatientServiceBill;
 import org.openmrs.module.hospitalcore.model.PatientServiceBillItem;
+import org.openmrs.module.hospitalcore.util.GlobalPropertyUtil;
 import org.openmrs.module.hospitalcore.util.PagingUtil;
 import org.openmrs.module.hospitalcore.util.PatientUtils;
 import org.openmrs.module.hospitalcore.util.RequestUtil;
@@ -123,6 +124,8 @@ public class BillableServiceBillListController {
 							
 					       }
 		}
+		String hospitalName=GlobalPropertyUtil.getString("hospitalcore.hospitalParticularName", "Kollegal DVT Hospital");
+		model.addAttribute("hospitalName", hospitalName);
 		
 		if( billId != null ){
 			PatientServiceBill bill = billingService.getPatientServiceBillById(billId);			
