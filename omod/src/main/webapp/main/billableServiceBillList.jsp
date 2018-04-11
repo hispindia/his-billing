@@ -257,7 +257,7 @@
 		display: none;
 	}
 	.spacer {
-		margin-top: 100px;
+		margin-top: 50px;
 		font-family: "Dot Matrix Normal", Arial, Helvetica, sans-serif;
 		font-style: normal;
 		font-size: 14px;
@@ -269,16 +269,11 @@
 	}
 }
 </style>
-		<input type="hidden" id="contextPath"
-			value="${pageContext.request.contextPath}" /> <img
-			class="donotprint"
-			src="${pageContext.request.contextPath}/moduleResources/billing/HEADEROPDSLIP.jpg"
-			width="981" height="212"></img>
-			<center><h3>${hospitalName}</h3></center>
+			<center><h2>${hospitalName}</h2></center>
 		<c:if test="${bill.billType=='walkin/credit' || bill.billType=='out/credit'}">
 		<h3 style="text-align:center;">Credit Bill</h3>
 		</c:if>
-		<table class="spacer" style="margin-left: 60px;">
+		<table style="margin-left: 60px;">
 			<tr>
 				<td>Patient ID:</td>
 				<td colspan="3">${patient.patientIdentifier}</td>
