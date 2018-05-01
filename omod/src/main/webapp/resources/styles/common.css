@@ -1,0 +1,33 @@
+.boxHover {
+	border: 1px inset #808080;
+	background-color: #FDDFFF;
+	cursor: pointer;
+	cursor: hand;
+}
+
+.boxNormal {
+	border: 1px outset #808080;
+	background-color: #CFE7FF;
+}
+
+.udiv {
+	padding: 0.3em;
+	margin: 0.3em;
+	color: #003366;
+	width: 250px;
+	display: inline-table;
+	line-height: 18px;
+}
+
+div.selected {
+	background-color: #91C05E;
+	color: white
+}
+
+#billDiv {
+	background: #91C05E;
+	border: 1px black solid;
+	padding: 0.3em;
+	width: 30%;
+	z-index: 999;
+}

@@ -1,0 +1,124 @@
+3.2.10
+released by ghanshyam on 16-March-2015
+- removed unwanted image from bill print
+
+3.2.9
+released by ghanshyam on 11-Nov-2013
+- #2938 Dealing with Dead Patient
+
+3.2.8
+released by ghanshyam on 20-may-2013
+- #343	Queue is being generated from Saving and printing the old bill from a previous date which should not happen[Billing][3.2.7-SNAPSHOT]
+- #357	 Error screen appears on clicking next page or changing page size in list of bills[Billing][3.2.7-SNAPSHOT]
+- #358	[DDU, DDU_SDMX] Error screen appears on selecting patients for billing[Billing][3.2.7-SNAPSHOT]
+- #386	On printing the misc services bill ,the print out shows DDU logo on the header part[Solan][billing-3.2.7 snap shot]
+- #458	 On editing the patient's category, the bill amount in figures and words in the print out of the previous bill of the same patient is not same[BILLING 3.2.8-SNAPSHOT] 
+- #1048	Unable to view the entire bill of the patient, no breakup of bill is shown but just the total amount(in mandi)
+
+3.2.7
+released by harsh
+Bug #323: [BILLING] When a bill with a lab\radiology order is edited the order is re-sent
+Support #339: [Billing]print of void bill [3.2.7 snapshot][DDU,Mohali,Solan,Tanda,]
+Support #342: [BILLING-3.2.7-Snap shot]edit quantity of service after print -DDU,MOHALI,SOLAN
+New Requirement #305: [BILLING] Additional details in Ambulance Bill
+New Requirement #306: [BILLING] Add field quantity in Miscellaneous Services Bill
+New Requirement #317: [BILLING] Advanced Search in Find Patient(s)
+New Requirement #321: [BILLING] Edit Price in Miscellaneous Service
+Bug #332:[Billing] java.lang.NullPointerException when searching for bill id 8000
+New Requirement #333: [Billing]Edit ambulance bill with all details 
+
+3.2.6
+- Fixed Bug #210: text box pop up after voiding patient bill(solan)
+	Bug #252: Coding error in String comparison
+	Bug #260: (Solan) Print out for voided bill
+	Bug #269: Cannot Edit Quantity in Bills
+	Bug #271: [3.2.6-SNAPSHOT][SOLAN/DDU] UNABLE TO SEARCH PATIENT WITH BILL ID
+	Bug #285: [3.2.6-SNAPSHOT] [Mohali] Cant print bills when assing lab services
+	Bug #293: [DUU, SOLAN, MOHALI] Billing in Ambulance, Tenders, Miscellaneous Services
+	Support #246: [PUNJAB] Text box when bill is voided & Print out of a bill that is voided
+	Support #247: [PUNJAB] Search Patient in Billing by Bill ID
+	Support #254: [Solan] Search for Patient Bill in Billing by Bill ID
+	Support #258: Description for voided bill
+
+3.2.5
+- Fixed #177 Add 6 more new free Categories for Punjab
+	#188 Add Free Patient Category for Solan
+
+3.1.9
+- Fixed bug incorrectly showing receipt amounts. 
+
+3.1.7.1
+- Fixed bug can not add a new ambulance.
+- Fixed bug can not add a miscellaneous.
+
+3.1.7
+- Added patient search and billing calculation for SOLAN
+
+3.1.6
+- Added column RSBY/BPL in to patient search result.
+- Added tag for free bill when creating new bill.
+
+3.1.5
+- Customized to change flexibly billing policy.
+
+3.1.4
+- Integrated new patient search plugin. 
+
+3.1.3.5
+- Fixed bug saving new company.
+- Fixed bug saving new driver.
+- Added feature Maintainer.
+
+3.1.3.4
+- Removed the feature to update old bills.
+
+3.1.3.3
+- Fixed bug jquery conflict in OpenMRS 1.8
+
+3.1.3.2
+- Fixed bug in db when running baseline db.
+
+3.1.3.1
+- Fixed bug change amount of BPL/RSBY bills to zero in database when editing a bill.
+
+3.1.3
+- Fixed bug not update Free bill status on BPL/RSBY bills when saving bill.
+- Fixed bug not update void and void_date column when voiding a tender bill.
+- Fixed bug not update void and void_date column when voiding an ambulance bill.
+
+3.1.2
+- Added global properties for sending orders to radiology module
+- Fixed bug updating billable service category
+
+3.1.1
+- Added feature to update billable service category for the easier report aggregation  
+
+3.1.0
+- Added feature to manage major and minor procedures
+
+3.0.17
+- Fixed not updating Voided and Voided Date column in PatientServiceBillItem
+
+3.0.14
+- Fixed bug displaying amount for patient with category RSBY/BPL 
+
+3.0.13
+- Added advance patient search 
+
+3.0.10
+- Fixed created date column not shown in page manage Miscellaneous service
+- Fixed throwing exception when not finding a lab for an order
+- Fixed deleting a company that says the selected company is deleted but not and the message is not correct
+- Fixed line through the tender bill when it is voided
+- Fixed tender bill id is not displayed in the listing.
+- Add Void bill button to page manage miscellaneous bill    
+####################
+3.0.9
+- Add the method updateReceipt ID for bills in hospitalcore, using batch update
+- require hospitalcore version 0.5
+####################
+3.0.8
+- fix bug can not install in version 3.0.7
+##################################
+3.0.7
+- Fixed bug can not install billing from blank database : move all sql queries which belong to billing from hospitalcore to billing. 
