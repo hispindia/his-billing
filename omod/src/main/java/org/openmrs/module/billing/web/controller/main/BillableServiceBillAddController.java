@@ -160,12 +160,18 @@ public class BillableServiceBillAddController {
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
 		String patientCategory = "";
+		String patientSubcategory = "";
        for (PersonAttribute pa : pas) {
             PersonAttributeType attributeType = pa.getAttributeType();
             if(pa.getAttributeType().getId()==14)
             {
             	patientCategory = pa.getValue();
             	  bill.setPatientCategory(patientCategory);
+            }
+            if(pa.getAttributeType().getId()==31)
+            {
+            	patientSubcategory = pa.getValue();
+            	bill.setPatientSubcategory(patientSubcategory);
             }
        }
     
