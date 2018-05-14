@@ -110,7 +110,7 @@
 			</tr>
 			<tr>
 				<td>Patient Category:</td>
-				<td>${category} - ${subCategory.name} - ${childCategory.name}</td>
+				<td>${categoryf} - ${subCategoryf.name} - ${childCategoryf.name}</td>
 			</tr>
 			<tr>
 				<td>Date:</td>
@@ -285,7 +285,7 @@
 			</tr>
 			<tr>
 			<td>Patient Category:</td>
-			<td>${category} - ${subCategory.name} - ${childCategory.name}</td>
+			<td>${categoryf} - ${subCategoryf.name} - ${childCategoryf.name}</td>
 		    </tr>
 		    	<tr>
 		    	<c:if test="${not empty dohId}">

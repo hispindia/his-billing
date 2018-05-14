@@ -74,6 +74,20 @@ public class BillableServiceBillListController {
 		//model.addAttribute("freeBill", calculator.isFreeBill(HospitalCoreUtils.buildParameters("attributes", attributes)));
 		
         
+		Concept conceptPaidCategory=Context.getConceptService().getConceptByName("Paid Category");
+		Collection<ConceptAnswer> cpcAns=conceptPaidCategory.getAnswers();
+		List<String> conceptListForPaidCategory = new ArrayList<String>();
+		for(ConceptAnswer cpc:cpcAns){
+			conceptListForPaidCategory.add(cpc.getAnswerConcept().getId().toString());
+		}
+		
+		Concept conceptPrograms=Context.getConceptService().getConceptByName("Programs");
+		Collection<ConceptAnswer> cpAns=conceptPrograms.getAnswers();
+		List<String> conceptListForPrograms = new ArrayList<String>();
+		for(ConceptAnswer cp:cpAns){
+			conceptListForPrograms.add(cp.getAnswerConcept().getId().toString());
+		}
+		
 		if( patient != null ){
 			
 			int total = billingService.countListPatientServiceBillByPatient(patient);
@@ -87,19 +101,6 @@ public class BillableServiceBillListController {
 			// New Requirement add comment for Add Paid Bill/Add Free Bill 
 						HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 						List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
-						Concept conceptPaidCategory=Context.getConceptService().getConceptByName("Paid Category");
-						Collection<ConceptAnswer> cpcAns=conceptPaidCategory.getAnswers();
-						List<String> conceptListForPaidCategory = new ArrayList<String>();
-						for(ConceptAnswer cpc:cpcAns){
-							conceptListForPaidCategory.add(cpc.getAnswerConcept().getId().toString());
-						}
-						
-						Concept conceptPrograms=Context.getConceptService().getConceptByName("Programs");
-						Collection<ConceptAnswer> cpAns=conceptPrograms.getAnswers();
-						List<String> conceptListForPrograms = new ArrayList<String>();
-						for(ConceptAnswer cp:cpAns){
-							conceptListForPrograms.add(cp.getAnswerConcept().getId().toString());
-						}
 						
 						for (PersonAttribute pa : pas) {
 							PersonAttributeType attributeType = pa.getAttributeType();
@@ -129,6 +130,16 @@ public class BillableServiceBillListController {
 		if( billId != null ){
 			PatientServiceBill bill = billingService.getPatientServiceBillById(billId);			
 						model.addAttribute("bill", bill);
+						if (conceptListForPaidCategory.contains(bill.getPatientCategory())) {
+							model.addAttribute("categoryf", "Paid Category");
+							model.addAttribute("subCategoryf", Context.getConceptService().getConcept(Integer.parseInt(bill.getPatientCategory())));	
+							model.addAttribute("childCategoryf", Context.getConceptService().getConcept(Integer.parseInt(bill.getPatientSubcategory())));
+						}
+						else if(conceptListForPrograms.contains(bill.getPatientCategory())){
+							model.addAttribute("categoryf", "Programs");
+							model.addAttribute("subCategoryf", Context.getConceptService().getConcept(Integer.parseInt(bill.getPatientCategory())));
+							model.addAttribute("childCategoryf", Context.getConceptService().getConcept(Integer.parseInt(bill.getPatientSubcategory())));
+						}
 						
 						model.addAttribute("amountPayable",bill.getAmountPayable());
 					}
