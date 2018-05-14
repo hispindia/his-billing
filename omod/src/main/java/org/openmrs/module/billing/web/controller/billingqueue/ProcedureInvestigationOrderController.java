@@ -165,11 +165,15 @@ public class ProcedureInvestigationOrderController {
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
 		String patientCategory = null;
+		String patientSubcategory =  null;
 		for (PersonAttribute pa : pas) {
 			PersonAttributeType attributeType = pa.getAttributeType();
 			if (attributeType.getPersonAttributeTypeId() == 14) {
 				patientCategory=pa.getValue();
 			}
+			if(pa.getAttributeType().getId()==31) {
+	           patientSubcategory = pa.getValue();
+	        }
 		}
 
 		String credit=request.getParameter("credit");
@@ -231,6 +235,7 @@ public class ProcedureInvestigationOrderController {
 			bill.setComment(waiverComment);
 			bill.setBillType("out/credit");
 			bill.setReceipt(billingService.createReceipt());	
+			bill.setPatientSubcategory(patientSubcategory);
 		}
 		else{
 			float waiverPercentage=Float.parseFloat(request.getParameter("waiverPercentage"));
@@ -299,6 +304,7 @@ public class ProcedureInvestigationOrderController {
 			bill.setComment(waiverComment);
 			bill.setBillType("out/paid");
 			bill.setReceipt(billingService.createReceipt());
+			bill.setPatientSubcategory(patientSubcategory);
 			
 		}
 		bill = billingService.savePatientServiceBill(bill);
