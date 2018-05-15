@@ -132,13 +132,21 @@ public class BillableServiceBillListController {
 						model.addAttribute("bill", bill);
 						if (conceptListForPaidCategory.contains(bill.getPatientCategory())) {
 							model.addAttribute("categoryf", "Paid Category");
-							model.addAttribute("subCategoryf", Context.getConceptService().getConcept(Integer.parseInt(bill.getPatientCategory())));	
+							if(bill.getPatientCategory()!=null){
+							model.addAttribute("subCategoryf", Context.getConceptService().getConcept(Integer.parseInt(bill.getPatientCategory())));
+							}
+							if(bill.getPatientSubcategory()!=null){
 							model.addAttribute("childCategoryf", Context.getConceptService().getConcept(Integer.parseInt(bill.getPatientSubcategory())));
+							}
 						}
 						else if(conceptListForPrograms.contains(bill.getPatientCategory())){
 							model.addAttribute("categoryf", "Programs");
+							if(bill.getPatientCategory()!=null){
 							model.addAttribute("subCategoryf", Context.getConceptService().getConcept(Integer.parseInt(bill.getPatientCategory())));
+							}
+							if(bill.getPatientSubcategory()!=null){
 							model.addAttribute("childCategoryf", Context.getConceptService().getConcept(Integer.parseInt(bill.getPatientSubcategory())));
+							}
 						}
 						
 						model.addAttribute("amountPayable",bill.getAmountPayable());
