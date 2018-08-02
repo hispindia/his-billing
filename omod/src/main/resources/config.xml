@@ -8,7 +8,7 @@
 	<name>@MODULE_NAME@</name>
 	<version>@MODULE_VERSION@</version>
 	<package>@MODULE_PACKAGE@</package>
-	<author>Ghanshyam</author>
+	<author>Ghanshyam,Ambika</author>
 	<description>
 		Billing module
 	</description>
