@@ -20,9 +20,9 @@
 
 package org.openmrs.module.billing.extension.html;
 
-import org.openmrs.module.Extension;
+import org.openmrs.module.web.extension.LinkExt;;
 
-public class BillingHeader extends Extension {
+public class BillingHeader extends LinkExt {
 
 	public MEDIA_TYPE getMediaType() {
 		return MEDIA_TYPE.html;
