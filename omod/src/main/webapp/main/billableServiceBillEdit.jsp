@@ -32,6 +32,8 @@
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/ui.tabs.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/common.js"></script>
+<script type="text/javascript"
+	src="${pageContext.request.contextPath}/moduleResources/hospitalcore/scripts/string-utils.js"></script>
 <link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/css/start/ui.tabs.css" />
 <script type="text/css" rel="stylesheet"
@@ -153,6 +155,17 @@ jQuery(document).ready(function(){
 		        var totalprice = parseFloat(document.getElementById('totalprice').value);
 		        document.getElementById('totalprice').value = totalprice  - removevalue;
 		        document.getElementById('box_'+conceptId).style.backgroundColor="#FCCFFF";
+		        
+				  var total=jQuery("#totalprice").val();
+	                var waiverPercentage=jQuery("#waiverPercentage").val();
+	                var totalAmountPay=total-(total*waiverPercentage)/100;
+	                var tap=Math.round(totalAmountPay);
+	                jQuery("#totalAmountPayable").val(tap);
+	                
+	                var totalAmountToPay=jQuery("#totalAmountPayable").val();
+	                var amountGiven=jQuery("#amountGiven").val();
+	                var amountReturned=amountGiven-totalAmountToPay;
+	                jQuery("#amountReturned").val(amountReturned);
 		   }
 		   else {
 		        alert("Element has already been removed or does not exist.");
@@ -173,6 +186,7 @@ jQuery(document).ready(function(){
 				var diff = parseFloat((servicePrice * qty) - initvalue);
 				var total = parseFloat(document.getElementById('totalprice').value);
 				document.getElementById('totalprice').value = total + diff;
+	
 			}
 		}
 		function submitBillForm(){
@@ -190,6 +204,45 @@ jQuery(document).ready(function(){
 			}else if(! jQuery("input[type='checkbox']","div#extra").length ) {
 				alert("Please select item for billing");
 			}else {
+				if(jQuery("#waiverPercentage").val() ==""){
+		            alert("Please enter Discount Percentage");
+		            return false;
+	                }
+
+	                if(jQuery("#waiverPercentage").val() < 0 ){
+		            alert("Please enter correct Discount Percentage");
+		            return false;
+	                }
+
+	                
+	                if(jQuery("#spclPercntage").val() ==""){
+			            alert("Please enter Spclward Percentage");
+			            return false;
+		                } 
+	                if(jQuery("#spclPercntage").val() < 0 ){
+			            alert("Please enter correct Spclward Percentage");
+			            return false;
+		                }
+
+	                if(jQuery("#amountGiven").val() ==""){
+		            alert("Please enter Amount Given");
+		            return false;
+	                }
+
+	                if(jQuery("#amountGiven").val() < 0 || !StringUtils.isDigit(jQuery("#amountGiven").val())){
+		            alert("Please enter correct Amount Given");
+		            return false;
+	                }
+
+	                if(jQuery("#amountReturned").val() ==""){
+		            alert("Please enter Amount Returned");
+		            return false;
+	                }
+
+	                if(jQuery("#amountReturned").val() < 0 || !StringUtils.isDigit(jQuery("#amountReturned").val())){
+		            alert("Please enter correct Amount Returned");
+		            return false;
+	                }
 				jQuery("#subm").attr("disabled", "disabled");
 				jQuery("#billForm").submit();
 			}
@@ -202,7 +255,39 @@ jQuery(document).ready(function(){
 /*			jQuery("#subm").attr("disabled", "disabled");
 			jQuery("#billForm").submit();*/
 		}
-
+		//New requirement add discount and special ward charges
+		function totalAmountToPay(){
+	        var total=jQuery("#totalprice").val();
+	        var waiverPercentage=jQuery("#waiverPercentage").val();
+	        var totalAmountPay=total-(total*waiverPercentage)/100;
+	        var tap=Math.round(totalAmountPay);
+	        jQuery("#totalAmountPayable").val(tap);
+	        var amountGiven=jQuery("#amountGiven").val();
+	        var amountReturned=amountGiven-tap;
+	        jQuery("#amountReturned").val(amountReturned);
+	        }
+		function totalAmountToPayspcl()
+		{
+			var total=jQuery("#totalprice").val();
+			var spclPercentage=jQuery("#spclPercntage").val();
+			
+			var totalAmountPay= +total + +((total*spclPercentage)/100);
+			
+			var tap=Math.round(totalAmountPay);
+			jQuery("#totalAmountPayable").val(tap);
+			var amountGiven=jQuery("#amountGiven").val();
+			var amountReturned=amountGiven-tap;
+			jQuery("#amountReturned").val(amountReturned);
+		}
+		
+		
+		
+	        function amountReturnedToPatient(){
+	        var totalAmountToPay=jQuery("#totalAmountPayable").val();
+	        var amountGiven=jQuery("#amountGiven").val();
+	        var amountReturned=amountGiven-totalAmountToPay;
+	        jQuery("#amountReturned").val(amountReturned);
+	        }
 </script>
 
 <!-- Right side div for bill collection -->
@@ -241,7 +326,39 @@ jQuery(document).ready(function(){
 			<input type='text' size='5' value='Price' readonly="readonly" />&nbsp;</b>
 			<hr />
 		</div>
-
+  		<div id="waiverDiv"
+			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
+			<div>
+			Discount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="text" id="waiverPercentage" name="waiverPercentage"
+				size="11" value="${bill.waiverPercentage}" class="cancelDraggable" onkeyup="totalAmountToPay();"/>%
+		</div>
+		<div id="spclwrd">
+			SpecialWard&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="text" id="spclPercntage" name="spclPercntage"
+				size="11"  value="${bill.spclwardPercentage}" class="cancelDraggable" value="0" onkeyup="totalAmountToPayspcl();"/>%
+		</div>
+		<div>
+		Total amount payable&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" id="totalAmountPayable" name="totalAmountPayable"
+				size="11" readOnly="true" value="${bill.amountPayable}" class="cancelDraggable"/>
+		</div>
+		<div>
+		Comment&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" id="waiverComment" name="waiverComment" size="11" value="${bill.comment}" class="cancelDraggable"/>
+		</div>
+		<div>
+		Amount Given&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" id="amountGiven" name="amountGiven" size="11" value="${bill.amountGiven}" class="cancelDraggable" onkeyup="amountReturnedToPatient();">
+		</div>
+		<div>
+		Amount Returned to Patient&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" id="amountReturned" name="amountReturned" size="11" readOnly="true" value="${bill.amountReturned}" class="cancelDraggable"/>
+		</div>
+		</div>
 		<div id="descriptionDiv">
 			<span style="color: blue; font-style: oblique; font-weight: bolder;">
 				Description:</span> <input type="text" size="50" value=""

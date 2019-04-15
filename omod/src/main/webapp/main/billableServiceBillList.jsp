@@ -219,6 +219,28 @@ function givefree(){
 						</c:otherwise>
 					</c:choose></td>
 			</tr>
+			
+			<c:choose>
+			<c:when test="${ bill.waiverPercentage != 0.0}">
+			<tr>
+				<td colspan="3" align='right'><b>Discount</td>
+				<td align='right'><b>${bill.waiverPercentage}0 %</td>
+			</tr>
+			</c:when>
+			<c:otherwise>
+			<tr>
+				<td colspan="3" align='right'><b>SpecialWard Percentage</td>
+				<td align='right'><b>${bill.spclwardPercentage}0 %</td>
+			</tr>
+			</c:otherwise>
+			</c:choose>
+			<tr>
+				<td colspan="3" align='right'><b>Total amount payable</td>
+				<td align='right'>
+										
+				<b>${bill.amountPayable}</td>
+				
+			</tr>
 		</table>
 		<br>
 		<form method="POST" id="billForm">
@@ -319,6 +341,27 @@ function givefree(){
 						<td align="right">${bill.actualAmount}</td>
 					</c:otherwise>
 				</c:choose>
+			</tr>
+			<c:choose>
+			<c:when test="${ bill.waiverPercentage != 0.0}">
+			<tr>
+				<td colspan="3" align='right'><b>Discount</td>
+				<td align='right'><b>${bill.waiverPercentage}0 %</td>
+			</tr>
+			</c:when>
+			<c:otherwise>
+			<tr>
+				<td colspan="3" align='right'><b>SpecialWard Percentage</td>
+				<td align='right'><b>${bill.spclwardPercentage}0 %</td>
+			</tr>
+			</c:otherwise>
+			</c:choose>
+			<tr>
+				<td colspan="3" align='right'><b>Total amount payable</td>
+				<td align='right'>
+										
+				<b>${bill.amountPayable}</td>
+				
 			</tr>
 		</table>
 		<br> <span class="printfont" style="margin-left: 60px;">Total

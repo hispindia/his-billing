@@ -32,6 +32,8 @@
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/ui.tabs.js"></script>
 <script type="text/javascript"
 	src="${pageContext.request.contextPath}/moduleResources/billing/scripts/common.js"></script>
+	<script type="text/javascript"
+	src="${pageContext.request.contextPath}/moduleResources/hospitalcore/scripts/string-utils.js"></script>
 <link type="text/css" rel="stylesheet"
 	href="${pageContext.request.contextPath}/moduleResources/billing/scripts/jquery/css/start/ui.tabs.css" />
 <script type="text/css" rel="stylesheet"
@@ -47,11 +49,25 @@ ${tabs }
 <script type="text/javascript">
 jQuery(document).ready(function(){ 
     $('#container-1 ul').tabs();
+    document.getElementById("spclwrd").style.display = "none";
+    document.getElementById("disc").style.display = "none";
 });
 </script>
 
 
 <script type="text/javascript">
+
+function dis(){ 
+   //if(document.getElementById("disc"))
+	document.getElementById("disc").style.display = "block";
+	 document.getElementById("spclwrd").style.display = "none";
+	}
+function spcl(){ 
+//if(document.getElementById("disc"))
+	document.getElementById("spclwrd").style.display = "block";
+	 document.getElementById("disc").style.display = "none";
+	}
+	
 	function addToBill( conceptId, serviceName, servicePrice, qty) {
 		servicePrice = parseFloat(servicePrice);
 		var colorSelected = "rgb(170, 255, 170)";
@@ -77,7 +93,7 @@ jQuery(document).ready(function(){
 	        newElement.setAttribute("id", conceptId);
 		        
 		 	newElement.innerHTML = htmlText;
-
+       
 	        var fieldsArea = document.getElementById('extra');
 			fieldsArea.appendChild(newElement);
 			var totalprice = parseFloat(document.getElementById('totalprice').value);
@@ -86,6 +102,18 @@ jQuery(document).ready(function(){
 			var serName = jQuery("#"+conceptId+"_name").val();
 			serName = serName.replace("#","\'");
 			jQuery("#"+conceptId+"_name").val(serName);
+			
+			
+			var total=jQuery("#totalprice").val();
+            var waiverPercentage=jQuery("#waiverPercentage").val();
+            var totalAmountPay=total-(total*waiverPercentage)/100;
+            var tap=Math.round(totalAmountPay);
+            jQuery("#totalAmountPayable").val(tap);
+
+            var totalAmountToPay=tap;
+            var amountGiven=jQuery("#amountGiven").val();
+            var amountReturned=amountGiven-totalAmountToPay;
+            jQuery("#amountReturned").val(amountReturned);
 		}
 	}
 	
@@ -103,6 +131,20 @@ jQuery(document).ready(function(){
 		        var totalprice = parseFloat(document.getElementById('totalprice').value);
 		        document.getElementById('totalprice').value = totalprice  - removevalue;
 		        document.getElementById('box_'+conceptId).style.backgroundColor="#FCCFFF";
+		        
+		        var total=jQuery("#totalprice").val();
+                var waiverPercentage=jQuery("#waiverPercentage").val();
+                var totalAmountPay=total-(total*waiverPercentage)/100;
+                var tap=Math.round(totalAmountPay);
+                jQuery("#totalAmountPayable").val(tap);
+
+                var totalAmountToPay=tap;
+                var amountGiven=jQuery("#amountGiven").val();
+                var amountReturned=amountGiven-totalAmountToPay;
+                jQuery("#amountReturned").val(amountReturned);
+		   
+		   
+		   
 		   }
 		   else {
 		        alert("Element has already been removed or does not exist.");
@@ -124,6 +166,17 @@ jQuery(document).ready(function(){
 				var total = parseFloat(document.getElementById('totalprice').value);
 				document.getElementById('totalprice').value = total + diff;
 			}
+			var total=jQuery("#totalprice").val();
+			  
+            var waiverPercentage=jQuery("#waiverPercentage").val();
+            var totalAmountPay=total-(total*waiverPercentage)/100;
+            var tap=Math.round(totalAmountPay);
+            jQuery("#totalAmountPayable").val(tap);
+
+            var totalAmountToPay=tap;
+            var amountGiven=jQuery("#amountGiven").val();
+            var amountReturned=amountGiven-totalAmountToPay;
+            jQuery("#amountReturned").val(amountReturned);
 		}
 		function submitBillForm(){
 			$('#totalprice').focus();
@@ -140,11 +193,82 @@ jQuery(document).ready(function(){
 			}else if(! jQuery("input[type='checkbox']","div#extra").length ) {
 				alert("Please select item for billing");
 			}else {
+				if(jQuery("#waiverPercentage").val() ==""){
+		            alert("Please enter Discount Percentage");
+		            return false;
+	                }
+
+	                if(jQuery("#waiverPercentage").val() < 0 ){
+		            alert("Please enter correct Discount Percentage");
+		            return false;
+	                }
+
+	            	if(jQuery("#spclPercntage").val() ==""){
+			            alert("Please enter Spclward Percentage");
+			            return false;
+		                } 
+	                if(jQuery("#spclPercntage").val() < 0 ){
+			            alert("Please enter correct Spclward Percentage");
+			            return false;
+		                }
+
+	                if(jQuery("#amountGiven").val() ==""){
+		            alert("Please enter Amount Given");
+		            return false;
+	                }
+
+	                if(jQuery("#amountGiven").val() < 0 || !StringUtils.isDigit(jQuery("#amountGiven").val())){
+		            alert("Please enter correct Amount Given");
+		            return false;
+	                }
+
+	                if(jQuery("#amountReturned").val() ==""){
+		            alert("Please enter Amount Returned");
+		            return false;
+	                }
+
+	                if(jQuery("#amountReturned").val() < 0 || !StringUtils.isDigit(jQuery("#amountReturned").val())){
+		            alert("Please enter correct Amount Returned");
+		            return false;
+	                }
 				jQuery("#subm").attr("disabled", "disabled");
 				jQuery("#billForm").submit();
 			}
 		}
-
+		function totalAmountToPay(){
+			var total=jQuery("#totalprice").val();
+			var waiverPercentage=jQuery("#waiverPercentage").val();
+			
+			var totalAmountPay=total-(total*waiverPercentage)/100;
+			
+			var tap=Math.round(totalAmountPay);
+			jQuery("#totalAmountPayable").val(tap);
+			var amountGiven=jQuery("#amountGiven").val();
+			var amountReturned=amountGiven-tap;
+			jQuery("#amountReturned").val(amountReturned);
+			}
+		
+		
+		function totalAmountToPayspcl()
+		{
+			var total=jQuery("#totalprice").val();
+			var spclPercentage=jQuery("#spclPercntage").val();
+			
+			var totalAmountPay= +total + +((total*spclPercentage)/100);
+			
+			var tap=Math.round(totalAmountPay);
+			jQuery("#totalAmountPayable").val(tap);
+			var amountGiven=jQuery("#amountGiven").val();
+			var amountReturned=amountGiven-tap;
+			jQuery("#amountReturned").val(amountReturned);
+		}
+		
+		function amountReturnedToPatient(){
+			var totalAmountToPay=jQuery("#totalAmountPayable").val();
+			var amountGiven=jQuery("#amountGiven").val();
+			var amountReturned=amountGiven-totalAmountToPay;
+			jQuery("#amountReturned").val(amountReturned);
+			}
 </script>
 
 <!-- Right side div for bill collection -->
@@ -173,6 +297,8 @@ jQuery(document).ready(function(){
 				readonly="readonly" />&nbsp; <b>
 		</div>
 
+
+        
 		<div id="extra" class="cancelDraggable"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
 			<input type='text' size='25' value='Service Name' readonly='readonly' />&nbsp;
@@ -181,7 +307,45 @@ jQuery(document).ready(function(){
 			<hr />
 		</div>
 
-
+   		<div id="waiverDiv"
+			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
+			<div>
+			<tr>
+			<td><input type="radio" value="Discount" name="Discount" onclick="dis();"/>Discount&nbsp;&nbsp;
+			<input type="radio" value='SpecialCharges' name="Discount" onclick="spcl();" />SpecialCharges</td></tr>
+			</div>
+			<div id="disc">
+			Discount&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="text" id="waiverPercentage" name="waiverPercentage"
+				size="11" class="cancelDraggable" value="0" onkeyup="totalAmountToPay();"/>%
+		</div>
+		<div id="spclwrd">
+			
+			SpecialWard&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<input type="text" id="spclPercntage" name="spclPercntage"
+				size="11" class="cancelDraggable" value="0" onkeyup="totalAmountToPayspcl();"/>%
+		</div>
+		<div>
+		Total amount payable&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" id="totalAmountPayable" name="totalAmountPayable"
+				size="11" readOnly="true"/>
+		</div>
+		<div>
+		Comment&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" id="waiverComment" name="waiverComment" size="11" class="cancelDraggable"/>
+		</div>
+		<div>
+		Amount Given&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" id="amountGiven" name="amountGiven" size="11" class="cancelDraggable" onkeyup="amountReturnedToPatient();"/>
+		</div>
+		<div>
+		Amount Returned to Patient&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="text" id="amountReturned" name="amountReturned" size="11" readOnly="true"/>
+		</div>
+		</div>
 	</form>
 </div>
 

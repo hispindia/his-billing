@@ -84,7 +84,14 @@ public class BillableServiceBillAddController {
 	public String onSubmit(Model model,Object command, BindingResult bindingResult, HttpServletRequest request,
 	                       @RequestParam("cons") Integer[] cons,@RequestParam(value = "billType", required = false) String billType,
 	                       @RequestParam(value = "comment", required = false) String comment,
-	                       @RequestParam("patientId") Integer patientId){
+	                       @RequestParam("patientId") Integer patientId,
+	                       @RequestParam(value = "totalprice", required = false) float totalprice,
+	                       @RequestParam(value = "waiverPercentage", required = false) float waiverPercentage,
+	                       @RequestParam(value= "waiverComment", required = false) String waiverComment,
+	                       @RequestParam(value = "spclPercntage", required = false) float spclwardPercentage,
+	           			   @RequestParam(value = "totalAmountPayable", required = false) BigDecimal totalAmountPayable,
+	           			   @RequestParam(value = "amountGiven", required = false) Integer amountGiven,
+	           			   @RequestParam(value = "amountReturned", required = false) Integer amountReturned){
 		validate(cons, bindingResult, request);		
 		if( bindingResult.hasErrors()){
 			model.addAttribute("errors", bindingResult.getAllErrors());
@@ -171,6 +178,18 @@ public class BillableServiceBillAddController {
        bill.setFreeBill(calculator.isFreeBill(billType));
 		logger.info("Is free bill: " + bill.getFreeBill());
 		bill.setReceipt(billingService.createReceipt());
+		//new requirement discount and spcl ward
+		bill.setWaiverPercentage(waiverPercentage);
+		float waiverAmount=totalprice*waiverPercentage/100;
+		bill.setWaiverAmount(waiverAmount);
+		
+		bill.setSpclwardPercentage(spclwardPercentage);
+		float spclwardAmount=totalprice*spclwardPercentage/100;
+		bill.setSpclwardAmount(spclwardAmount);
+		bill.setAmountPayable(totalAmountPayable);
+		bill.setAmountGiven(amountGiven);
+		bill.setAmountReturned(amountReturned);
+		bill.setComment(waiverComment);
 		bill = billingService.savePatientServiceBill(bill);		
 		return "redirect:/module/billing/patientServiceBill.list?patientId="+patientId+"&billId="+bill.getPatientServiceBillId();
 		

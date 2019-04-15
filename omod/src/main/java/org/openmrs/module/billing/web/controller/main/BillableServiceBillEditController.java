@@ -93,7 +93,9 @@ public class BillableServiceBillEditController {
 			@RequestParam("patientId") Integer patientId,
 			@RequestParam("billId") Integer billId,
 			@RequestParam("action") String action,
-			@RequestParam(value = "description", required = false) String description) {
+			@RequestParam(value = "description", required = false) String description,
+			@RequestParam(value = "totalprice", required = false) float totalprice,
+			@RequestParam(value= "waiverComment", required = false) String waiverComment) {
 
 		validate(cons, bindingResult, request);
 		if (bindingResult.hasErrors()) {
@@ -305,7 +307,22 @@ public class BillableServiceBillEditController {
 		}
 		
 		logger.info("Is free bill: " + bill.getFreeBill());
-
+		float waiverPercentage =Float.parseFloat(request.getParameter("waiverPercentage"));
+		float spclwardPercentage =Float.parseFloat(request.getParameter("spclPercntage"));
+		BigDecimal totalAmountPayable =new BigDecimal(request.getParameter("totalAmountPayable"));
+		Integer amountGiven =Integer.parseInt(request.getParameter("amountGiven"));
+		Integer amountReturned =Integer.parseInt(request.getParameter("amountReturned"));
+		
+		bill.setWaiverPercentage(waiverPercentage);
+		bill.setSpclwardPercentage(spclwardPercentage);
+		float waiverAmount=totalprice*waiverPercentage/100;
+		bill.setWaiverAmount(waiverAmount);
+		float spclwardAmount=totalprice*spclwardPercentage/100;
+		bill.setSpclwardAmount(spclwardAmount);
+		bill.setAmountPayable(totalAmountPayable);
+		bill.setAmountGiven(amountGiven);
+		bill.setAmountReturned(amountReturned);
+		bill.setComment(waiverComment);
 		bill = billingService.savePatientServiceBill(bill);
 		//ghanshyam 7-sept-2012 Support #343 [Billing][3.2.7-SNAPSHOT]No Queue to be generated from Old bill
 		return "redirect:/module/billing/patientServiceBillEdit.list?patientId="

@@ -426,4 +426,15 @@
 		ADD COLUMN `comment` varchar(50);						
 		</sql>
 	</diff>
+	<diff>
+		<version>3.1.9</version>
+		<author>ambika</author>
+		<date>April 15th 2019</date>
+		<description>
+			Alter billing_patient_service_bill
+		</description>
+		<sql>
+		ALTER TABLE billing_patient_service_bill ADD COLUMN(waiver_percentage float(11,2),waiver_amount float(11,2),spcl_percentage float(11,2),spcl_amount float(11,2),amount_payable decimal(11,2),amount_given int(11),amount_returned int(11));
+		</sql>
+	</diff>
 </sqldiff>
