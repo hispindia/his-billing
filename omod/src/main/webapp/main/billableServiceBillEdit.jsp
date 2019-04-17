@@ -335,8 +335,7 @@ jQuery(document).ready(function(){
 				size="11" value="${bill.waiverPercentage}" class="cancelDraggable" onkeyup="totalAmountToPay();"/>%
 		</div>
 		<div id="spclwrd">
-			SpecialWard&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			SpecialWard Charges &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<input type="text" id="spclPercntage" name="spclPercntage"
 				size="11"  value="${bill.spclwardPercentage}" class="cancelDraggable" value="0" onkeyup="totalAmountToPayspcl();"/>%
 		</div>

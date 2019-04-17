@@ -219,7 +219,8 @@ function givefree(){
 						</c:otherwise>
 					</c:choose></td>
 			</tr>
-			
+			<c:choose>
+			<c:when test="${bill.waiverPercentage != 0.0 || bill.spclwardPercentage != 0.0  }">
 			<c:choose>
 			<c:when test="${ bill.waiverPercentage != 0.0}">
 			<tr>
@@ -229,10 +230,12 @@ function givefree(){
 			</c:when>
 			<c:otherwise>
 			<tr>
-				<td colspan="3" align='right'><b>SpecialWard Percentage</td>
+				<td colspan="3" align='right'><b>SpecialWard Charges</td>
 				<td align='right'><b>${bill.spclwardPercentage}0 %</td>
 			</tr>
 			</c:otherwise>
+			</c:choose>
+			</c:when>
 			</c:choose>
 			<tr>
 				<td colspan="3" align='right'><b>Total amount payable</td>
@@ -343,6 +346,8 @@ function givefree(){
 				</c:choose>
 			</tr>
 			<c:choose>
+			<c:when test="${bill.waiverPercentage != 0.0 || bill.spclwardPercentage != 0.0  }">
+			<c:choose>
 			<c:when test="${ bill.waiverPercentage != 0.0}">
 			<tr>
 				<td colspan="3" align='right'><b>Discount</td>
@@ -351,10 +356,12 @@ function givefree(){
 			</c:when>
 			<c:otherwise>
 			<tr>
-				<td colspan="3" align='right'><b>SpecialWard Percentage</td>
+				<td colspan="3" align='right'><b>SpecialWard Charges</td>
 				<td align='right'><b>${bill.spclwardPercentage}0 %</td>
 			</tr>
 			</c:otherwise>
+			</c:choose>
+			</c:when>
 			</c:choose>
 			<tr>
 				<td colspan="3" align='right'><b>Total amount payable</td>
@@ -365,7 +372,7 @@ function givefree(){
 			</tr>
 		</table>
 		<br> <span class="printfont" style="margin-left: 60px;">Total
-			Amount:</span> Rupees <span id="totalValue2" class="printfont"> </span> only
+			Amount Payable:</span> Rupees <span id="totalValue2" class="printfont"> </span> only
 		<br /> <br /> <br /> <br /> <br /> <br /> <span
 			class="printfont" style="margin-left: 200px;">Signature of
 			billing clerk/ Stamp</span>
@@ -455,7 +462,7 @@ function givefree(){
 </c:if>
 
 <%--ghanshyam 12-dec-2012 Bug #458 [BILLING 3.2.8-SNAPSHOT] Edit in patient category, the amount in figures and words in the print out of the previous bill is not same--%>
-<input type="hidden" id="total" value="${bill.actualAmount}">
+<input type="hidden" id="total" value="${bill.amountPayable}">
 
 <script>
 	function printDiv() {
