@@ -237,6 +237,27 @@ function givefree(){
 			</c:choose>
 			</c:when>
 			</c:choose>
+			<c:choose>
+			<c:when test="${bill.freeBill eq '1'}">
+			<tr>
+				<td colspan="3" align='right'><b>Total amount payable</td>
+				<td align='right'>
+										
+				<b>${bill.actualAmount}</td>
+				
+			</tr>
+			</c:when>
+			
+			<c:when test="${bill.freeBill eq '0' && bill.actualAmount == 0.0}">
+			<tr>
+				<td colspan="3" align='right'><b>Total amount payable</td>
+				<td align='right'>
+										
+				<b>${bill.actualAmount}</td>
+				
+			</tr>
+			</c:when>
+			<c:otherwise>
 			<tr>
 				<td colspan="3" align='right'><b>Total amount payable</td>
 				<td align='right'>
@@ -244,6 +265,8 @@ function givefree(){
 				<b>${bill.amountPayable}</td>
 				
 			</tr>
+			</c:otherwise>
+			</c:choose>
 		</table>
 		<br>
 		<form method="POST" id="billForm">
@@ -363,6 +386,27 @@ function givefree(){
 			</c:choose>
 			</c:when>
 			</c:choose>
+			<c:choose>
+			<c:when test="${bill.freeBill eq '1'}">
+			<tr>
+				<td colspan="3" align='right'><b>Total amount payable</td>
+				<td align='right'>
+										
+				<b>${bill.actualAmount}</td>
+				
+			</tr>
+			</c:when>
+			
+			<c:when test="${bill.freeBill eq '0' && bill.actualAmount == 0.0}">
+			<tr>
+				<td colspan="3" align='right'><b>Total amount payable</td>
+				<td align='right'>
+										
+				<b>${bill.actualAmount}</td>
+				
+			</tr>
+			</c:when>
+			<c:otherwise>
 			<tr>
 				<td colspan="3" align='right'><b>Total amount payable</td>
 				<td align='right'>
@@ -370,6 +414,8 @@ function givefree(){
 				<b>${bill.amountPayable}</td>
 				
 			</tr>
+			</c:otherwise>
+			</c:choose>
 		</table>
 		<br> <span class="printfont" style="margin-left: 60px;">Total
 			Amount Payable:</span> Rupees <span id="totalValue2" class="printfont"> </span> only
@@ -462,8 +508,37 @@ function givefree(){
 </c:if>
 
 <%--ghanshyam 12-dec-2012 Bug #458 [BILLING 3.2.8-SNAPSHOT] Edit in patient category, the amount in figures and words in the print out of the previous bill is not same--%>
-<input type="hidden" id="total" value="${bill.amountPayable}">
 
+<c:choose>
+			<c:when test="${bill.freeBill eq '1'}">
+			<tr>
+				<td colspan="3" align='right'><b>Total amount payable</td>
+				<td align='right'>
+										
+				<b><input type="hidden" id="total" value="${bill.actualAmount}"></b>	
+				
+			</tr>
+			</c:when>
+			
+			<c:when test="${bill.freeBill eq '0' && bill.actualAmount == 0.0}">
+			<tr>
+				<td colspan="3" align='right'><b>Total amount payable</td>
+				<td align='right'>
+					<b><input type="hidden" id="total" value="${bill.actualAmount}"></b>					
+				
+				
+			</tr>
+			</c:when>
+			<c:otherwise>
+			<tr>
+				<td colspan="3" align='right'><b>Total amount payable</td>
+				<td align='right'>
+				<b><input type="hidden" id="total" value="${bill.amountPayable}"></b>						
+				
+				
+			</tr>
+			</c:otherwise>
+			</c:choose>
 <script>
 	function printDiv() {
 		jQuery("div#printDiv").printArea({
