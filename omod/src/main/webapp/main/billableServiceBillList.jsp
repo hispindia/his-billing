@@ -238,7 +238,7 @@ function givefree(){
 			</c:when>
 			</c:choose>
 			<c:choose>
-			<c:when test="${bill.freeBill eq '1'}">
+			<c:when test="${bill.freeBill eq 'true'}">
 			<tr>
 				<td colspan="3" align='right'><b>Total amount payable</td>
 				<td align='right'>
@@ -247,8 +247,7 @@ function givefree(){
 				
 			</tr>
 			</c:when>
-			
-			<c:when test="${bill.freeBill eq '0' && bill.actualAmount == 0.0}">
+			<c:when test="${bill.freeBill eq 'false' && bill.actualAmount == '0.00'}">
 			<tr>
 				<td colspan="3" align='right'><b>Total amount payable</td>
 				<td align='right'>
@@ -387,7 +386,7 @@ function givefree(){
 			</c:when>
 			</c:choose>
 			<c:choose>
-			<c:when test="${bill.freeBill eq '1'}">
+			<c:when test="${bill.freeBill eq 'true'}">
 			<tr>
 				<td colspan="3" align='right'><b>Total amount payable</td>
 				<td align='right'>
@@ -397,7 +396,7 @@ function givefree(){
 			</tr>
 			</c:when>
 			
-			<c:when test="${bill.freeBill eq '0' && bill.actualAmount == 0.0}">
+			<c:when test="${bill.freeBill eq 'false' && bill.actualAmount == '0.00'}">
 			<tr>
 				<td colspan="3" align='right'><b>Total amount payable</td>
 				<td align='right'>
@@ -510,9 +509,9 @@ function givefree(){
 <%--ghanshyam 12-dec-2012 Bug #458 [BILLING 3.2.8-SNAPSHOT] Edit in patient category, the amount in figures and words in the print out of the previous bill is not same--%>
 
 <c:choose>
-			<c:when test="${bill.freeBill eq '1'}">
+			<c:when test="${bill.freeBill eq  'true'}">
 			<tr>
-				<td colspan="3" align='right'><b>Total amount payable</td>
+			
 				<td align='right'>
 										
 				<b><input type="hidden" id="total" value="${bill.actualAmount}"></b>	
@@ -520,9 +519,9 @@ function givefree(){
 			</tr>
 			</c:when>
 			
-			<c:when test="${bill.freeBill eq '0' && bill.actualAmount == 0.0}">
+			<c:when test="${bill.freeBill eq 'false' && bill.actualAmount == '0.00'}">
 			<tr>
-				<td colspan="3" align='right'><b>Total amount payable</td>
+				
 				<td align='right'>
 					<b><input type="hidden" id="total" value="${bill.actualAmount}"></b>					
 				
@@ -531,7 +530,7 @@ function givefree(){
 			</c:when>
 			<c:otherwise>
 			<tr>
-				<td colspan="3" align='right'><b>Total amount payable</td>
+				
 				<td align='right'>
 				<b><input type="hidden" id="total" value="${bill.amountPayable}"></b>						
 				

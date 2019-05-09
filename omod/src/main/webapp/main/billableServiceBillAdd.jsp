@@ -48,9 +48,25 @@ span {
 ${tabs }
 <script type="text/javascript">
 jQuery(document).ready(function(){ 
+	
     $('#container-1 ul').tabs();
     document.getElementById("spclwrd").style.display = "none";
     document.getElementById("disc").style.display = "none";
+    var bill= document.getElementById("billType");
+    if(bill.value == "free")
+    	{ 
+    	    document.getElementById("discntamnt").style.display = "none";
+    	    document.getElementById("tamp").style.display = "none";
+    	    document.getElementById("amg").style.display = "none";
+    	    document.getElementById("artp").style.display = "none";
+    	}
+    else
+    	{ 
+    	document.getElementById("discntamnt").style.display = "block";
+    	document.getElementById("tamp").style.display = "block";
+	    document.getElementById("amg").style.display = "block";
+	    document.getElementById("artp").style.display = "block";
+    	}
 });
 </script>
 
@@ -112,7 +128,16 @@ function spcl(){
 
             var totalAmountToPay=tap;
             var amountGiven=jQuery("#amountGiven").val();
-            var amountReturned=amountGiven-totalAmountToPay;
+         
+            if(jQuery("#amountGiven").val() =="")
+            	{
+            	var amountReturned="";
+            	}
+            else
+            	{
+            	 var amountReturned=amountGiven-totalAmountToPay;
+            	}
+           
             jQuery("#amountReturned").val(amountReturned);
 		}
 	}
@@ -192,7 +217,7 @@ function spcl(){
 				alert("Please enter valid quantity!!!");
 			}else if(! jQuery("input[type='checkbox']","div#extra").length ) {
 				alert("Please select item for billing");
-			}else {
+			}else { var bill= document.getElementById("billType");
 				if(jQuery("#waiverPercentage").val() ==""){
 		            alert("Please enter Discount Percentage");
 		            return false;
@@ -211,8 +236,8 @@ function spcl(){
 			            alert("Please enter correct Spclward Percentage");
 			            return false;
 		                }
-
-	                if(jQuery("#amountGiven").val() ==""){
+	                if(bill.value == "paid")
+	                { if(jQuery("#amountGiven").val() ==""){
 		            alert("Please enter Amount Given");
 		            return false;
 	                }
@@ -221,7 +246,8 @@ function spcl(){
 		            alert("Please enter correct Amount Given");
 		            return false;
 	                }
-
+	                
+	               
 	                if(jQuery("#amountReturned").val() ==""){
 		            alert("Please enter Amount Returned");
 		            return false;
@@ -230,6 +256,7 @@ function spcl(){
 	                if(jQuery("#amountReturned").val() < 0 || !StringUtils.isDigit(jQuery("#amountReturned").val())){
 		            alert("Please enter correct Amount Returned");
 		            return false;
+	                }
 	                }
 				jQuery("#subm").attr("disabled", "disabled");
 				jQuery("#billForm").submit();
@@ -309,7 +336,7 @@ function spcl(){
 
    		<div id="waiverDiv"
 			style="background: #f6f6f6; border: 1px #808080 solid; padding: 0.3em; margin: 0.3em 0em; width: 100%;">
-			<div>
+			<div id=discntamnt>
 			<tr>
 			<td><input type="radio" value="Discount" name="Discount" onclick="dis();"/>Discount&nbsp;&nbsp;
 			<input type="radio" value='SpecialCharges' name="Discount" onclick="spcl();" />SpecialCharges</td></tr>
@@ -326,7 +353,7 @@ function spcl(){
 			<input type="text" id="spclPercntage" name="spclPercntage"
 				size="11" class="cancelDraggable" value="0" onkeyup="totalAmountToPayspcl();"/>%
 		</div>
-		<div>
+		<div id=tamp>
 		Total amount payable&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="text" id="totalAmountPayable" name="totalAmountPayable"
 				size="11" readOnly="true"/>
@@ -336,16 +363,16 @@ function spcl(){
 		&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="text" id="waiverComment" name="waiverComment" size="11" class="cancelDraggable"/>
 		</div>
-		<div>
+		<div id=amg>
 		Amount Given&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="text" id="amountGiven" name="amountGiven" size="11" class="cancelDraggable" onkeyup="amountReturnedToPatient();"/>
 		</div>
-		<div>
+		<div id=artp>
 		Amount Returned to Patient&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="text" id="amountReturned" name="amountReturned" size="11" readOnly="true"/>
 		</div>
 		</div>
 	</form>
 </div>
-
+<input type="hidden" id="billType" value="${billType}">
 <%@ include file="/WEB-INF/template/footer.jsp"%>

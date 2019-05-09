@@ -65,7 +65,7 @@ public class BillableServiceBillAddController {
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String viewForm( Model model, @RequestParam("patientId") Integer patientId,
-	@RequestParam(value = "comment", required = false) String comment){
+	@RequestParam(value = "comment", required = false) String comment,@RequestParam(value = "billType", required = false) String billType){
 		BillingService billingService = Context.getService(BillingService.class);
 		List<BillableService> services = billingService.getAllServices();
     	Map<Integer, BillableService> mapServices = new HashMap<Integer, BillableService>();
@@ -74,8 +74,10 @@ public class BillableServiceBillAddController {
 		}
 		Integer conceptId = Integer.valueOf(Context.getAdministrationService().getGlobalProperty("billing.rootServiceConceptId"));
 		Concept concept = Context.getConceptService().getConcept(conceptId);
+		
 		model.addAttribute("tabs", billingService.traversTab(concept, mapServices, 1));
 		model.addAttribute("patientId", patientId);
+		model.addAttribute("billType", billType);
 		return "/module/billing/main/billableServiceBillAdd";
 	}
 	
@@ -106,7 +108,7 @@ public class BillableServiceBillAddController {
 		Patient patient = patientService.getPatient(patientId);
 		Map<String, String> attributes = PatientUtils.getAttributes(patient);
 		BillCalculatorService calculator = new BillCalculatorService();
-		
+	
 		PatientServiceBill bill = new PatientServiceBill();
 		bill.setCreatedDate(new Date());
 		bill.setPatient(patient);
@@ -175,6 +177,7 @@ public class BillableServiceBillAddController {
             }
        }
      //New Requirement add Paid bill & Free bill Both 
+     
        bill.setFreeBill(calculator.isFreeBill(billType));
 		logger.info("Is free bill: " + bill.getFreeBill());
 		bill.setReceipt(billingService.createReceipt());
@@ -182,7 +185,6 @@ public class BillableServiceBillAddController {
 		bill.setWaiverPercentage(waiverPercentage);
 		float waiverAmount=totalprice*waiverPercentage/100;
 		bill.setWaiverAmount(waiverAmount);
-		
 		bill.setSpclwardPercentage(spclwardPercentage);
 		float spclwardAmount=totalprice*spclwardPercentage/100;
 		bill.setSpclwardAmount(spclwardAmount);
