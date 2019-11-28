@@ -25,11 +25,13 @@
 <c:set var="numberOfPages" value="${pagingUtil.numberOfPages}" />
 <%-- ghanshyam 12-sept-2012 Bug #357 [billing][3.2.7-SNAPSHOT] Error screen appears on clicking next page or changing page size in list of bills --%>
 <c:set var="patientId" value="${pagingUtil.patientId}" />
+<c:set var="driverId" value="${driverId}" />
 
 <input type="hidden" id="baseLink" value="${baseLink}" />
 <input type="hidden" id="currentPage" value="${currentPage}" />
 <%-- ghanshyam 12-sept-2012 Bug #357 [billing][3.2.7-SNAPSHOT] Error screen appears on clicking next page or changing page size in list of bills --%>
 <input type="hidden" id="patientId" value="${patientId}" />
+<input type="hidden" id="driverId" value="${driverId}" />
 <c:if test="${numberOfPages > 0 }">
 	<ul class="pageSizeSelection">
 		<li><span><spring:message
@@ -50,9 +52,9 @@
 			<c:when test="${currentPage > 1}">
 				<c:set var="prev" value="${currentPage - 1 }" />
 				<%-- ghanshyam 12-sept-2012 Bug #357 [billing][3.2.7-SNAPSHOT] Error screen appears on clicking next page or changing page size in list of bills --%>
-				<a href="${baseLink}currentPage=1&pageSize=${pageSize}&patientId=${patientId}"
+				<a href="${baseLink}currentPage=1&pageSize=${pageSize}&patientId=${patientId}&driverId=${driverId}"
 					class="first" title="First">&laquo;&laquo;</a>
-				<a href="${baseLink}currentPage=${prev}&pageSize=${pageSize}&patientId=${patientId}"
+				<a href="${baseLink}currentPage=${prev}&pageSize=${pageSize}&patientId=${patientId}&driverId=${driverId}"
 					class="prev" title="Previous">&laquo;</a>
 			</c:when>
 			<c:otherwise>
@@ -69,7 +71,7 @@
 				<c:choose>
 					<c:when test="${p != currentPage }">
 					<%-- ghanshyam 12-sept-2012 Bug #357 [billing][3.2.7-SNAPSHOT] Error screen appears on clicking next page or changing page size in list of bills --%>
-						<a href="${baseLink}currentPage=${p}&pageSize=${pageSize}&patientId=${patientId}"
+						<a href="${baseLink}currentPage=${p}&pageSize=${pageSize}&patientId=${patientId}&driverId=${driverId}"
 							class="page" title="Page $p">${p}</a>
 					</c:when>
 					<c:otherwise>
@@ -82,10 +84,10 @@
 			<c:when test="${currentPage < numberOfPages  }">
 				<c:set var="next" value="${currentPage + 1  }" />
 				<%-- ghanshyam 12-sept-2012 Bug #357 [billing][3.2.7-SNAPSHOT] Error screen appears on clicking next page or changing page size in list of bills --%>
-				<a href="${baseLink}currentPage=${next}&pageSize=${pageSize}&patientId=${patientId}"
+				<a href="${baseLink}currentPage=${next}&pageSize=${pageSize}&patientId=${patientId}&driverId=${driverId}"
 					class="next" title="Next">&raquo;</a>
 				<a
-					href="${baseLink}currentPage=${numberOfPages}&pageSize=${pageSize}&patientId=${patientId}"
+					href="${baseLink}currentPage=${numberOfPages}&pageSize=${pageSize}&patientId=${patientId}&driverId=${driverId}"
 					class="last" title="Last">&raquo;&raquo;</a>
 			</c:when>
 			<c:otherwise>

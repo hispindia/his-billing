@@ -23,11 +23,12 @@ function changePageSize( baseLink )
 	// ghanshyam 12-sept-2012 Bug #357 [billing][3.2.7-SNAPSHOT] Error screen appears on clicking next page or changing page size in list of bills
 	var currentPage = jQuery("#currentPage").val();
 	var patientId = jQuery("#patientId").val();
+	var driverId = jQuery("#driverId").val();
 	if(  !/^ *[0-9]+ *$/.test(pageSize) ){
 		alert("Invalid number!");
 	}else {
 	// ghanshyam 12-sept-2012 Bug #357 [billing][3.2.7-SNAPSHOT] Error screen appears on clicking next page or changing page size in list of bills
-		window.location.href = baseLink +"currentPage=" +currentPage +"&pageSize=" +pageSize +"&patientId=" +patientId;
+		window.location.href = baseLink +"currentPage=" +currentPage +"&pageSize=" +pageSize +"&patientId=" +patientId + "&driverId=" + driverId;
 	}
 }
 
@@ -37,10 +38,11 @@ function jumpPage( baseLink )
 	var currentPage = jQuery("#jumpToPage").val();
 	// ghanshyam 12-sept-2012 Bug #357 [billing][3.2.7-SNAPSHOT] Error screen appears on clicking next page or changing page size in list of bills
 	var patientId = jQuery("#patientId").val();
+	var driverId = jQuery("#driverId").val();
 	if(  !/^ *[0-9]+ *$/.test(pageSize)  ||  !/^ *[0-9]+ *$/.test(currentPage) ){
 		alert("Invalid number!");
 	}else {
 	// ghanshyam 12-sept-2012 Bug #357 [billing][3.2.7-SNAPSHOT] Error screen appears on clicking next page or changing page size in list of bills
-		window.location.href = baseLink +"currentPage=" +currentPage +"&pageSize=" +pageSize +"&patientId=" +patientId;
+		window.location.href = baseLink +"currentPage=" +currentPage +"&pageSize=" +pageSize +"&patientId=" +patientId + "&driverId=" + driverId;
 	}
 }
