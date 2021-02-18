@@ -44,9 +44,7 @@
 	</span>
 </c:forEach>
 <div>
-	<b><a href="addMiscellaneousServiceBill.form">Add Miscellaneous
-			Service bill</a>
-	</b>
+	<b><a href="addMiscellaneousServiceBill.form">Add Miscellaneous Service bill</a></b>
 </div>
 <br />
 <br />
@@ -85,79 +83,28 @@
 				<td align="right">${bill.amount}</td>
 			</tr>
 		</table>
-		<br>
-		<form method="POST" id="billForm">
-			<center>
-				<c:if test="${bill.voided==false }">
-					<input type="button"
-						value='<spring:message code="billing.print" />'
-						onClick="printDiv();" />&nbsp;&nbsp;</c:if>
-				<a href="#" onclick="javascript:jQuery('#billContainer').hide();">Hide</a>
-			</center>
-		</form>
+		<div id="billContainerFooter" style="display: none">
+			<br> <span style="font-size: 1.5em">Total Amount:</span> <span
+				id="totalValue" style="font-size: 1.5em"></span> <br />
+			<br />
+			<br />
+			<br />
+			<br />
+			<br /> <span style="float: right; font-size: 1.5em">Signature
+				of billing clerk/ Stamp</span>
+		</div>
+		<div id="billContainerFooterButtons">
+		<center>
+		<c:if test="${bill.voided==false }">
+			<button id="printBillButton">
+				<spring:message code="billing.print" />
+			</button>
+		</c:if>
+		<a href="#" onclick="javascript:jQuery('#billContainer').hide();">Hide</a>
+	</center>
 	</div>
-
-	<!-- PRINT DIV -->
-
-	<div id="printDiv" class="hidden"
-		style="margin: 10px auto; width: 981px; font-size: 1.5em; font-family: 'Dot Matrix Normal', Arial, Helvetica, sans-serif;">
-		<%-- ghanshyam 18-sept-2012 Support #386 [Solan][billing-3.2.7 snap shot]-misc services print out(note:-commented below line for that) --%>
-		<%-- 
-		<img
-			src="${pageContext.request.contextPath}/moduleResources/billing/HEADEROPDSLIP.jpg"
-			width="981" height="170"></img>
-		--%>
-			
-		<table>
-			<tr><br /></tr>
-			<tr><br /></tr>
-			<tr><br /></tr>
-			<tr><br /></tr>
-			<tr>
-				<td>Liable name:</td>
-				<td>${bill.liableName }</td>
-			</tr>
-			<tr>
-				<td>Date:</td>
-				<td><openmrs:formatDate date="${bill.createdDate}"
-						type="textbox" />
-				</td>
-			</tr>
-			<tr>
-				<td>Bill ID:</td>
-				<td>${bill.receipt.id}</td>
-			</tr>
-		</table>
-		<table width="100%" border="1">
-			<tr>
-				<th align="center">Service</th>
-				<th align="center">Quantity</th>
-				<th align="center">Price (Rs)</th>
-			</tr>
-			<tr>
-				<td align="center">${bill.service.name}</td>
-				<td align="center">${bill.quantity}</td>
-				<td align="center">${bill.amount}</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td align="center"><b>Total</b></td>				
-				<td align="center">${bill.amount}</td>
-			</tr>
-		</table>
-		<br> <span style="font-size: 1.5em">Total Amount:</span> <span
-			id="totalValue" style="font-size: 1.5em"></span> <br />
-		<br />
-		<br />
-		<br />
-		<br />
-		<br /> <span style="float: right; font-size: 1.5em">Signature
-			of billing clerk/ Stamp</span>
 	</div>
-
-	<!-- END PRINT DIV -->
 </c:if>
-
 
 <!--List old bills -->
 <div>
@@ -218,16 +165,21 @@
 
 	<input type="hidden" id="total" value="${bill.amount}">
 
-	<script>
-function printDiv()
-{
-  	jQuery("div#printDiv").printArea({mode:"popup",popClose:true});
-	jQuery("#billForm").submit();
-}
-jQuery(document).ready(function(){
-	jQuery("#totalValue").html(toWords(jQuery("#total").val()));
-});
+<script>
+	jQuery(document).ready(() => {
+		jQuery('#printBillButton').click((e) => {
+			e.preventDefault()
+			jQuery("#billContainerFooterButtons").css("display", "none")
+			jQuery("#billContainerFooter").css("display", "block")
+			jQuery("#totalValue").html(toWords(jQuery("#total").val()));
+			jQuery("div#billContainer").printArea({
+				mode: "popup",
+				popClose: true
+			})
+			jQuery("#billContainerFooter").css("display", "none")
+			jQuery("#billContainerFooterButtons").css("display", "block")
+		})
+	})	
 </script>
-
 	<%@ include file="/WEB-INF/template/footer.jsp"%>
 </div>
