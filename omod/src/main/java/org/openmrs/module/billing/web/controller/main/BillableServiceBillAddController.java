@@ -53,68 +53,69 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 /**
  *
  */
 @Controller
 @RequestMapping("/module/billing/addPatientServiceBill.form")
 public class BillableServiceBillAddController {
-	
+
 	private Log logger = LogFactory.getLog(getClass());
-	
-	@RequestMapping(method=RequestMethod.GET)
-	public String viewForm( Model model, @RequestParam("patientId") Integer patientId,
-	@RequestParam(value = "comment", required = false) String comment,@RequestParam(value = "billType", required = false) String billType){
+
+	@RequestMapping(method = RequestMethod.GET)
+	public String viewForm(Model model, @RequestParam("patientId") Integer patientId,
+			@RequestParam(value = "comment", required = false) String comment,
+			@RequestParam(value = "billType", required = false) String billType) {
 		BillingService billingService = Context.getService(BillingService.class);
 		List<BillableService> services = billingService.getAllServices();
-    	Map<Integer, BillableService> mapServices = new HashMap<Integer, BillableService>();
-		for(BillableService ser : services){
-				mapServices.put(ser.getConceptId(), ser);
+		Map<Integer, BillableService> mapServices = new HashMap<Integer, BillableService>();
+		for (BillableService ser : services) {
+			mapServices.put(ser.getConceptId(), ser);
 		}
-		Integer conceptId = Integer.valueOf(Context.getAdministrationService().getGlobalProperty("billing.rootServiceConceptId"));
+		Integer conceptId = Integer
+				.valueOf(Context.getAdministrationService().getGlobalProperty("billing.rootServiceConceptId"));
 		Concept concept = Context.getConceptService().getConcept(conceptId);
-		
+
 		model.addAttribute("tabs", billingService.traversTab(concept, mapServices, 1));
 		model.addAttribute("patientId", patientId);
 		model.addAttribute("billType", billType);
 		return "/module/billing/main/billableServiceBillAdd";
 	}
-	
-	@RequestMapping(method=RequestMethod.POST)
-	//New Requirement add Paid bill & Free bill Both 
-	public String onSubmit(Model model,Object command, BindingResult bindingResult, HttpServletRequest request,
-	                       @RequestParam("cons") Integer[] cons,@RequestParam(value = "billType", required = false) String billType,
-	                       @RequestParam(value = "comment", required = false) String comment,
-	                       @RequestParam("patientId") Integer patientId,
-	                       @RequestParam(value = "totalprice", required = false) float totalprice,
-	                       @RequestParam(value = "waiverPercentage", required = false) float waiverPercentage,
-	                       @RequestParam(value= "waiverComment", required = false) String waiverComment,
-	                       @RequestParam(value = "spclPercntage", required = false) float spclwardPercentage,
-	           			   @RequestParam(value = "totalAmountPayable", required = false) BigDecimal totalAmountPayable,
-	           			   @RequestParam(value = "amountGiven", required = false) Integer amountGiven,
-	           			   @RequestParam(value = "amountReturned", required = false) Integer amountReturned){
-		validate(cons, bindingResult, request);		
-		if( bindingResult.hasErrors()){
+
+	@RequestMapping(method = RequestMethod.POST)
+	// New Requirement add Paid bill & Free bill Both
+	public String onSubmit(Model model, Object command, BindingResult bindingResult, HttpServletRequest request,
+			@RequestParam("cons") Integer[] cons, @RequestParam(value = "billType", required = false) String billType,
+			@RequestParam(value = "comment", required = false) String comment,
+			@RequestParam("patientId") Integer patientId,
+			@RequestParam(value = "totalprice", required = false) float totalprice,
+			@RequestParam(value = "waiverPercentage", required = false) float waiverPercentage,
+			@RequestParam(value = "waiverComment", required = false) String waiverComment,
+			@RequestParam(value = "spclPercntage", required = false) float spclwardPercentage,
+			@RequestParam(value = "totalAmountPayable", required = false) BigDecimal totalAmountPayable,
+			@RequestParam(value = "amountGiven", required = false) Integer amountGiven,
+			@RequestParam(value = "amountReturned", required = false) Integer amountReturned) {
+		validate(cons, bindingResult, request);
+		if (bindingResult.hasErrors()) {
 			model.addAttribute("errors", bindingResult.getAllErrors());
 			return "module/billing/main/billableServiceBillEdit";
 		}
-		
+
 		BillingService billingService = Context.getService(BillingService.class);
 
 		PatientService patientService = Context.getPatientService();
-		
-		// Get the BillCalculator to calculate the rate of bill item the patient has to pay
+
+		// Get the BillCalculator to calculate the rate of bill item the patient has to
+		// pay
 		Patient patient = patientService.getPatient(patientId);
 		Map<String, String> attributes = PatientUtils.getAttributes(patient);
 		BillCalculatorService calculator = new BillCalculatorService();
-	
+
 		PatientServiceBill bill = new PatientServiceBill();
 		bill.setCreatedDate(new Date());
 		bill.setPatient(patient);
 		bill.setCreator(Context.getAuthenticatedUser());
-		
-		
+
 		PatientServiceBillItem item = null;
 		int quantity = 0;
 		Money itemAmount;
@@ -122,90 +123,92 @@ public class BillableServiceBillAddController {
 		Money totalAmount = new Money(BigDecimal.ZERO);
 		BigDecimal totalActualAmount = new BigDecimal(0);
 		BigDecimal unitPrice;
-		String name ;
-		BillableService service ;
-		
-		for( int conceptId : cons){
-		
-			unitPrice = NumberUtils.createBigDecimal(request.getParameter(conceptId+"_unitPrice"));
-			quantity = NumberUtils.createInteger(request.getParameter(conceptId+"_qty"));
-			name = request.getParameter(conceptId+"_name");
+		String name;
+		BillableService service;
+
+		for (int conceptId : cons) {
+
+			unitPrice = NumberUtils.createBigDecimal(request.getParameter(conceptId + "_unitPrice"));
+			quantity = NumberUtils.createInteger(request.getParameter(conceptId + "_qty"));
+			name = request.getParameter(conceptId + "_name");
 			service = billingService.getServiceByConceptId(conceptId);
 
 			mUnitPrice = new Money(unitPrice);
 			itemAmount = mUnitPrice.times(quantity);
 			totalAmount = totalAmount.plus(itemAmount);
-			
-			item = new PatientServiceBillItem();			
+
+			item = new PatientServiceBillItem();
 			item.setCreatedDate(new Date());
 			item.setName(name);
 			item.setPatientServiceBill(bill);
 			item.setQuantity(quantity);
 			item.setService(service);
-			item.setUnitPrice(unitPrice);		
-			
+			item.setUnitPrice(unitPrice);
+
 			item.setAmount(itemAmount.getAmount());
-			
+
 			// Get the ratio for each bill item
-			Map<String, Object> parameters = HospitalCoreUtils.buildParameters("patient", patient, "attributes", attributes, "billItem", item, "request", request);
-			BigDecimal rate = calculator.getRate(parameters,billType);	
+			Map<String, Object> parameters = HospitalCoreUtils.buildParameters("patient", patient, "attributes",
+					attributes, "billItem", item, "request", request);
+			BigDecimal rate = calculator.getRate(parameters, billType);
 			item.setActualAmount(item.getAmount().multiply(rate));
 			totalActualAmount = totalActualAmount.add(item.getActualAmount());
-			
+
 			bill.addBillItem(item);
 		}
-		
+
 		bill.setComment(comment);
-		bill.setAmount(totalAmount.getAmount());	
+		bill.setAmount(totalAmount.getAmount());
 		bill.setActualAmount(totalActualAmount);
-		
-		//New Requirement add Paid bill & Free bill Both 
-		/*bill.setFreeBill(calculator.isFreeBill(HospitalCoreUtils
-				.buildParameters("attributes", attributes)));
-		logger.info("Is free bill: " + bill.getFreeBill());*/
-		
-		//new requirement capture 'patient_category'
+
+		// New Requirement add Paid bill & Free bill Both
+		/*
+		 * bill.setFreeBill(calculator.isFreeBill(HospitalCoreUtils
+		 * .buildParameters("attributes", attributes))); logger.info("Is free bill: " +
+		 * bill.getFreeBill());
+		 */
+
+		// new requirement capture 'patient_category'
 		HospitalCoreService hcs = Context.getService(HospitalCoreService.class);
 		List<PersonAttribute> pas = hcs.getPersonAttributes(patientId);
 		String patientCategory = "";
-       for (PersonAttribute pa : pas) {
-            PersonAttributeType attributeType = pa.getAttributeType();
-            if(pa.getAttributeType().getId()==14)
-            {
-            	patientCategory = pa.getValue();
-            	  bill.setPatientCategory(patientCategory);
-            }
-       }
-     //New Requirement add Paid bill & Free bill Both 
-     
-       bill.setFreeBill(calculator.isFreeBill(billType));
+		for (PersonAttribute pa : pas) {
+			PersonAttributeType attributeType = pa.getAttributeType();
+			if (pa.getAttributeType().getId() == 14) {
+				patientCategory = pa.getValue();
+				bill.setPatientCategory(patientCategory);
+			}
+		}
+		// New Requirement add Paid bill & Free bill Both
+
+		bill.setFreeBill(calculator.isFreeBill(billType));
 		logger.info("Is free bill: " + bill.getFreeBill());
 		bill.setReceipt(billingService.createReceipt());
-		//new requirement discount and spcl ward
+		// new requirement discount and spcl ward
 		bill.setWaiverPercentage(waiverPercentage);
-		float waiverAmount=totalprice*waiverPercentage/100;
+		float waiverAmount = totalprice * waiverPercentage / 100;
 		bill.setWaiverAmount(waiverAmount);
 		bill.setSpclwardPercentage(spclwardPercentage);
-		float spclwardAmount=totalprice*spclwardPercentage/100;
+		float spclwardAmount = totalprice * spclwardPercentage / 100;
 		bill.setSpclwardAmount(spclwardAmount);
 		bill.setAmountPayable(totalAmountPayable);
 		bill.setAmountGiven(amountGiven);
 		bill.setAmountReturned(amountReturned);
-		bill.setComment(waiverComment);
-		bill = billingService.savePatientServiceBill(bill);		
-		return "redirect:/module/billing/patientServiceBill.list?patientId="+patientId+"&billId="+bill.getPatientServiceBillId();
-		
+		bill.setComment(comment);
+		bill = billingService.savePatientServiceBill(bill);
+		return "redirect:/module/billing/patientServiceBill.list?patientId=" + patientId + "&billId="
+				+ bill.getPatientServiceBillId();
+
 	}
-	
-	private void validate(Integer[] ids, BindingResult binding, HttpServletRequest request){
-		for( int id : ids){
+
+	private void validate(Integer[] ids, BindingResult binding, HttpServletRequest request) {
+		for (int id : ids) {
 			try {
-	            Integer.parseInt(request.getParameter(id+"_qty"));
-            }
-            catch (Exception e) {
-            	binding.reject("billing.bill.quantity.invalid", "Quantity is invalid");
-            	return;
-            }
+				Integer.parseInt(request.getParameter(id + "_qty"));
+			} catch (Exception e) {
+				binding.reject("billing.bill.quantity.invalid", "Quantity is invalid");
+				return;
+			}
 		}
 	}
 }

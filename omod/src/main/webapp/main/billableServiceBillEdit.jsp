@@ -345,8 +345,7 @@ jQuery(document).ready(function(){
 				size="11" readOnly="true" value="${bill.amountPayable}" class="cancelDraggable"/>
 		</div>
 		<div>
-		Comment&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		&nbsp;&nbsp;&nbsp;&nbsp;
+		Secondary Category&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 		<input type="text" id="waiverComment" name="waiverComment" size="11" value="${bill.comment}" class="cancelDraggable"/>
 		</div>
 		<div>

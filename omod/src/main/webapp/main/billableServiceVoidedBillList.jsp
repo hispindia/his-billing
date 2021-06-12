@@ -89,6 +89,11 @@ function givefree(){
 		window.location.href="addPatientServiceBill.form?patientId="+patientId+"&billType="+billType+"&comment="+comment;
 	  }    	
 	}
+
+function addPaidBill() {
+	let comment = jQuery("#comment").val();
+	window.location.href='addPatientServiceBill.form?patientId=${patient.patientId}&billType=paid&comment='+comment
+}
 </script>
 
 <!-- ghanshyam,11-nov-2013,New Requirement #2938 Dealing with Dead Patient -->
@@ -97,7 +102,7 @@ function givefree(){
 	<b>
 	<%-- New Requirement add Paid bill & Free bill Both  --%>
 <td><input type="button" value="Add Paid Bill"
-			onclick="window.location.href='addPatientServiceBill.form?patientId=${patient.patientId}&billType=paid'" />
+			onclick="addPaidBill();" />
 	</td>
 		<td><input type="button" value="Add Free Bill" style="color: red"
 			onclick="givefree();" /></td>
